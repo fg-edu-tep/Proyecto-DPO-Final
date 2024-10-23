@@ -1,11 +1,10 @@
-package modelo;
+package LPTH.modelo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import LPTH.actividades.Actividad;
 
-import modelo.Actividades.Actividad;
-
-public class LearningPath {
+public class learningPath {
     private String profesorCreador;
     private String titulo;
     private int id;
@@ -21,7 +20,7 @@ public class LearningPath {
     private ArrayList<Actividad> actividades;
 
     
-    public LearningPath(String profesorCreador, String titulo, int id, String descripcion, ArrayList<String> objetivos,
+    public learningPath(String profesorCreador, String titulo, int id, String descripcion, ArrayList<String> objetivos,
                         String nivelDeDificultad, int duracion, int rating, Date fechaDeCreacion, Date fechaDeModificacion,
                         String version, float tasaDeExitoFracaso, ArrayList<Actividad> actividades) {
         this.profesorCreador = profesorCreador;
@@ -53,7 +52,7 @@ public class LearningPath {
     }
 
     public ArrayList<Actividad> getActividades() {
-        return actividades;
+    	return actividades;
     }
 
     public String getProfesorCreador() {
