@@ -5,8 +5,14 @@ import java.util.Date;
 
 public abstract class Actividad {
 
+		//revisar q es send
+		//revisar atributos externos invocados en metodos
+		//revisar parametros de metodos invocados.
+		//revisar logica detras de resena, posible cambio en uml
+	
+	
         protected boolean obligatoria;
-        public final int notaMinima= 3;
+        protected int notaMinima;
         protected String nombre;
         protected Date fechaLimite;
         protected String descripcion;
@@ -14,17 +20,13 @@ public abstract class Actividad {
         protected float rating;
         protected String retroalimentacion;
         protected boolean esCompletada;
-        protected ArrayList<Resenia> reseñas;
+        protected ArrayList<Resenia> resenias;
         protected int nivelDificultad;
+        protected boolean estaEmpezado;
 
-        public abstract void calificarActividad(); // revisar logica?? debiria calificarse automaticamente.    ???
-        public abstract void notificarEstudiante(); // asume atributo como publico, mismo q recordar. Se emplea asi para identificar el tipo
+        public abstract Double calificarActividad(); 
+        public abstract String notificarEstudiante(); 
 
-        // siguiendo la logica del taller 3, los metodos heredados no se añaden
-
-        public float calcularCalificacion() {
-            return calificacion;
-        }
 
         public String darRetroalimentacion() {
             return retroalimentacion;
@@ -35,10 +37,13 @@ public abstract class Actividad {
         }
 
         public ArrayList<Resenia> getResenas(){
-            return resenas;
+            return resenias;
         }
 
         public int nivelDeDificultad(){
-            return this.nivelDificultad;
+            return nivelDificultad;
 
+        public boolean empezarActividad(boolean quizEmpezado) {
+            return estaEmpezado= true;
+        }
 }

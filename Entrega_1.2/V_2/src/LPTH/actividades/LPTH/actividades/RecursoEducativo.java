@@ -7,23 +7,12 @@ public class RecursoEducativo extends Actividad {
     private String contenido;
     private String tipo;
 
-    public RecursoEducativo(boolean obligatoria, float notaMinima, String nombre, String descripcion, Date fechaLimite, boolean esCompletada,  list<Reseña> reseñas,int nivelDificultad , String contenido, String tipo) {
-        this.obligatoria = obligatoria;
-        this.notaMinima = notaMinima;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.fechaLimite= fechaLimite= Date;
-        this.esCompletada = false;
-        this.resenas= resenas;
-        this.nivelDificultad= nivelDificultad;
-        this.contenido = contenido;
-        this.tipo = tipo;
-    }
 
     @Override
-    public void calificarActividad() {
-        // TODO Auto-generated method stub
-
+    public Double calificarActividad(boolean esCompletada) {		
+        if (esCompletada==true) {
+        	return 5.0;
+        }
     }
 
     @Override
@@ -31,5 +20,12 @@ public class RecursoEducativo extends Actividad {
         return("Debe realizar su Examen!");
 
     }
-
+    
+    public void completarTarea() {
+    	esCompletada = true;
+    }
+    
+    public boolean getEstado() {
+    	return esCompletada;
+    }
 }

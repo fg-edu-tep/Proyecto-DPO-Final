@@ -1,4 +1,5 @@
 package LPTH.actividades;
+import java.awt.geom.Arc2D.Double;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -6,15 +7,23 @@ import LPTH.Preguntas.PreguntaCerrada;
 
 public class Quiz extends Actividad{
 
-    private boolean quizEmpezando;
+    private boolean isDone;
     private ArrayList<PreguntaCerrada> preguntas;
-    private int counter; 
-
+    private int counterPregunta;
+    private int counterCorrecta;
+    private double calificacionMinima; //encontrar uso
 
     @Override
-    public void calificarActividad() {
-        // TODO Auto-generated method stub
-
+    public Double calificarActividad(int counterCorrecta) {  // Por algun triple hpta motivo x.x es doble
+        if (esCompletada==true) {
+    	if (counterCorrecta != 0) {
+	    	float calificacion= (counterCorrecta/ 4)*5 ; 
+	        return calificacion;
+        }
+        else {
+        	return 0.0;
+        }
+        }
     }
 
     @Override
@@ -22,30 +31,35 @@ public class Quiz extends Actividad{
         return "Debe realizar su quiz!";
     }
 
-    public boolean empezarQuiz(boolean quizEmpezado) {
-        return quizEmpezado= true;
-    }
-
-    public void nextQuestion(ArrayList<PreguntaCerrada> preguntas, boolean esCompletada, boolean quizEmpezado) {
+    public String nextQuestion(ArrayList<PreguntaCerrada> preguntas, boolean esCompletada, boolean quizEmpezado, int counterPregunta) {
 
         if(quizEmpezado == true) {
-            if (counter < 4) {
-                System.out.println(preguntas[counter]);
-                counter ++;
+            if (counterPregunta < 4) {
+            	String enunciadoPregunta = preguntas.get(counterPregunta).getEnunciado();
+                String opcionesPregunta = preguntas.get(counterPregunta).getOpciones();
+                return (enunciadoPregunta + " " + opcionesPregunta);
+                counterPregunta ++;
             }
             else {
-                System.out.println("Ya completo su quiz");
+            	return ("Ya completo su quiz.");
                 esCompletada = true;
             }
         }
         else {
-            System.out.println("Debe iniciar el Quiz primero");
+        	return("Debe iniciar el quiz primero.");
         }
 
     }
-
-    public void isitDone(boolean isDone) { //gettersenconsola
-        if(counter == 3) {
+    
+    public void preguntaCorrecta(int counterPregunta, int counterCorrecta, String input, ArrayList<PreguntaCerrada> preguntas) {
+    	boolean respuestaPregunta= preguntas[counterPregunta].checkCorrecta(input);
+    	if (respuestaPregunta == true) {
+    		counterCorrecta ++;
+    	}
+    }
+    
+    public void isitDone(boolean isDone) { 	//Es lo mismo q esCompletada?
+        if(counterPregunta == 3) {
             isDone= true;
         }
     }

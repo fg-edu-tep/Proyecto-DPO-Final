@@ -4,6 +4,9 @@ import java.util.Date;
 
 public class Tarea extends Actividad{
 
+	private boolean isDone;
+	
+	
     @Override
     public void calificarActividad() {
         // TODO Auto-generated method stub
@@ -12,8 +15,13 @@ public class Tarea extends Actividad{
 
     @Override
     public String notificarEstudiante() {
-        return("Debe realizar su Examen!");
+        return("Debe realizar su Tarea!");
 
     }
-
+    
+    public void isitDone() {  //revisar q es, asume q es enviada
+        if(esCompletada== true) {
+            isDone= true;
+        }
+     }
 }
