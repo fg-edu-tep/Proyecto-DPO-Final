@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import LPTH.actividades.Actividad;
 import LPTH.modelo.learningPath;
+import LPTH.usuarios.Estudiante;
+import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Usuario;
 
 
@@ -20,14 +22,26 @@ public class Sistema {
         this.learningPaths = new ArrayList<>();
         this.usuarios = new LinkedList<>();
     }
-
+    
+    public Object crearUsaurio(String tipo) {
+    	
+    	if (tipo == "profesor") {
+        	Profesor nuevoUsuario = new Profesor();
+        	return nuevoUsuario;
+    	}
+    	else {
+        	Estudiante nuevoUsuario = new Estudiante();   
+        	return nuevoUsuario;	
+    		}	
+    	}
+    
     public boolean autenticarUsuario(String email, String contraseña) {
         return logIns.containsKey(email) && logIns.get(email).equals(contraseña);
     }
 
     public void cargarLearningPath() {
-        // Implementación para cargar los LearningPaths (puede ser desde un archivo o una base de datos)
-    }
+    	
+    	}
 
     public void salvarLearningPath() {
         // Implementación para guardar los LearningPaths (puede ser en un archivo o una base de datos)
