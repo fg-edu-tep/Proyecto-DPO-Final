@@ -1,65 +1,56 @@
 package LPTH.usuarios;
+// No es necesario importar resenia
+import LPTH.modelo.Sistema;
 import LPTH.modelo.learningPath;
 import LPTH.actividades.Actividad;
-import LPTH.usuarios.Resenia;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public abstract class Usuario {
     private int idUsuario;
     private String nombre;
     private String email;
-    private String contraseña;
+    private String password;
     private String fechaRegistro;
     private String tipo;
     private ArrayList<Resenia> resenias;
     private ArrayList<learningPath> learningPaths;
+    private  boolean loggedOn = false;
+    protected Sistema sistemaCentral;
 
-    public Usuario(int idUsuario, String nombre, String email, String contraseña, String fechaRegistro, String tipo) {
-        this.idUsuario = idUsuario;
+    public Usuario(Sistema sistemaCentral ,int idUsuario, String nombre, String email, String contraseña, String fechaRegistro, String tipo) {
+        this.sistemaCentral = sistemaCentral;
+    	this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.email = email;
-        this.contraseña = contraseña;
+        this.password = contraseña;
         this.fechaRegistro = fechaRegistro;
         this.tipo = tipo;
         this.resenias = new ArrayList<>();
         this.learningPaths = new ArrayList<>();
+        
     }
 
-    public abstract void crearReseña(String texto, int rating, Actividad actividad);
-    public abstract void modificarRating(Resenia resenia, int nuevoRating);
-    public abstract void realizarLogIn(String email, String contrasenia);
+    public void crearResenia(Actividad actividad, String texto, int rating) {
+    	Resenia resenia = new Resenia(texto, rating);
+    	actividad.agregarResenia(resenia);
+    }
+    
+    
+    public boolean realizarLogIn(String email, String contrasenia) {
+    	boolean logStatus = sistemaCentral.autenticarUsuario(email, contrasenia);
+    	return logStatus;
+    }
 
-    // Methodos
-
-    @Override
+    public void Logout() {
+    	this.loggedOn = false;
+    }
+    
     public ArrayList<learningPath> checkLearningPaths() {
-        if (learningPaths.isEmpty()) {
-            System.out.println("No hay Learning Paths asociados a este usuario.");
-        } else {
-            System.out.println("Learning Paths asociados:");
-            for (learningPath lp : learningPaths) {
-                System.out.println("- " + lp.getTitulo());
-            }
-        }
-        return learningPaths;
-    }
+		return learningPaths;
+    	}
 
-    public void resetPassword() {
-    try (Scanner scanner = new Scanner(System.in)) {
-        System.out.println("Por favor, ingrese su nueva contraseña:");
-        String nuevaContrasenia = scanner.nextLine();
-        if (nuevaContrasenia == null || nuevaContrasenia.isEmpty()) {
-            System.out.println("La nueva contraseña no puede estar vacía.");
-            return;
-        }
-        if (nuevaContrasenia.length() < 8) {
-            System.out.println("La nueva contraseña debe tener al menos 8 caracteres.");
-            return;
-        }
-        setContrasenia(nuevaContrasenia);
-        System.out.println("La contraseña ha sido restablecida con éxito.");
-    }
+    public void resetPassword(String newPass) {
+    	this.password = newPass;
 }
 
 
@@ -88,11 +79,11 @@ public abstract class Usuario {
     }
 
     public String getContrasenia() {
-        return contraseña;
+        return password;
     }
 
-    public void setContrasenia(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasenia(String password) {
+        this.password = password;
     }
 
     public String getFechaRegistro() {
@@ -102,17 +93,19 @@ public abstract class Usuario {
     public void setFechaRegistro(String fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
-
+    
     public String getTipo() {
         return tipo;
     }
-
+    
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+    
     public void agregarResenia(Resenia resenia) {
         this.resenias.add(resenia);
     }
+    
     public ArrayList<Resenia> getResenias() {
         return resenias;
     }

@@ -58,5 +58,16 @@ public class learningPath {
     public String getProfesorCreador() {
         return profesorCreador;
     }
+
+
+	public String getTitulo() {
+		return this.titulo;
+	}
+	
+	public String getDescripcion() {
+		return this.descripcion;
+	}
+	
+	// TODO Seguir esto, LP está muy incompleto
     
 }

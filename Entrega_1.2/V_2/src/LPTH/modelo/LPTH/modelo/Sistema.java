@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random; // Para los Ids de Usuario
+
 import LPTH.actividades.Actividad;
 import LPTH.modelo.learningPath;
 import LPTH.usuarios.Estudiante;
@@ -13,72 +15,80 @@ import LPTH.usuarios.Usuario;
 
 
 public class Sistema {
-    private Map<String, String> logIns; 
-    private List<learningPath> learningPaths; 
-    private LinkedList<Usuario> usuarios; 
+    private Map<String, String> logIns; //Correo y Password
+    private Map<String, learningPath> learningPaths; 
+    private LinkedList<Usuario> usuarios;
+    private Random rand = new Random();
+
 
     public Sistema() {
-        this.logIns = new HashMap<>();
-        this.learningPaths = new ArrayList<>();
-        this.usuarios = new LinkedList<>();
+        this.logIns = new HashMap<String, String>();
+        this.learningPaths = new HashMap<String, learningPath>();
+        this.usuarios = new LinkedList<Usuario>();
     }
     
-    public Object crearUsaurio(String tipo) {
-    	
+    public Object crearUsaurio(String tipo, String nombre, String email, String contrasenia, String fechaRegistro, String materia) {
+    	int idUsuario = rand.nextInt(99999);
     	if (tipo == "profesor") {
-        	Profesor nuevoUsuario = new Profesor();
+        	Profesor nuevoUsuario = new Profesor(this, idUsuario,nombre,email,contrasenia,fechaRegistro,tipo, materia);
         	return nuevoUsuario;
     	}
     	else {
-        	Estudiante nuevoUsuario = new Estudiante();   
+        	Estudiante nuevoUsuario = new Estudiante(this,idUsuario,nombre,email,contrasenia,fechaRegistro,tipo);   //TODO revisar si el sistema se puede auto-mandar
         	return nuevoUsuario;	
-    		}	
+    		}
     	}
     
     public boolean autenticarUsuario(String email, String contraseña) {
         return logIns.containsKey(email) && logIns.get(email).equals(contraseña);
     }
 
-    public void cargarLearningPath() {
-    	
-    	}
-
-    public void salvarLearningPath() {
-        // Implementación para guardar los LearningPaths (puede ser en un archivo o una base de datos)
+    // Métodos de conexión:
+    public ArrayList<learningPath> getLearningPaths() {
+        return new ArrayList<>(learningPaths.values()); // Retornar los valores en una lista
+    }
+    
+    public learningPath getLearningPath(String name) {
+        return learningPaths.get(name);
     }
 
-    // Métodos para cargar y salvar Usuarios
-    public void cargarUsuarios() {
-        // Implementación para cargar usuarios (puede ser desde un archivo o una base de datos)
-    }
-
-    public void salvarUsuarios() {
-        // Implementación para guardar usuarios (puede ser en un archivo o una base de datos)
-    }
-
-    public void cargarSistema() {
-        // Implementación para cargar todos los datos del sistema
-    }
-
-    public void salvarSistema() {
-        // Implementación para guardar todos los datos del sistema
-    }
-
-    public List<learningPath> getLearningPaths() {
-        return learningPaths;
-    }
 
     public LinkedList<Usuario> getUsuarios() {
         return usuarios;
     }
 
     public learningPath recomendarLearningPath() {
-        // Implementación para recomendar un LearningPath según algún criterio (por ejemplo, rating o nivel de dificultad)
-        if (!learningPaths.isEmpty()) {
-            return learningPaths.get(0); // Ejemplo simple que devuelve el primer LearningPath
-        }
-        return null;
+    	ArrayList<learningPath> Lp = getLearningPaths();
+    	int recommend = rand.nextInt(Lp.size());
+        return Lp.get(recommend);
     }
+    
+   // Persistencia:
+    
+    public void cargarLearningPath() {
+    	// TODO Esto es de persistencia
+    	}
+    
+    public void cargarSistema() {
+    	// TODO Esto es de persistencia
+    }
+    public void cargarUsuarios() {
+    	// TODO Esto es de persistencia
+    }
+
+    public void salvarLearningPath() {
+        /// TODO Esto es de persistencia
+    }
+
+    public void salvarUsuarios() {
+    	// TODO Esto es de persistencia
+    }
+
+    public void salvarSistema() {
+        /// TODO Esto es de persistencia
+    }
+
+
 
     
 }
