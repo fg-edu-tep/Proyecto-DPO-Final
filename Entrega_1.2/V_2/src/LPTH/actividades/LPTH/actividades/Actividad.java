@@ -9,7 +9,8 @@ public abstract class Actividad {
 		//revisar atributos externos invocados en metodos
 		//revisar parametros de metodos invocados.
 		//revisar logica detras de resena, posible cambio en uml
-	
+		// crear super/constructor
+		// isdone == esCompletada
 	
         protected boolean obligatoria;
         protected int notaMinima;
@@ -42,6 +43,7 @@ public abstract class Actividad {
 
         public int nivelDeDificultad(){
             return nivelDificultad;
+        }
 
         public boolean empezarActividad(boolean quizEmpezado) {
             return estaEmpezado= true;
