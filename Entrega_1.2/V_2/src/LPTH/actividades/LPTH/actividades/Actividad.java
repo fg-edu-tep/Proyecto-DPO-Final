@@ -45,7 +45,8 @@ public abstract class Actividad {
         public int nivelDeDificultad(){
             return this.nivelDificultad;
 
-}
+        }
+        
 		public String getNombre() {
 			return this.nombre;
 		}
