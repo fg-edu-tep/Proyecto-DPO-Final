@@ -1,5 +1,5 @@
 package LPTH.actividades;
-import LPTH.actividades.Resenia;
+import LPTH.usuarios.Resenia;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -33,6 +33,10 @@ public abstract class Actividad {
             return retroalimentacion;
         }
 
+        public void setCompletada(boolean Status){
+            this.esCompletada =  Status;
+        }
+        
         public boolean estaCompletada(){
             return esCompletada;
         }
@@ -42,10 +46,20 @@ public abstract class Actividad {
         }
 
         public int nivelDeDificultad(){
-            return nivelDificultad;
-        }
+            return this.nivelDificultad;
 
         public boolean empezarActividad(boolean quizEmpezado) {
             return estaEmpezado= true;
         }
 }
+		public String getNombre() {
+			return this.nombre;
+		}
+		
+		public String getDescripcion() {
+			return this.descripcion;
+		}
+		public void agregarResenia(Resenia nuevaResenia) {
+			resenias.add(nuevaResenia);
+		}
+	}
