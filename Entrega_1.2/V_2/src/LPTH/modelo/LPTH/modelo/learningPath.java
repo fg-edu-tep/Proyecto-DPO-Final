@@ -3,6 +3,15 @@ package LPTH.modelo;
 import java.util.ArrayList;
 import java.util.Date;
 import LPTH.actividades.Actividad;
+import LPTH.usuarios.Estudiante;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.Calendar;  
+
+import java.util.List;
+
 
 public class learningPath {
     private String profesorCreador;
@@ -68,11 +77,27 @@ public class learningPath {
 		return this.descripcion;
 	}
 	
+	public void notificarEstudianteDue(Estudiante ElEstudiante){
+		ArrayList<Actividad> sinCompletar = getActividadesSinCompletar();
+    	Instant now = Instant.now(); 
+    	Date today = Date.from(now);
+    	Calendar cal = Calendar.getInstance(); //Usar cal
+    	cal.setTime(today); 
+    	cal.add(Calendar.DAY_OF_MONTH, 2); //Avanzar dos dias
+    	Date future = cal.getTime(); // EStablecer dos dias en el futuro cómo el futuro
+		for (Actividad subAct : sinCompletar) {
+			if(((subAct.getDueDate()).before(today)) || ((subAct.getDueDate()).before(future))) { // Si es hoy o en el futur
+				ElEstudiante.agregarNotificacion(subAct.getNombre()); // Agregar notificación
+			}
+		}
+	}
+	
 	public ArrayList<Actividad> getActividadesSinCompletar(){
 		ArrayList<Actividad> ActividadesNoComp = new ArrayList<Actividad>();
 		for (Actividad actividad : actividades) {
 			if (!actividad.estaCompletada()) {
 				ActividadesNoComp.add(actividad);
+				
 			}
 		}
 		return ActividadesNoComp;

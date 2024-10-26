@@ -60,6 +60,11 @@ public abstract class Actividad {
 		public String getDescripcion() {
 			return this.descripcion;
 		}
+		
+		public Date getDueDate() {
+			return this.fechaLimite;
+		}
+		
 		public void agregarResenia(Resenia nuevaResenia) {
 			resenias.add(nuevaResenia);
 		}

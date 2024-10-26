@@ -33,11 +33,23 @@ public class Estudiante extends Usuario{
 		miActividad.setCompletada(false);
     }
     
-    public void peekLearningPath() {
-        sistemaCentral.getLearningPath(nombreLPActual);
+    public learningPath peekLearningPath() {
+    	/*Revisar el learning path acual (Retorna un learning Path)*/
+        learningPath myLP = sistemaCentral.getLearningPath(nombreLPActual);
+        return myLP;
+    }
+  
+    public ArrayList<String> peekLearningPathInfo() {
+    	/*Revisar info de un LearningPath actual [Titulo, descripción]*/
+        learningPath myLP = peekLearningPath();
+        ArrayList<String> attributos = new ArrayList<String>();
+        attributos.add(myLP.getTitulo());
+        attributos.add(myLP.getDescripcion());
+        return attributos;
     }
 
     public void startLearningPath(learningPath selectedLp) {
+    	/*Agrega el LP seleccionado y lo agrega a progreso*/
     	nombreLPActual = selectedLp.getTitulo();
     	Instant now = Instant.now();
     	Date actual = Date.from(now);
@@ -45,6 +57,7 @@ public class Estudiante extends Usuario{
     	}
     
     public void removeLearningPath() {
+    	/*Elimina el LP y lo quita de progreso*/
     	learningPath mylearningPath = sistemaCentral.getLearningPath(nombreLPActual);
     	progreso.removeStartDate(mylearningPath);
     	nombreLPActual = "None";
@@ -60,8 +73,17 @@ public class Estudiante extends Usuario{
         return laActividad.getDescripcion();
     }
 
+    public List<String>agregarNotificacion(String tituloActividad){
+    	/*Learnign path usa este método para agregar notificaciones en rango*/
+    	this.notificaciones.add(tituloActividad);
+    	return this.notificaciones;
+    }
+    
     public List<String> getNotificaciones(){
-    	
+    	/*Learning path es el responsable de obtener las notificaciones, 
+    	 * este agrega a la lista*/ 
+    	notificaciones.clear();
+    	peekLearningPath().notificarEstudianteDue(this);
     	return this.notificaciones;
     }
 
