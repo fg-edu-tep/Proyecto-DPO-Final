@@ -4,58 +4,51 @@ import java.awt.geom.Arc2D.Double;
 import java.util.ArrayList;
 import java.util.Date;
 import LPTH.Preguntas.PreguntaAbierta;
+import LPTH.usuarios.Resenia;
 
 public class Examen extends Actividad {
 
-    private boolean isDone;
     private ArrayList<PreguntaAbierta> preguntas;
     private double calificacionMinima;
+    private int counterCorrecta;
+    private int counterPregunta;
     
-    
+    public Examen (boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo) {
+    	super(obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo);
+    	this.preguntas= new ArrayList<PreguntaAbierta>();
+    	this.calificacionMinima= calificacionMinima;
+    	this.counterCorrecta= 0;
     }
 
     @Override
-   //asume que el profesor retorna la cantidad correcta, misma logica q quiz
-        
-
-     public Double calificarActividad(int counterCorrecta, ArrayList<PreguntaAbierta> preguntas) {  // Por algun triple hpta motivo x.x es doble
+     public double calificarActividad() {  
             if (esCompletada==true) {
-	        	if (counterCorrecta != 0) {
-	    	    	float calificacion= (counterCorrecta/ (preguntas.size()))*5 ; 
-	    	        return calificacion;
+            	return 5.0;
 	            }
-            else {
-            	return 0.0;
             }
-            }
-      }
+            return 0.0;
+     }    
+   
 
     @Override
-    public String notificarEstudiante() {  // 
+    public String notificarEstudiante() {   
         return("Debe realizar su Examen!");
     }
 
-    public String nextQuestion(ArrayList<PreguntaAbierta> preguntas, boolean esCompletada, boolean estaEmpezado, int counterPregunta) {
+    public String nextQuestion(){
 
         if(estaEmpezado == true) {
         	if (counterPregunta < 4) {
-            	String enunciadoPregunta = preguntas.get(counterPregunta).getEnunciado(); // reviasr getEneunciado en pregunta abierta
-                return (enunciadoPregunta);
-                counterPregunta ++;
+            	String enunciadoPregunta = preguntas.get(counterPregunta).getEnunciado(); 
+            	counterPregunta ++;
+            	return (enunciadoPregunta);
+                
             }
         }
         else if (counterPregunta== (preguntas.size())){
-        	return("Ya completo su encuesta.");
+        	esCompletada= true;
+        	return("Ya completo su Examen.");
         }
-        else {
-        	return("Debe iniciar la encuesta primero.");
-        }
+        return("Debe iniciar la Examen primero.");
     }
-    
-    public void isitDone() {  //revisar q es, asume q es enviada
-        if(esCompletada== true) {
-            isDone= true;
-        }
-        }
-    
 }

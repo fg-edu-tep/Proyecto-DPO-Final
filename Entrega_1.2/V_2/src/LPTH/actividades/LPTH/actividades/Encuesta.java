@@ -6,20 +6,27 @@ import java.util.Date;
 import LPTH.Preguntas.Pregunta;
 import LPTH.Preguntas.PreguntaAbierta;
 import LPTH.Preguntas.PreguntaCerrada;
+import LPTH.usuarios.Resenia;
 
 
 public class Encuesta extends Actividad {
 	
-	private boolean isDone;
+
     private ArrayList<PreguntaAbierta> preguntas;
     private int counterPregunta;
-
+    
+    public Encuesta (boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo) {
+    	super(obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo);
+    	this.preguntas= new ArrayList<PreguntaAbierta>();
+    	this.counterPregunta= 0;
+    }
+    
     @Override
-    public Double calificarActividad(boolean esCompletada) {		//Asume q realizar encuesta da 5
+    public double calificarActividad() {		
         if (esCompletada==true) {
         	return 5.0;
         }
-
+        return 0.0;
     }
 
     @Override
@@ -28,36 +35,21 @@ public class Encuesta extends Actividad {
 
     }
 
-    public String nextQuestion(ArrayList<PreguntaAbierta> preguntas, boolean esCompletada, boolean estaEmpezado, int counterPregunta) {
-
+    public String nextQuestion() {
         if(estaEmpezado == true) {
         	if (counterPregunta < 4) {
-            	String enunciadoPregunta = preguntas.get(counterPregunta).getEnunciado(); // reviasr getEneunciado en pregunta abierta, y sus parametros
-                return (enunciadoPregunta);
-                counterPregunta ++;
+            	String enunciadoPregunta = preguntas.get(counterPregunta).getEnunciado(); 
+            	counterPregunta ++;
+            	return (enunciadoPregunta);
+                
             }
         }
         else if (counterPregunta== (preguntas.size())){
         	return("Ya completo su encuesta.");
         }
-        else {
-        	return("Debe iniciar la encuesta primero.");
-        }
+		return "Debe iniciar su encuesta";
     }
     
-    public void isitDone() {  //revisar q es
-        if(esCompletada== true) {
-            isDone= true;
-        }
-        }
-        
-    public ArrayList<String> getResults(ArrayList<PreguntaAbierta> preguntas, int counterPregunta){  //reviasr q es esto, asumo q es una lista de resultados del estudiante????
-    	ArrayList<String> respuestas = new ArrayList<>();
-    	for (int i: preguntas) {
-    		 String enunciado= preguntas[counterPregunta].getResults(); //q retonar la res del usuario?
-    		 repuestas.add(enunciado);
-    	}
-    	return respuestas;
-    }
+
 
 }

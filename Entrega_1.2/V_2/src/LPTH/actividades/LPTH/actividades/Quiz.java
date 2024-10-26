@@ -4,41 +4,48 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import LPTH.Preguntas.PreguntaCerrada;
+import LPTH.usuarios.Resenia;
 
 public class Quiz extends Actividad{
 
-    private boolean isDone;
     private ArrayList<PreguntaCerrada> preguntas;
     private int counterPregunta;
     private int counterCorrecta;
-    private double calificacionMinima; //encontrar uso
-
+    private double calificacionMinima; 
+    
+    public Quiz (boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo) {
+    	super(obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo);
+    	this.counterPregunta = 0;
+    	this.counterCorrecta= 0;
+    	this.calificacionMinima= calificacionMinima;
+    	this.preguntas= new ArrayList<PreguntaCerrada>();
+    }
+    
     @Override
-    public Double calificarActividad(int counterCorrecta) {  // Por algun triple hpta motivo x.x es doble
+    public double calificarActividad() { 
         if (esCompletada==true) {
-    	if (counterCorrecta != 0) {
-	    	float calificacion= (counterCorrecta/ 4)*5 ; 
-	        return calificacion;
+	    	if (counterCorrecta != 0) {
+		    	float calificacion= (counterCorrecta/ 4)*5 ; 
+		        return calificacion;
+	        }
         }
-        else {
-        	return 0.0;
-        }
-        }
+		return 0.0;
     }
 
     @Override
     public String notificarEstudiante() {
-        return "Debe realizar su quiz!";
+        return "Debe realizar su quiz"+ " "+ this.nombre;
     }
 
-    public String nextQuestion(ArrayList<PreguntaCerrada> preguntas, boolean esCompletada, boolean quizEmpezado, int counterPregunta) {
+    public String nextQuestion(String inputUsuario) {
 
-        if(quizEmpezado == true) {
+        if(estaEmpezado == true) {
             if (counterPregunta < 4) {
             	String enunciadoPregunta = preguntas.get(counterPregunta).getEnunciado();
-                String opcionesPregunta = preguntas.get(counterPregunta).getOpciones();
-                return (enunciadoPregunta + " " + opcionesPregunta);
+                String opcionesPregunta = preguntas.get(counterPregunta).getOpciones();	
+                preguntaCorrecta(inputUsuario);
                 counterPregunta ++;
+                return (enunciadoPregunta + " " + opcionesPregunta);                
             }
             else {
             	return ("Ya completo su quiz.");
@@ -51,17 +58,12 @@ public class Quiz extends Actividad{
 
     }
     
-    public void preguntaCorrecta(int counterPregunta, int counterCorrecta, String input, ArrayList<PreguntaCerrada> preguntas) {
-    	boolean respuestaPregunta= preguntas[counterPregunta].checkCorrecta(input);
+    public void preguntaCorrecta(String inputUsuario) {
+    	boolean respuestaPregunta= preguntas.get(counterCorrecta).checkCorrecta(inputUsuario);
     	if (respuestaPregunta == true) {
     		counterCorrecta ++;
     	}
     }
-    
-    public void isitDone(boolean isDone) { 	//Es lo mismo q esCompletada?
-        if(counterPregunta == 3) {
-            isDone= true;
-        }
-    }
+
 
 }

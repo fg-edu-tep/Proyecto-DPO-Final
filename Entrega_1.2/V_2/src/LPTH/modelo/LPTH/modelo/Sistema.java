@@ -1,5 +1,7 @@
 package LPTH.modelo;
 
+import java.util.Scanner;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -7,11 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random; // Para los Ids de Usuario
 
+import LPTH.Preguntas.PreguntaAbierta;
+import LPTH.Preguntas.PreguntaCerrada;
 import LPTH.actividades.Actividad;
 import LPTH.modelo.learningPath;
 import LPTH.usuarios.Estudiante;
 import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Usuario;
+
 
 
 public class Sistema {
@@ -63,6 +68,61 @@ public class Sistema {
         return Lp.get(recommend);
     }
     
+
+
+    public ArrayList<PreguntaCerrada> crearPreguntasCerradas() {
+        ArrayList<PreguntaCerrada> preguntas = new ArrayList<>();
+        
+        Scanner input = new Scanner(System.in);
+
+        for (int i = 1; i <= 4; i++) {
+            System.out.print("Ingrese el enunciado de la pregunta " + i + ": ");
+            String enunciado = input.nextLine();
+
+            ArrayList<String> opciones = new ArrayList<>();
+
+            for (int j = 1; j <= 4; j++) {
+                System.out.print("Ingrese la opcion " + j + ": ");
+                String opcion = input.nextLine();
+                opciones.add(opcion);
+            }
+
+            System.out.println("Opciones : ");
+            for (int j = 0; j < opciones.size(); j++) {
+                System.out.println((j + 1) + ". " + opciones.get(j));
+            }
+
+            System.out.print("Seleccione el número de la opcion correcta (1-4): ");
+            int opcionCorrectaI = Integer.parseInt(input.nextLine()) - 1;
+
+            String opcionCorrecta = opciones.get(opcionCorrectaI);
+
+            preguntas.add(new PreguntaCerrada(enunciado, opciones, opcionCorrecta));
+        }
+        input.close();
+
+        return preguntas; 
+    }
+
+    public ArrayList<PreguntaAbierta> crearPreguntasAbiertas() {
+        ArrayList<PreguntaAbierta> preguntas = new ArrayList<>();
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Ingrese la cantidad de preguntas que desea: ");
+        int cantidadPreguntas = Integer.parseInt(input.nextLine());
+
+        for (int i = 1; i <= cantidadPreguntas; i++) {
+            System.out.print("Ingrese el enunciado de la pregunta " + i + ": ");
+            String enunciado = input.nextLine();
+
+            preguntas.add(new PreguntaAbierta(enunciado));
+        }
+        input.close();
+        return preguntas; 
+
+    }
+    	
+    	
    // Persistencia:
     
     public void cargarLearningPath() {

@@ -12,26 +12,36 @@ public abstract class Actividad {
 		// crear super/constructor
 		// isdone == esCompletada
 	
-        protected boolean obligatoria;
+        protected boolean obligatoria; 
         protected int notaMinima;
         protected String nombre;
         protected Date fechaLimite;
         protected String descripcion;
-        protected float calificacion;
-        protected float rating;
-        protected String retroalimentacion;
-        protected boolean esCompletada;
-        protected ArrayList<Resenia> resenias;
-        protected int nivelDificultad;
+        protected double calificacion;
+        protected float rating; 
+        protected boolean esCompletada; 
+        protected ArrayList<Resenia> resenias; 
+        protected double nivelDificultad;
         protected boolean estaEmpezado;
+        protected String objetivo;
 
-        public abstract Double calificarActividad(); 
-        public abstract String notificarEstudiante(); 
-
-
-        public String darRetroalimentacion() {
-            return retroalimentacion;
-        }
+        public Actividad (boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo) {
+			   this.obligatoria = obligatoria;
+			   this.notaMinima = notaMinima;
+			   this.nombre = nombre;
+			   this.fechaLimite = fechaLimite;
+			   this.descripcion = descripcion;
+			   this.calificacion = calificacion;
+			   this.rating = rating;
+			   this.esCompletada = esCompletada;
+			   this.resenias = resenias != null ? resenias : new ArrayList<>(); // Manejo nulo
+			   this.nivelDificultad = nivelDificultad;
+			   this.estaEmpezado = estaEmpezado;
+			   this.objetivo= objetivo;
+			   }
+        
+        public abstract double calificarActividad(); 
+        public abstract String notificarEstudiante(); // eliminar y meter en learning path
 
         public void setCompletada(boolean Status){
             this.esCompletada =  Status;
@@ -45,8 +55,9 @@ public abstract class Actividad {
             return resenias;
         }
 
-        public int nivelDeDificultad(){
+        public double nivelDeDificultad(){
             return this.nivelDificultad;
+        }
 
         public boolean empezarActividad(boolean quizEmpezado) {
             return estaEmpezado= true;
@@ -61,5 +72,9 @@ public abstract class Actividad {
 		}
 		public void agregarResenia(Resenia nuevaResenia) {
 			resenias.add(nuevaResenia);
+		}
+		
+		public String getObjetivo() {
+			return this.objetivo;
 		}
 	}

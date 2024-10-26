@@ -2,7 +2,13 @@ package LPTH.modelo;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import LPTH.Preguntas.PreguntaCerrada;
 import LPTH.actividades.Actividad;
+import LPTH.actividades.Encuesta;
+import LPTH.actividades.Quiz;
+import LPTH.usuarios.Resenia;
+import LPTH.usuarios.Usuario;
 
 public class learningPath {
     private String profesorCreador;
@@ -38,6 +44,7 @@ public class learningPath {
         this.actividades = actividades;
     }
 
+    // 
     
     public int mostrarCalificacion() {
         return rating;
@@ -68,6 +75,44 @@ public class learningPath {
 		return this.descripcion;
 	}
 	
-	// TODO Seguir esto, LP está muy incompleto
+	public String crearActividad(Usuario usuario, Actividad actividad, int cantidadPreguntas, String actividadDeseada) { //Profesor usa crearActividad desde su propio metodo)
+		ArrayList<preg>
+		if (usuario.getTipotoLowerCase() == "Profesor") {
+			if(actividadDeseada.toLowerCase()== "quiz") {
+				crearQuiz()
+			}
+		}
+		else {
+			return "Para crear/modificar actividad(s) debe ser profesor")
+		}
+	}
+	
+	
+	public Encuesta crearEncuesta() {
+		
+	}
+	
+	public Examen crearExamen() {
+		
+	}
+	
+	
+    public Quiz crearQuiz() {
+    	
+    }
+	public RecursoEducativo crearRecursoEd() {
+		
+	}
+	
+	public Tarea crearTarea() {
+		
+		
+		
+	}
+	
+	public void notificarEstudiante(conocer estudiante, conocer actividad) {
+		
+	}
+	
     
 }
