@@ -47,11 +47,12 @@ public abstract class Actividad {
 
         public int nivelDeDificultad(){
             return this.nivelDificultad;
-
-        public boolean empezarActividad(boolean quizEmpezado) {
-            return estaEmpezado= true;
         }
-}
+        
+        public void empezarActividad() {
+            this.estaEmpezado = true;
+        }
+
 		public String getNombre() {
 			return this.nombre;
 		}

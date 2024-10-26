@@ -68,6 +68,17 @@ public class learningPath {
 		return this.descripcion;
 	}
 	
+	public ArrayList<Actividad> getActividadesSinCompletar(){
+		ArrayList<Actividad> ActividadesNoComp = new ArrayList<Actividad>();
+		for (Actividad actividad : actividades) {
+			if (!actividad.estaCompletada()) {
+				ActividadesNoComp.add(actividad);
+			}
+		}
+		return ActividadesNoComp;
+	}
+	
+	
 	// TODO Seguir esto, LP está muy incompleto
     
 }
