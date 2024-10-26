@@ -3,6 +3,8 @@ package LPTH.actividades;
 import java.awt.geom.Arc2D.Double;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
+
 import LPTH.Preguntas.PreguntaAbierta;
 import LPTH.usuarios.Resenia;
 
@@ -15,7 +17,7 @@ public class Examen extends Actividad {
     
     public Examen (boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo) {
     	super(obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo);
-    	this.preguntas= new ArrayList<PreguntaAbierta>();
+    	this.preguntas= crearPreguntasAbiertas();
     	this.calificacionMinima= calificacionMinima;
     	this.counterCorrecta= 0;
     }
@@ -51,4 +53,23 @@ public class Examen extends Actividad {
         }
         return("Debe iniciar la Examen primero.");
     }
+    
+    public ArrayList<PreguntaAbierta> crearPreguntasAbiertas() {
+        ArrayList<PreguntaAbierta> preguntas = new ArrayList<>();
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Ingrese la cantidad de preguntas que desea: ");
+        int cantidadPreguntas = Integer.parseInt(input.nextLine());
+
+        for (int i = 1; i <= cantidadPreguntas; i++) {
+            System.out.print("Ingrese el enunciado de la pregunta " + i + ": ");
+            String enunciado = input.nextLine();
+
+            preguntas.add(new PreguntaAbierta(enunciado));
+        }
+        input.close();
+        return preguntas; 
+
+    }
+    
 }

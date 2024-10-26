@@ -75,44 +75,43 @@ public class learningPath {
 		return this.descripcion;
 	}
 	
-	public String crearActividad(Usuario usuario, Actividad actividad, int cantidadPreguntas, String actividadDeseada) { //Profesor usa crearActividad desde su propio metodo)
-		ArrayList<preg>
-		if (usuario.getTipotoLowerCase() == "Profesor") {
-			if(actividadDeseada.toLowerCase()== "quiz") {
-				crearQuiz()
-			}
-		}
-		else {
-			return "Para crear/modificar actividad(s) debe ser profesor")
-		}
+	public String crearActividad(Usuario usuario, String actividadDeseada, boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo, ArrayList<PreguntaCerrada> preguntas, int counterPregunta, int counterCorrecta, double calificacionMinima) {
+	    if (usuario.getTipo().equalsIgnoreCase("profesor")) {
+	        if (actividadDeseada.equalsIgnoreCase("quiz")) {
+	            Quiz quiz = crearQuiz(objetivo, obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo, preguntas, counterCorrecta, counterCorrecta, calificacionMinima);
+	            return "Actividad creada: " + quiz.getNombre(); 
+	        } //Falta implementacion, seguir ejemplo quiz.
+	    } else {
+	        return "Para crear/modificar actividades debe ser profesor";
+	    }
+	    return "Actividad no creada"; 
 	}
-	
+
 	
 	public Encuesta crearEncuesta() {
-		
+		//Falta implementacion, ver ejemplo quiz.
 	}
 	
 	public Examen crearExamen() {
-		
+		//Falta implementacion, ver ejemplo quiz.
+
 	}
 	
+	public Quiz crearQuiz(String actividadDeseada, boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo, ArrayList<PreguntaCerrada> preguntas, int counterPregunta, int counterCorrecta, double calificacionMinima) {
+	    Quiz quiz = new Quiz(obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo);
+	    return quiz;
+	}
+
 	
-    public Quiz crearQuiz() {
-    	
-    }
-	public RecursoEducativo crearRecursoEd() {
-		
+    public RecursoEducativo crearRecursoEd() {
+		//Falta implementacion, ver ejemplo quiz.
+
 	}
 	
 	public Tarea crearTarea() {
-		
-		
-		
+		//Falta implementacion, ver ejemplo quiz.
 	}
-	
-	public void notificarEstudiante(conocer estudiante, conocer actividad) {
-		
-	}
+
 	
     
 }
