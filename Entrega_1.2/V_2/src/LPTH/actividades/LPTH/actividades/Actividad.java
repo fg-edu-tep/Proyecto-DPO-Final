@@ -38,6 +38,11 @@ public abstract class Actividad {
         public abstract double calificarActividad(); 
         public abstract String notificarEstudiante(); // eliminar y meter en learning path
 
+        public void marcarObligatoria() {
+        	this.obligatoria = true;
+        }
+
+
         public void setCompletada(boolean Status){
             this.esCompletada =  Status;
         }
@@ -53,11 +58,11 @@ public abstract class Actividad {
         public double nivelDeDificultad(){
             return this.nivelDificultad;
         }
-
-        public boolean empezarActividad(boolean quizEmpezado) {
-            return estaEmpezado= true;
+        
+        public void empezarActividad() {
+            this.estaEmpezado = true;
         }
-}
+
 		public String getNombre() {
 			return this.nombre;
 		}
@@ -65,6 +70,19 @@ public abstract class Actividad {
 		public String getDescripcion() {
 			return this.descripcion;
 		}
+		
+		public void setNombre(String nombreNuevo) {
+			this.nombre = nombreNuevo;
+		}
+		
+		public void setDescripcion(String descripcionNueva) {
+			this.descripcion = descripcionNueva;
+		}
+		
+		public Date getDueDate() {
+			return this.fechaLimite;
+		}
+		
 		public void agregarResenia(Resenia nuevaResenia) {
 			resenias.add(nuevaResenia);
 		}

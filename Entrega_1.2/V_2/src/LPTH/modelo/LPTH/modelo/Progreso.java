@@ -10,7 +10,7 @@ public class Progreso {
 	// Se elimino porcActividadesExitosas =\equiv successRate
     private Map<learningPath, Date> inicioLearningPaths = new HashMap<>();
     private Map<learningPath, Date> finLearningPaths = new HashMap<>();
-    private Map<Actividad, Integer> tiempoDedicado = new HashMap<>();
+    private Map<Actividad, Integer> tiempoDedicado = new HashMap<>(); // En el LP actual
     private boolean learningInProgress;
     private float successRate;
 
@@ -48,13 +48,15 @@ public class Progreso {
     	inicioLearningPaths.put(theLearningPath, fecha);
     }
     
-
+    public void removeStartDate(learningPath theLearningPath) {
+    	inicioLearningPaths.remove(theLearningPath);
+    }
     
     public void addEndDate(Date fecha, learningPath theLearningPath) {
     	finLearningPaths.put(theLearningPath, fecha);
     }
     
-
+    
     
     public boolean toggleLearning() {
 	    this.learningInProgress = !learningInProgress;

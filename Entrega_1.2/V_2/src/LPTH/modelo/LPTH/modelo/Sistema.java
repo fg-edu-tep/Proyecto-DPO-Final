@@ -1,8 +1,8 @@
 package LPTH.modelo;
 
-import java.util.Scanner;
-
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,11 +35,11 @@ public class Sistema {
     public Object crearUsaurio(String tipo, String nombre, String email, String contrasenia, String fechaRegistro, String materia) {
     	int idUsuario = rand.nextInt(99999);
     	if (tipo == "profesor") {
-        	Profesor nuevoUsuario = new Profesor(this, idUsuario,nombre,email,contrasenia,fechaRegistro,tipo, materia);
+        	Profesor nuevoUsuario = new Profesor(this, idUsuario,nombre,email,contrasenia,fechaRegistro, materia);
         	return nuevoUsuario;
     	}
     	else {
-        	Estudiante nuevoUsuario = new Estudiante(this,idUsuario,nombre,email,contrasenia,fechaRegistro,tipo);   //TODO revisar si el sistema se puede auto-mandar
+        	Estudiante nuevoUsuario = new Estudiante(this,idUsuario,nombre,email,contrasenia,fechaRegistro);   // Sie se puede
         	return nuevoUsuario;	
     		}
     	}
@@ -49,6 +49,27 @@ public class Sistema {
     }
 
     // Métodos de conexión:
+    public learningPath crearLearningPath(Profesor profe, String titulo, String descripcion,
+    		String nivelDeDificultad, int duracion){
+    	String profesorCreador = profe.getNombre();
+    	int id = rand.nextInt(999999);
+    	Instant now = Instant.now(); 
+    	Date today = Date.from(now);
+    	Date fechaDeCreacion = today;
+    	Date fechaDeModificacion = today;
+    	String version = "1";
+    	int rating = 5;
+    	int tasaDeExitoFracaso = 0;
+    	ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+    	
+    	
+    	learningPath originates = new learningPath(profesorCreador, titulo, id, descripcion, objetivos,
+                nivelDeDificultad, duracion, rating, fechaDeCreacion, fechaDeModificacion,
+                version, tasaDeExitoFracaso,actividades);
+    	this.learningPaths.put(titulo, originates);
+    	return originates;
+    }
+    
     public ArrayList<learningPath> getLearningPaths() {
         return new ArrayList<>(learningPaths.values()); // Retornar los valores en una lista
     }

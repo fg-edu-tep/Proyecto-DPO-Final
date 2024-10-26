@@ -5,10 +5,15 @@ import java.util.Date;
 
 import LPTH.Preguntas.PreguntaCerrada;
 import LPTH.actividades.Actividad;
-import LPTH.actividades.Encuesta;
-import LPTH.actividades.Quiz;
-import LPTH.usuarios.Resenia;
-import LPTH.usuarios.Usuario;
+import LPTH.usuarios.Estudiante;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.Calendar;  
+
+import java.util.List;
+
 
 public class learningPath {
     private String profesorCreador;
@@ -41,40 +46,138 @@ public class learningPath {
         this.fechaDeModificacion = fechaDeModificacion;
         this.version = version;
         this.tasaDeExitoFracaso = tasaDeExitoFracaso;
-        this.actividades = actividades;
+        if (!actividades.isEmpty()) {
+        	this.actividades = actividades;
+        }
+        
     }
 
-    // 
-    
+    // Getters basicos
     public int mostrarCalificacion() {
-        return rating;
+        return this.rating;
+    }
+    
+    public int getDuracion() {
+        return this.duracion;
+    }
+    
+    public int getID() {
+        return this.id;
     }
 
     public Date getFechaModificacion() {
-        return fechaDeModificacion;
+        return this.fechaDeModificacion;
+    }
+ 
+    public Date getFechaCreacionn() {
+        return this.fechaDeCreacion;
     }
 
     public String getVersion() {
-        return version;
+        return this.version;
     }
 
     public ArrayList<Actividad> getActividades() {
-    	return actividades;
+    	return this.actividades;
     }
 
+    public ArrayList<String> getObjetivos() {
+    	return this.objetivos;
+    }
+    
     public String getProfesorCreador() {
-        return profesorCreador;
+        return this.profesorCreador;
     }
-
 
 	public String getTitulo() {
 		return this.titulo;
+	}
+	
+	public String getnivelDeDificultad() {
+		return this.nivelDeDificultad;
 	}
 	
 	public String getDescripcion() {
 		return this.descripcion;
 	}
 	
+    
+	public float getTasa(){
+		return this.tasaDeExitoFracaso;
+	}
+	
+	
+	// setters basicos
+	public void setRating(int rating) {
+	    this.rating = rating;
+	}
+
+	public void setFechaDeModificacion(Date fechaDeModificacion) {
+	    this.fechaDeModificacion = fechaDeModificacion;
+	}
+
+	public void setVersion(String version) {
+	    this.version = version;
+	}
+
+	public void setActividades(ArrayList<Actividad> actividades) {
+	    this.actividades = actividades;
+	}
+	
+	public void agregarActividad(Actividad actividadNueva) {
+	    this.actividades.add(actividadNueva);
+	}
+	
+	public void eliminarActividad(Actividad actividadQuitar) {
+	    this.actividades.remove(actividadQuitar);
+	}
+
+	public void setProfesorCreador(String profesorCreador) {
+	    this.profesorCreador = profesorCreador;
+	}
+
+	public void setTitulo(String titulo) {
+	    this.titulo = titulo;
+	}
+
+	public void setDescripcion(String descripcion) {
+	    this.descripcion = descripcion;
+	}
+
+	// Métodos complejos de profesor
+
+	public void editarTituloDesc(String titulo, String Descripcion) {
+		setTitulo(titulo);
+		setDescripcion(descripcion);
+	}
+	// Métodos complejos de estudiante
+	public void notificarEstudianteDue(Estudiante ElEstudiante){
+		ArrayList<Actividad> sinCompletar = getActividadesSinCompletar();
+    	Instant now = Instant.now(); 
+    	Date today = Date.from(now);
+    	Calendar cal = Calendar.getInstance(); //Usar cal
+    	cal.setTime(today); 
+    	cal.add(Calendar.DAY_OF_MONTH, 2); //Avanzar dos dias
+    	Date future = cal.getTime(); // EStablecer dos dias en el futuro cómo el futuro
+		for (Actividad subAct : sinCompletar) {
+			if(((subAct.getDueDate()).before(today)) || ((subAct.getDueDate()).before(future))) { // Si es hoy o en el futur
+				ElEstudiante.agregarNotificacion(subAct.getNombre()); // Agregar notificación
+			}
+		}
+	}
+	
+	public ArrayList<Actividad> getActividadesSinCompletar(){
+		ArrayList<Actividad> ActividadesNoComp = new ArrayList<Actividad>();
+		for (Actividad actividad : actividades) {
+			if (!actividad.estaCompletada()) {
+				ActividadesNoComp.add(actividad);
+				
+			}
+		}
+		return ActividadesNoComp;
+	}
+	
+}
 	public String crearActividad(Usuario usuario, String actividadDeseada, boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo, ArrayList<PreguntaCerrada> preguntas, int counterPregunta, int counterCorrecta, double calificacionMinima) {
 	    if (usuario.getTipo().equalsIgnoreCase("profesor")) {
 	        if (actividadDeseada.equalsIgnoreCase("quiz")) {
@@ -112,6 +215,3 @@ public class learningPath {
 		//Falta implementacion, ver ejemplo quiz.
 	}
 
-	
-    
-}
