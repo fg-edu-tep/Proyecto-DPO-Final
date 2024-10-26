@@ -16,9 +16,10 @@ public class Estudiante extends Usuario{
     private Progreso progreso;
     private List<String> notificaciones;
     private String nombreLPActual;
+    private static final String tipo = "Estudiante";
 
     // Constructor
-    public Estudiante(Sistema sistemaCentral, int idUsuario, String nombre, String email, String contraseña, String fechaRegistro, String tipo) {
+    public Estudiante(Sistema sistemaCentral, int idUsuario, String nombre, String email, String contraseña, String fechaRegistro) {
     	super(sistemaCentral, idUsuario, nombre, email, contraseña, fechaRegistro, tipo);
         this.progreso = new Progreso();
         this.notificaciones = new ArrayList<>();

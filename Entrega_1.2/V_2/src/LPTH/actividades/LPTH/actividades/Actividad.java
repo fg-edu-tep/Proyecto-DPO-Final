@@ -28,7 +28,9 @@ public abstract class Actividad {
         public abstract Double calificarActividad(); 
         public abstract String notificarEstudiante(); 
 
-
+        public void marcarObligatoria() {
+        	this.obligatoria = true;
+        }
         public String darRetroalimentacion() {
             return retroalimentacion;
         }
@@ -59,6 +61,14 @@ public abstract class Actividad {
 		
 		public String getDescripcion() {
 			return this.descripcion;
+		}
+		
+		public void setNombre(String nombreNuevo) {
+			this.nombre = nombreNuevo;
+		}
+		
+		public void setDescripcion(String descripcionNueva) {
+			this.descripcion = descripcionNueva;
 		}
 		
 		public Date getDueDate() {
