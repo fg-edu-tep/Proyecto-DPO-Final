@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="LPTH/" kind="src" path="src"/>
-	<classpathentry excluding="preguntas/|actividades/|usuarios/|modelo/" kind="src" path="src/LPTH"/>
 	<classpathentry kind="src" path="src/LPTH/preguntas"/>
 	<classpathentry kind="src" path="src/LPTH/actividades"/>
 	<classpathentry kind="src" path="src/LPTH/usuarios"/>
 	<classpathentry kind="src" path="src/LPTH/modelo"/>
+	<classpathentry kind="src" path="gui"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>

@@ -61,6 +61,7 @@ public class Sistema {
     	int rating = 5;
     	int tasaDeExitoFracaso = 0;
     	ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+    	ArrayList<String> objetivos = new ArrayList<String>();
     	
     	
     	learningPath originates = new learningPath(profesorCreador, titulo, id, descripcion, objetivos,

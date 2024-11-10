@@ -5,7 +5,15 @@ import java.util.Date;
 
 import LPTH.Preguntas.PreguntaCerrada;
 import LPTH.actividades.Actividad;
+import LPTH.actividades.Encuesta;
+import LPTH.actividades.Examen;
+import LPTH.actividades.Quiz;
+import LPTH.actividades.RecursoEducativo;
+import LPTH.actividades.Tarea;
 import LPTH.usuarios.Estudiante;
+import LPTH.usuarios.Resenia;
+import LPTH.usuarios.Usuario;
+
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -177,7 +185,7 @@ public class learningPath {
 		return ActividadesNoComp;
 	}
 	
-}
+
 	public String crearActividad(Usuario usuario, String actividadDeseada, boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo, ArrayList<PreguntaCerrada> preguntas, int counterPregunta, int counterCorrecta, double calificacionMinima) {
 	    if (usuario.getTipo().equalsIgnoreCase("profesor")) {
 	        if (actividadDeseada.equalsIgnoreCase("quiz")) {
@@ -192,10 +200,12 @@ public class learningPath {
 
 	
 	public Encuesta crearEncuesta() {
+		return null;
 		//Falta implementacion, ver ejemplo quiz.
 	}
 	
 	public Examen crearExamen() {
+		return null;
 		//Falta implementacion, ver ejemplo quiz.
 
 	}
@@ -207,11 +217,13 @@ public class learningPath {
 
 	
     public RecursoEducativo crearRecursoEd() {
+		return null;
 		//Falta implementacion, ver ejemplo quiz.
 
 	}
 	
 	public Tarea crearTarea() {
+		return null;
 		//Falta implementacion, ver ejemplo quiz.
 	}
-
+}

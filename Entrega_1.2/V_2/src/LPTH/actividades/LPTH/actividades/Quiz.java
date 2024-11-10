@@ -45,14 +45,14 @@ public class Quiz extends Actividad{
         if(estaEmpezado == true) {
             if (counterPregunta < 4) {
             	String enunciadoPregunta = preguntas.get(counterPregunta).getEnunciado();
-                String opcionesPregunta = preguntas.get(counterPregunta).getOpciones();	
+                String opcionesPregunta = (preguntas.get(counterPregunta).getOpciones()).toString();	// TODO getOpciones regresa una lista
                 preguntaCorrecta(inputUsuario);
                 counterPregunta ++;
                 return (enunciadoPregunta + " " + opcionesPregunta);                
             }
             else {
+            	esCompletada = true;
             	return ("Ya completo su quiz.");
-                esCompletada = true;
             }
         }
         else {
