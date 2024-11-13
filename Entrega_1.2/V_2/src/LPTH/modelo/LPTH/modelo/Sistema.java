@@ -23,6 +23,7 @@ public class Sistema {
     private Map<String, String> logIns; //Correo y Password
     private Map<String, learningPath> learningPaths; 
     private LinkedList<Usuario> usuarios;
+    private Map<String, Usuario> dbUsuarios;
     private Random rand = new Random();
 
 
@@ -30,16 +31,25 @@ public class Sistema {
         this.logIns = new HashMap<String, String>();
         this.learningPaths = new HashMap<String, learningPath>();
         this.usuarios = new LinkedList<Usuario>();
+        this.dbUsuarios = new HashMap<String, Usuario>();
     }
     
-    public Object crearUsaurio(String tipo, String nombre, String email, String contrasenia, String fechaRegistro, String materia) {
+    public Usuario crearUsuario(String tipo, String nombre, String email, String contrasenia, String fechaRegistro, String materia) {
     	int idUsuario = rand.nextInt(99999);
     	if (tipo == "profesor") {
         	Profesor nuevoUsuario = new Profesor(this, idUsuario,nombre,email,contrasenia,fechaRegistro, materia);
+        	nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
+        	logIns.put(email, contrasenia);
+        	dbUsuarios.put(email, nuevoUsuario);
+        	usuarios.add(nuevoUsuario);
         	return nuevoUsuario;
     	}
     	else {
         	Estudiante nuevoUsuario = new Estudiante(this,idUsuario,nombre,email,contrasenia,fechaRegistro);   // Sie se puede
+        	nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
+        	logIns.put(email, contrasenia);
+        	dbUsuarios.put(email, nuevoUsuario);
+        	usuarios.add(nuevoUsuario);
         	return nuevoUsuario;	
     		}
     	}
@@ -47,16 +57,28 @@ public class Sistema {
     public boolean autenticarUsuario(String email, String contraseña) {
         return logIns.containsKey(email) && logIns.get(email).equals(contraseña);
     }
+    
+    public Usuario realizarLogin(String email, String contrasenia) {
+    	if (autenticarUsuario(email, contrasenia)) {
+    		return dbUsuarios.get(email);
+    	}
+    	else {
+    		return null; // TODO Agregar throw exception
+    	}
+    }
+    // TODO Regresar el usuario autenticado
+    
+    public Usuario grabUsuarioByEmail(String email) {
+    	return dbUsuarios.get(email);
+    }
 
     // Métodos de conexión:
     public learningPath crearLearningPath(Profesor profe, String titulo, String descripcion,
     		String nivelDeDificultad, int duracion){
     	String profesorCreador = profe.getNombre();
     	int id = rand.nextInt(999999);
-    	Instant now = Instant.now(); 
-    	Date today = Date.from(now);
-    	Date fechaDeCreacion = today;
-    	Date fechaDeModificacion = today;
+    	Date fechaDeCreacion = getCurrentDate();
+    	Date fechaDeModificacion = getCurrentDate();
     	String version = "1";
     	int rating = 5;
     	int tasaDeExitoFracaso = 0;
@@ -69,6 +91,12 @@ public class Sistema {
                 version, tasaDeExitoFracaso,actividades);
     	this.learningPaths.put(titulo, originates);
     	return originates;
+    }
+    
+    public Date getCurrentDate() {
+    	Instant now = Instant.now(); 
+    	Date today = Date.from(now);
+    	return today;
     }
     
     public ArrayList<learningPath> getLearningPaths() {

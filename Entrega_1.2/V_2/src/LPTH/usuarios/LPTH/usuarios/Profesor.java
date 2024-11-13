@@ -2,6 +2,7 @@ package LPTH.usuarios;
 import LPTH.modelo.Sistema;
 import LPTH.modelo.learningPath;
 import LPTH.actividades.Actividad;
+import LPTH.actividades.Quiz;
 
 public class Profesor extends Usuario{
     private String materia;
@@ -13,6 +14,10 @@ public class Profesor extends Usuario{
     }
 
 
+    public String getMateria() {
+    	return this.materia;
+    }
+    
 	public learningPath crearlearningPath(String titulo, String descripcion, String nivelDeDificultad, int duracion) {
 		learningPath myNewLp = sistemaCentral.crearLearningPath(this, titulo, descripcion, nivelDeDificultad, duracion);
 		return myNewLp;
@@ -23,22 +28,16 @@ public class Profesor extends Usuario{
     	return learningPath;
     }
 
-    public Actividad crearyAgregarQuiz(learningPath learningPath, String tipo) { // Tiene que tener las entradas por cada tipo de <Actividad>
-    	/* Crea un nuevo <Actividad> y lo agrega al LP - No se pudo completar debido a que no se completó
-    	 * ni se pudo establecer la creación de preguntas individuales, lo cual hace casacada a los tipos de actividad.
-    	 * 
-    	 * Este se debe crear en base a un tipo de actividad particular (Quiz, examen, encuesta, etc)pues las actividades entre sí tiene
-    	 *  atributos distintos.*/
-    	
-        return null;
+    public Actividad AgregarQuiz(learningPath specificLP, Quiz ActividadNueva) {
+    	/* Recibe un objeto actividad creada y lo agrega al LearningPath*/
+    	specificLP.agregarActividad(ActividadNueva);
+        return ActividadNueva;
     }
 
     public Actividad editarActividad(Actividad actividad, String nuevoTitulo, String nuevaDescripcion) {
+    	/* Cambia el nombre y la descripción de una actividad*/
     	actividad.setNombre(nuevoTitulo);
     	actividad.setDescripcion(nuevaDescripcion);
-    	/*Sólo se pueden implementar estos pues son generales a la clase abstracta actividad, el editar preguntas, etc se debe a 
-    	 * la misma razón de no haber podido definir la creación de preguntas particulares para una actividad (pues se requiere una dimensión n
-    	 * con campos personalizados)*/ 
     	return actividad;
     }
 
