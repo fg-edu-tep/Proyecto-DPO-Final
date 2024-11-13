@@ -9,8 +9,8 @@ public class RecursoEducativo extends Actividad {
     private String contenido;
     private String tipo;
 
-    public RecursoEducativo (boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo) {
-    	super(obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo);
+    public RecursoEducativo (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String contenido, String tipo) {
+    	super(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado);
     	this.contenido=contenido;
     	this.tipo=tipo;
     }
@@ -21,12 +21,6 @@ public class RecursoEducativo extends Actividad {
         	return 5.0;
         }
         return 0.0;
-    }
-
-    @Override
-    public String notificarEstudiante() {
-        return("Debe realizar su Examen!");
-
     }
     
     public void completarTarea() {

@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import LPTH.Preguntas.PreguntaAbierta;
 import LPTH.Preguntas.PreguntaCerrada;
 import LPTH.usuarios.Resenia;
 
 public class Quiz extends Actividad{
 
+    //Se removio crearPregunta Abierta
+	
     private ArrayList<PreguntaCerrada> preguntas;
     private int counterPregunta;
     private int counterCorrecta;
-    private double calificacionMinima; 
     
-    public Quiz (boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo) {
-    	super(obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo);
+    public Quiz (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, ArrayList<PreguntaCerrada> preguntas) {
+    	super(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado);
+    	this.preguntas= preguntas;
     	this.counterPregunta = 0;
-    	this.counterCorrecta= 0;
-    	this.calificacionMinima= calificacionMinima;
-    	this.preguntas= crearPreguntasCerradas();
-    
+    	this.counterCorrecta= 0;   
     }
     
     
@@ -35,11 +35,10 @@ public class Quiz extends Actividad{
 		return 0.0;
     }
 
-    @Override
-    public String notificarEstudiante() {
-        return "Debe realizar su quiz"+ " "+ this.nombre;
+    public void setPreguntas (ArrayList<PreguntaCerrada> nuevaspreguntas) {
+    	this.preguntas= nuevaspreguntas;
     }
-
+    
     public String nextQuestion(String inputUsuario) {
 
         if(estaEmpezado == true) {
@@ -68,38 +67,5 @@ public class Quiz extends Actividad{
     	}
     }
 
-    public ArrayList<PreguntaCerrada> crearPreguntasCerradas() {
-        ArrayList<PreguntaCerrada> preguntas = new ArrayList<>();
-        
-        Scanner input = new Scanner(System.in);
-
-        for (int i = 1; i <= 4; i++) {
-            System.out.print("Ingrese el enunciado de la pregunta " + i + ": ");
-            String enunciado = input.nextLine();
-
-            ArrayList<String> opciones = new ArrayList<>();
-
-            for (int j = 1; j <= 4; j++) {
-                System.out.print("Ingrese la opcion " + j + ": ");
-                String opcion = input.nextLine();
-                opciones.add(opcion);
-            }
-
-            System.out.println("Opciones : ");
-            for (int j = 0; j < opciones.size(); j++) {
-                System.out.println((j + 1) + ". " + opciones.get(j));
-            }
-
-            System.out.print("Seleccione el número de la opcion correcta (1-4): ");
-            int opcionCorrectaI = Integer.parseInt(input.nextLine()) - 1;
-
-            String opcionCorrecta = opciones.get(opcionCorrectaI);
-
-            preguntas.add(new PreguntaCerrada(enunciado, opciones, opcionCorrecta));
-        }
-        input.close();
-
-        return preguntas; 
-    }
 
 }
