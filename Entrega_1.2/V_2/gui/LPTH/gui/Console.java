@@ -97,4 +97,15 @@ public class Console {
 		scanner.close();
 		return olvidadiso;
 	}
+
+
+	private Usuario realizarLogIn() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Ingrese Usuario: ");
+		String usurio = scanner.next();
+		System.out.print("Ingrese su contraseña: ");
+		String password = scanner.next();
+		scanner.close();
+		return sistemaCentral.realizarLogin(usurio, password);
+	}
 }
