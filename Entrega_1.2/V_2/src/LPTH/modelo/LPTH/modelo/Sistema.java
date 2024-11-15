@@ -19,16 +19,19 @@ import LPTH.usuarios.Usuario;
 
 
 
+
 public class Sistema {
-    private Map<String, String> logIns; //Correo y Password
+    private Map<String, Usuario> logIns; //Correo y Password
     private Map<String, learningPath> learningPaths; 
     private LinkedList<Usuario> usuarios;
     private Map<String, Usuario> dbUsuarios;
     private Random rand = new Random();
+    private Usuario usuarioActual = null;
+    
 
 
     public Sistema() {
-        this.logIns = new HashMap<String, String>();
+        this.logIns = new HashMap<String, Usuario>();
         this.learningPaths = new HashMap<String, learningPath>();
         this.usuarios = new LinkedList<Usuario>();
         this.dbUsuarios = new HashMap<String, Usuario>();
@@ -39,7 +42,7 @@ public class Sistema {
     	if (tipo == "profesor") {
         	Profesor nuevoUsuario = new Profesor(this, idUsuario,nombre,email,contrasenia,fechaRegistro, materia);
         	nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
-        	logIns.put(email, contrasenia);
+        	logIns.put(email, nuevoUsuario);
         	dbUsuarios.put(email, nuevoUsuario);
         	usuarios.add(nuevoUsuario);
         	return nuevoUsuario;
@@ -47,15 +50,32 @@ public class Sistema {
     	else {
         	Estudiante nuevoUsuario = new Estudiante(this,idUsuario,nombre,email,contrasenia,fechaRegistro);   // Sie se puede
         	nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
-        	logIns.put(email, contrasenia);
+        	logIns.put(email, nuevoUsuario);
         	dbUsuarios.put(email, nuevoUsuario);
         	usuarios.add(nuevoUsuario);
         	return nuevoUsuario;	
     		}
     	}
     
-    public boolean autenticarUsuario(String email, String contraseña) {
-        return logIns.containsKey(email) && logIns.get(email).equals(contraseña);
+    public boolean autenticarUsuario(String email, String contrasenia) {
+    	
+    	//Obtener el usuario
+    	// Compruebas igualdad
+    	// Si es igual, lo guardas en usuarioActual
+    	// Si no, devolver false
+    	
+    	Usuario usuario = logIns.get(email);
+    	if (usuario != null && contrasenia.equals(usuario.getContrasenia())) {
+			usuarioActual = usuario;
+			return true;
+		} else {
+			return false;
+    	}
+    }
+    
+    public String esProfesorOEstudiante() {
+        return usuarioActual.getTipo();
+        
     }
     
     public Usuario realizarLogin(String email, String contrasenia) {
@@ -94,6 +114,7 @@ public class Sistema {
     }
     
     public Date getCurrentDate() {
+    	System.out.print("true");
     	Instant now = Instant.now(); 
     	Date today = Date.from(now);
     	return today;
