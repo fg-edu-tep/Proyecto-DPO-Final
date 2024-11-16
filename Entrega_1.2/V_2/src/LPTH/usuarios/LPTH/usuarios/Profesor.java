@@ -13,6 +13,9 @@ public class Profesor extends Usuario{
         this.materia = materia;
     }
 
+	public String getTipo() {
+		return this.tipo;
+	}
 
     public String getMateria() {
     	return this.materia;
