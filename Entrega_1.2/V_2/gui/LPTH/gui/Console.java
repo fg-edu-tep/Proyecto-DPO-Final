@@ -31,25 +31,30 @@ public class Console {
 	
 	/*Métodos de autenticación y creacion de usuario*/
 	
-	public static boolean IngresoUsuario() {
+	public static Usuario IngresoUsuario() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Ingrese su email: ");
 		String email = scanner.next();
 		System.out.println("Ingrese su contraseña: ");
 		String contrasenia = scanner.next();
-		boolean estaautenticado = sistemaCentral.autenticarUsuario(email, contrasenia);
-		if (estaautenticado) {
+		Usuario elUsuario = sistemaCentral.autenticarUsuario(email, contrasenia);
+		if (elUsuario.checkLogIn()) {
 			System.out.println("Ha ingresado correctamente");
-			TipodeUsuario();
-			if (TipodeUsuario().equals("profesor")) {
+			String tipoDeUsuario = elUsuario.getTipo();
+			if (tipoDeUsuario.equals("profesor")) {
+				Profesor elProfesor = (Profesor)elUsuario; 
+				// TODO Constructor de consola y enviar a flujo
 				menu_profesor.opcionesprofesor();
-			} else if (TipodeUsuario().equals("estudiante")) {
-				menu_estudiante.opcionesestudiante();
+			} else if (tipoDeUsuario.equals("estudiante")) {
+				Estudiante elEstudiante = (Estudiante)elUsuario; 
+				menu_estudiante menuDelEstudiante = new menu_estudiante(sistemaCentral, elEstudiante); // Constructor de instancia consola
+				menu_estudiante.opcionesestudiante(); // Enviar al flujo de esa consola
 			}
 		} else {
 			System.out.println("No se ha podido autenticar");
 		}
-		return estaautenticado;
+		scanner.close();
+		return elUsuario;
 	}
 	
 	public static void elegirCreacionUsuario() {
@@ -71,7 +76,7 @@ public class Console {
 				IngresoUsuario();
 			}
 			
-				
+			scanner.close();	
 		}
 		else if (selection.equals("P")) {
 			Profesor nuevoProfesor = crearUsuarioProfesor();
@@ -98,6 +103,7 @@ public class Console {
 		String fechaRegistro = (sistemaCentral.getCurrentDate()).toString();
 		//scanner.close();
 		Estudiante nuevoEstudiante = (Estudiante)sistemaCentral.crearUsuario(tipo, nombre, email, pass, fechaRegistro, materia);
+		scanner.close();
 		return nuevoEstudiante;
 	}
 
@@ -128,7 +134,6 @@ public class Console {
 		scanner.close();
 		return olvidadiso;
 	}
-<<<<<<< HEAD
 
 
 	private Usuario realizarLogIn() {
@@ -139,11 +144,6 @@ public class Console {
 		String password = scanner.next();
 		scanner.close();
 		return sistemaCentral.realizarLogin(usurio, password);
-	}
-=======
-	public static String TipodeUsuario() {
-		 String tipo = sistemaCentral.esProfesorOEstudiante();		
-		return tipo;
 	}
 
 	
@@ -181,5 +181,4 @@ public class Console {
 			
 		}
 	
->>>>>>> main
 }
