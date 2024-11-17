@@ -27,6 +27,12 @@ public class menu_estudiante {
 			System.out.println("Opción inválida");
 		}
 		
+	}
+	
+	
+		
+		
+	
 		
 		
 	}

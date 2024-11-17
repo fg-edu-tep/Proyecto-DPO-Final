@@ -15,6 +15,7 @@ import LPTH.actividades.Actividad;
 import LPTH.modelo.learningPath;
 import LPTH.usuarios.Estudiante;
 import LPTH.usuarios.Profesor;
+import LPTH.usuarios.Resenia;
 import LPTH.usuarios.Usuario;
 
 
@@ -138,6 +139,15 @@ public class Sistema {
     	int recommend = rand.nextInt(Lp.size());
         return Lp.get(recommend);
     }
+    
+    
+        
+        
+        
+        
+    
+    
+    
         	
     	
    // Persistencia:
@@ -164,6 +174,8 @@ public class Sistema {
     public void salvarSistema() {
         /// TODO Esto es de persistencia
     }
+
+	
 
 
 
