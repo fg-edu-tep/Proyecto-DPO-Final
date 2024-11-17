@@ -102,7 +102,6 @@ public class menu_profesor {
         
 	public static void verLearningPaths(Profesor profesor,Sistema sistemaCentral) {
 		// Método para ver los Learning Paths existentes
-		Scanner scanner = new Scanner(System.in);
 		ArrayList<LearningPath> paths = sistemaCentral.getLearningPaths();
 		
 		System.out.println("Learning Paths existentes:");
@@ -229,70 +228,29 @@ public class menu_profesor {
 
 	public static void ConsultarotrosLearningpath(Profesor profesor, Sistema sistemaCentral) {
 	    String nombreDocente = profesor.getNombre();
-	    ArrayList<String> otrosDocentes = new ArrayList<>();
+	    ArrayList<Profesor> otrosDocentes = new ArrayList<>();
+	    
 	    ArrayList<LearningPath> paths = sistemaCentral.getLearningPaths();
-
+	    
 	    for (LearningPath path : paths) {
-	        String profesorPath = path.getProfesorCreador();
-	        if (!profesorPath.equals(nombreDocente) && !otrosDocentes.contains(profesorPath)) {
-	            otrosDocentes.add(profesorPath);
+	        /// profesorCreador = path.getProfesorCreador();
+	        if (profesorCreador.getNombre().equals(nombreDocente) && 
+	           // otrosDocentes.contains(profesorCreador)) {
+	            otrosDocentes.add(profesorCreador);
 	        }
-	    }
-	    
-	    
-	    
-	    for (String otroDocente : otrosDocentes) {
-	        System.out.println("\nLearning Paths del profesor " + otroDocente + ":");
-
-	        for (LearningPath path : paths) {
-	            if (path.getProfesorCreador().equals(otroDocente)) {
-	                System.out.println("- " + path.getTitulo() + " (ID: " + path.getID() + ")");
-	                System.out.println("  Descripción: " + path.getDescripcion());
-	                System.out.println("  Duración: " + path.getDuracion() + " horas");
-	            }
-	        }
-	    }
+	}
 
 	    if (otrosDocentes.isEmpty()) {
-	        System.out.println("No se encontraron Learning Paths de otros docentes en el sistema.");
+	        System.out.println("No hay otros docentes con Learning Paths.");
+	        return;
 	    }
-	
-	   
+	    
+	    
+	        
+	        
+	     
+		
 	}
-	
-	
-	
-	public static void clonarLearningPath(Profesor profesor, Sistema sistemaCentral) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingrese el ID del Learning Path a clonar: ");
-        String nombre = scanner.next();
-        LearningPath path = sistemaCentral.getLearningPath(nombre);
-        if (path == null) {
-            System.out.println("Learning Path no encontrado.");
-            System.exit(0);
-        }
-        String titulo = path.getTitulo();
-        String descripcion = path.getDescripcion();
-        String nivelDeDificultad = path.getnivelDeDificultad();
-        int duracion = path.getDuracion();
-        LearningPath pathClonado = sistemaCentral.crearLearningPath(profesor, titulo, descripcion, nivelDeDificultad, duracion);
-        System.out.println("Learning Path clonado exitosamente: " + pathClonado.getTitulo());
-        scanner.close();
-        
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	public static void revisarTareasExamenes(Profesor profesor) {
 		

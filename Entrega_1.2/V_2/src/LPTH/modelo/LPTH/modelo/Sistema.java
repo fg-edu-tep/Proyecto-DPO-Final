@@ -1,5 +1,6 @@
 package LPTH.modelo;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,8 @@ import LPTH.usuarios.Estudiante;
 import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Resenia;
 import LPTH.usuarios.Usuario;
+import LPTH.persistencia.*;
+
 
 
 
@@ -138,30 +141,6 @@ public class Sistema {
     
         	
     	
-   // Persistencia:
-    
-    public void cargarLearningPath() {
-    	// TODO Esto es de persistencia
-    	}
-    
-    public void cargarSistema() {
-    	// TODO Esto es de persistencia
-    }
-    public void cargarUsuarios() {
-    	// TODO Esto es de persistencia
-    }
-
-    public void salvarLearningPath() {
-        /// TODO Esto es de persistencia
-    }
-
-    public void salvarUsuarios() {
-    	// TODO Esto es de persistencia
-    }
-
-    public void salvarSistema() {
-        /// TODO Esto es de persistencia
-    }
 
 	
 

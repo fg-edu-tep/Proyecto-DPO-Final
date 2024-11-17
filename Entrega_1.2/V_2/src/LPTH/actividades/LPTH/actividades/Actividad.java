@@ -3,6 +3,7 @@ import LPTH.usuarios.Resenia;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,8 +25,8 @@ public abstract class Actividad {
 
 		//Se elimino objetivo y notaminima, notaminima no se espcifica, objetivos puede estar en descripcion.
         //notificar estudiante se realiza en L.P
-        protected Date fechaEmpezada;
-        protected Date fechaTerminada;
+        protected Temporal fechaEmpezada;
+        protected Temporal fechaTerminada;
         protected int duracion;
         
         public Actividad (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado) {
@@ -90,15 +91,13 @@ public abstract class Actividad {
         
         public void empezarActividad() {
             Instant empezado = Instant.now();
-            Date fechaEmpezado = Date.from(empezado);
-        	this.fechaEmpezada = fechaEmpezado;
+        	this.fechaEmpezada = empezado;
             this.estaEmpezado = true;
         }
 
         public void terminarActividad() {
             Instant terminado = Instant.now(); 
-            Date fechaTerminado = Date.from(terminado);
-        	this.fechaTerminada = fechaTerminado;
+        	this.fechaTerminada = terminado;
             this.esCompletada = true;
         }
         

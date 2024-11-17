@@ -1,4 +1,5 @@
 package LPTH.gui;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,7 @@ import LPTH.usuarios.Estudiante;
 import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Usuario;
 import LPTH.modelo.Sistema.*;
+import LPTH.persistencia.PeristirSistema;
 
 
 public class Console {
@@ -50,7 +52,8 @@ public class Console {
 
 	                if (tipoDeUsuario.equals("profesor")) {
 	                    Profesor elProfesor = (Profesor) elUsuario;
-	                    menu_profesor.opcionesprofesor();
+	                    menu_profesor menuDelProfesor= new menu_profesor(sistemaCentral, elProfesor);
+	                    menuDelProfesor.opcionesprofesor(elProfesor);
 	                } else if (tipoDeUsuario.equals("estudiante")) {
 	                    Estudiante elEstudiante = (Estudiante) elUsuario;
 	                    menu_estudiante menuDelEstudiante = new menu_estudiante(sistemaCentral, elEstudiante);
@@ -355,7 +358,36 @@ public class Console {
 		} scanner.close();
 	} 
 	
-	/*
+	
+   // Persistencia:
+    
+
+    public void salvarSistema(Sistema sistemaCentral) {
+    	PeristirSistema fileMngr = new PeristirSistema(); 
+    	try {
+			fileMngr.salvarSistema(sistemaCentral);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+
+    public Sistema cargarSistema() throws NullPointerException {
+    	PeristirSistema fileMngr = new PeristirSistema();
+    	Sistema sistemaCentral = null;
+		try {
+			sistemaCentral = fileMngr.cargarSistema();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (sistemaCentral.equals(null)) {
+			throw new NullPointerException();
+		}
+    	return sistemaCentral;
+    }
+
+	
+    /*
 	Crear l.p
 	un lp necesita minimo 1 actividad,
 	
