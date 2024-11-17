@@ -35,14 +35,17 @@ public abstract class Usuario {
     	actividad.agregarResenia(resenia);
     }
     
-    
-    public boolean realizarLogIn(String email, String contrasenia) {
-    	boolean logStatus = sistemaCentral.autenticarUsuario(email, contrasenia);
-    	return logStatus;
-    }
 
     public void Logout() {
     	this.loggedOn = false;
+    }
+    
+    public void LogInAtt() {
+    	this.loggedOn = true;
+    }
+    
+    public boolean checkLogIn() {
+    	return this.loggedOn;
     }
     
     public ArrayList<learningPath> checkLearningPaths() {

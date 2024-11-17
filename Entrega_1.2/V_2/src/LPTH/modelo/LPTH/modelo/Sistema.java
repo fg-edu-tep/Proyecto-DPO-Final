@@ -12,7 +12,7 @@ import java.util.Random; // Para los Ids de Usuario
 import LPTH.Preguntas.PreguntaAbierta;
 import LPTH.Preguntas.PreguntaCerrada;
 import LPTH.actividades.Actividad;
-import LPTH.modelo.learningPath;
+import LPTH.modelo.*;
 import LPTH.usuarios.Estudiante;
 import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Resenia;
@@ -22,17 +22,15 @@ import LPTH.usuarios.Usuario;
 
 
 public class Sistema {
-    private Map<String, Usuario> logIns; //Correo y Password
+    private Map<String, String> logIns; //Correo y Password
     private Map<String, learningPath> learningPaths; 
     private LinkedList<Usuario> usuarios;
-    private Map<String, Usuario> dbUsuarios;
-    private Random rand = new Random();
-    private Usuario usuarioActual = null;
-    
+    private Map<String, Usuario> dbUsuarios; //Correo y Usuario
+    private Random rand = new Random();    
 
 
     public Sistema() {
-        this.logIns = new HashMap<String, Usuario>();
+        this.logIns = new HashMap<String, String>();
         this.learningPaths = new HashMap<String, learningPath>();
         this.usuarios = new LinkedList<Usuario>();
         this.dbUsuarios = new HashMap<String, Usuario>();
@@ -43,51 +41,38 @@ public class Sistema {
     	if (tipo == "profesor") {
         	Profesor nuevoUsuario = new Profesor(this, idUsuario,nombre,email,contrasenia,fechaRegistro, materia);
         	nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
-        	logIns.put(email, nuevoUsuario);
+        	logIns.put(email, contrasenia);
         	dbUsuarios.put(email, nuevoUsuario);
         	usuarios.add(nuevoUsuario);
+        	nuevoUsuario.LogInAtt(); // Regresa con la sesión iniciada
         	return nuevoUsuario;
     	}
     	else {
         	Estudiante nuevoUsuario = new Estudiante(this,idUsuario,nombre,email,contrasenia,fechaRegistro);   // Sie se puede
         	nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
-        	logIns.put(email, nuevoUsuario);
+        	logIns.put(email, contrasenia);
         	dbUsuarios.put(email, nuevoUsuario);
         	usuarios.add(nuevoUsuario);
+        	nuevoUsuario.LogInAtt(); // Regresa con la sesión iniciada
         	return nuevoUsuario;	
     		}
     	}
     
-    public boolean autenticarUsuario(String email, String contrasenia) {
-    	
-    	//Obtener el usuario
-    	// Compruebas igualdad
-    	// Si es igual, lo guardas en usuarioActual
-    	// Si no, devolver false
-    	
-    	Usuario usuario = logIns.get(email);
-    	if (usuario != null && contrasenia.equals(usuario.getContrasenia())) {
-			usuarioActual = usuario;
-			return true;
-		} else {
-			return false;
-    	}
-    }
     
-    public String esProfesorOEstudiante() {
-        return usuarioActual.getTipo();
-        
+    public Usuario autenticarUsuario(String email, String contrasenia){
+        Usuario usuario = grabUsuarioByEmail(email);
+        if (usuario.equals(null)) {
+        	return null;
+        }
+        if (usuario.getContrasenia().equals(contrasenia)) { 
+        	usuario.LogInAtt();
+        return usuario;
+        }
+        else {
+        	return null;
+        }
     }
-    
-    public Usuario realizarLogin(String email, String contrasenia) {
-    	if (autenticarUsuario(email, contrasenia)) {
-    		return dbUsuarios.get(email);
-    	}
-    	else {
-    		return null; // TODO Agregar throw exception
-    	}
-    }
-    // TODO Regresar el usuario autenticado
+ 
     
     public Usuario grabUsuarioByEmail(String email) {
     	return dbUsuarios.get(email);
