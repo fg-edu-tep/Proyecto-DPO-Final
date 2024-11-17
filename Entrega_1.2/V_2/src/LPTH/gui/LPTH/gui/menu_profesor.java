@@ -6,36 +6,36 @@ import java.util.Scanner;
 import LPTH.modelo.Sistema;
 import LPTH.modelo.LearningPath;
 import LPTH.usuarios.Profesor;
-import LPTH.usuarios.Usuario;
+import LPTH.usuarios.*;
 import LPTH.actividades.Actividad;
 import LPTH.gui.*;
 
 public class menu_profesor {
 	private static Sistema sistemaCentral;
 	private Profesor profesor;
+	
 
 	public menu_profesor(Sistema sistemaCentral, Profesor profesor) {
 		menu_profesor.sistemaCentral = sistemaCentral; // Dado que solo hay una instancia de sistema debe ser estático
 		this.profesor = profesor;
+		
 	}
 
    
-    public static void opcionesprofesor(Profesor profesor) {
+    public static void opcionesprofesor(Profesor profesor,Sistema sistemaCentral) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("¿Que desea hacer?");
-        System.out.println("1. Consultar reseñas de actividades");
-        System.out.println("2. Crear un nuevo Learning Path");
-        System.out.println("3. Ver Learning Paths existentes");
-        System.out.println("4. Consultar learning Path de otro docente");
-        System.out.println("5. Revisar tareas y exámenes enviados por estudiantes");
+        System.out.println("1. Crear un nuevo Learning Path");
+        System.out.println("2. Ver Learning Paths existentes");
+        System.out.println("3. Consultar learning Path de otro docente");
+        System.out.println("4. Revisar tareas y exámenes enviados por estudiantes");
         String opcion = scanner.next();
         
         if (opcion.equals("1")) {
-        } else if (opcion.equals("2")) {
             opcionescrearLearningPath(profesor);
-        } else if (opcion.equals("3")) {
+        } else if (opcion.equals("2")) {
             verLearningPaths(sistemaCentral);
-        } else if (opcion.equals("4")) {
+        } else if (opcion.equals("3")) {
         	ConsultarotrosLearningpath(profesor, sistemaCentral);
         	System.out.println("Desea clonar alguno de estos Learning Paths? (S/N)");
         	String respuesta = scanner.next();
@@ -46,15 +46,14 @@ public class menu_profesor {
 				System.out.println("Hasta luego!");
 			}
 
-        } else if (opcion.equals("5")) {
+        } else if (opcion.equals("4")) {
+        	//revisarTareasExamenes(profesor);
 
         } else {
             System.out.println("Opción inválida");
         }
     }
     
-	public static void consultarResenasActividades(Profesor profesor) {
-	// Método para consultar las reseñas de las actividades de los estudiantes
 	
 	}
     
@@ -108,6 +107,11 @@ public class menu_profesor {
 		
 		System.out.println("Learning Paths existentes:");
 		System.out.println(paths);//usar libreria como en EDA para imprimir
+		
+		
+		
+		
+		
 		if (paths.isEmpty()) {
 	        System.out.println("No hay Learning Paths disponibles."); 
 	        System.exit(0);
@@ -234,7 +238,9 @@ public class menu_profesor {
 	            otrosDocentes.add(profesorPath);
 	        }
 	    }
-
+	    
+	    
+	    
 	    for (String otroDocente : otrosDocentes) {
 	        System.out.println("\nLearning Paths del profesor " + otroDocente + ":");
 
