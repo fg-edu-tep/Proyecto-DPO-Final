@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import LPTH.modelo.Sistema;
-import LPTH.modelo.learningPath;
+import LPTH.modelo.LearningPath;
 import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Usuario;
 import LPTH.gui.*;
@@ -69,7 +69,7 @@ public class menu_profesor {
         System.out.println("Ingrese la duración del Learning Path en horas: ");
         int duracion = scanner.nextInt();
 
-        learningPath nuevoPath = sistemaCentral.crearLearningPath(
+        LearningPath nuevoPath = sistemaCentral.crearLearningPath(
             profesor, // Usa el objeto pasado como argumento NO OLVIDAR
             titulo,
             descripcion,
@@ -98,7 +98,7 @@ public class menu_profesor {
         
 	public static void verLearningPaths(Sistema sistemaCentral) {
 		// Método para ver los Learning Paths existentes
-		ArrayList<learningPath> paths = sistemaCentral.getLearningPaths();
+		ArrayList<LearningPath> paths = sistemaCentral.getLearningPaths();
 		
 		System.out.println("Learning Paths existentes:");
 		System.out.println(paths);//usar libreria como en EDA para imprimir
@@ -115,15 +115,15 @@ public class menu_profesor {
 	    String nombreDocente = profesor.getNombre();
 	    ArrayList<Profesor> otrosDocentes = new ArrayList<>();
 	    
-	    ArrayList<learningPath> paths = sistemaCentral.getLearningPaths();
+	    ArrayList<LearningPath> paths = sistemaCentral.getLearningPaths();
 	    
-	    for (learningPath path : paths) {
+	    for (LearningPath path : paths) {
 	        /// profesorCreador = path.getProfesorCreador();
 	        if (profesorCreador.getNombre().equals(nombreDocente) && 
 	           // otrosDocentes.contains(profesorCreador)) {
 	            otrosDocentes.add(profesorCreador);
 	        }
-	    }
+	}
 
 	    if (otrosDocentes.isEmpty()) {
 	        System.out.println("No hay otros docentes con Learning Paths.");
@@ -135,7 +135,6 @@ public class menu_profesor {
 	        
 	     
 		
-	    }
 	}
 
 	public static void revisarTareasExamenes(Profesor profesor) {
