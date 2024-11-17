@@ -132,7 +132,7 @@ public abstract class Actividad {
         public double getCalificacion() {
         	return this.calificacion;
         }
-        
+        public Actividad 
 		
 		public void agregarResenia(Resenia nuevaResenia) {
 			resenias.add(nuevaResenia);

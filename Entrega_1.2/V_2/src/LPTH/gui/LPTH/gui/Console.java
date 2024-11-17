@@ -53,7 +53,7 @@ public class Console {
 	                if (tipoDeUsuario.equals("profesor")) {
 	                    Profesor elProfesor = (Profesor) elUsuario;
 	                    menu_profesor menuDelProfesor= new menu_profesor(sistemaCentral, elProfesor);
-	                    menuDelProfesor.opcionesprofesor(elProfesor);
+	                    menuDelProfesor.opcionesprofesor();
 	                } else if (tipoDeUsuario.equals("estudiante")) {
 	                    Estudiante elEstudiante = (Estudiante) elUsuario;
 	                    menu_estudiante menuDelEstudiante = new menu_estudiante(sistemaCentral, elEstudiante);

@@ -5,62 +5,59 @@ import java.util.Map;
 import java.util.Scanner;
 import LPTH.modelo.Sistema;
 import LPTH.modelo.LearningPath;
+import LPTH.usuarios.Estudiante;
 import LPTH.usuarios.Profesor;
-import LPTH.usuarios.*;
+import LPTH.usuarios.Resenia;
+import LPTH.usuarios.Usuario;
 import LPTH.actividades.Actividad;
 import LPTH.gui.*;
+
+
 
 public class menu_profesor {
 	private static Sistema sistemaCentral;
 	private Profesor profesor;
 	
-
 	public menu_profesor(Sistema sistemaCentral, Profesor profesor) {
-		menu_profesor.sistemaCentral = sistemaCentral; // Dado que solo hay una instancia de sistema debe ser estático
+		menu_profesor.sistemaCentral = sistemaCentral; // EDado que solo hay una instancia de sistema debe ser estático
 		this.profesor = profesor;
-		
 	}
 
-   
-    public static void opcionesprofesor(Profesor profesor,Sistema sistemaCentral) {
+    public void opcionesprofesor() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("¿Que desea hacer?");
+        
         System.out.println("1. Crear un nuevo Learning Path");
         System.out.println("2. Ver Learning Paths existentes");
         System.out.println("3. Consultar learning Path de otro docente");
         System.out.println("4. Revisar tareas y exámenes enviados por estudiantes");
         String opcion = scanner.next();
         
-        if (opcion.equals("1")) {
-            opcionescrearLearningPath(profesor);
+         if (opcion.equals("1")) {
+            opcionescrearLearningPath();
         } else if (opcion.equals("2")) {
-            verLearningPaths(sistemaCentral);
+            verLearningPaths();
         } else if (opcion.equals("3")) {
-        	ConsultarotrosLearningpath(profesor, sistemaCentral);
-        	System.out.println("Desea clonar alguno de estos Learning Paths? (S/N)");
-        	String respuesta = scanner.next();
-        	if (respuesta.equals("S")) {
-        	clonarLearningPath(profesor, sistemaCentral);
-        	}
-			else {
-				System.out.println("Hasta luego!");
-			}
-
+            ConsultarotrosLearningpath();
+            System.out.println("Desea clonar alguno de estos Learning Paths? (S/N)");
+            String respuesta = scanner.next();
+            if (respuesta.equals("S")) {
+                clonarLearningPath();
+            } else {
+                System.out.println("Hasta luego!");
+            }
         } else if (opcion.equals("4")) {
-        	//revisarTareasExamenes(profesor);
-
+            revisarTareasExamenes();
         } else {
             System.out.println("Opción inválida");
+        scanner.close();    
         }
     }
-    
-	
-	}
-    
 
-    public static void opcionescrearLearningPath(Profesor profesor) {
+  
+
+    private void opcionescrearLearningPath() {
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("Ingrese el titulo del Learning Path: ");
         String titulo = scanner.nextLine();
 
@@ -74,211 +71,221 @@ public class menu_profesor {
         int duracion = scanner.nextInt();
 
         LearningPath nuevoPath = sistemaCentral.crearLearningPath(
-            profesor, // Usa el objeto pasado como argumento NO OLVIDAR
+            this.profesor,
             titulo,
             descripcion,
             nivelDeDificultad,
             duracion
         );
 
-        System.out.println("Learning Path creado exitosamente: " + nuevoPath.getTitulo());
-    
         if (nuevoPath != null) {
             System.out.println("Learning Path creado exitosamente!");
             System.out.println("Título: " + nuevoPath.getTitulo());
             System.out.println("ID: " + nuevoPath.getID());
+            System.out.println("Desearía agregar actividades ahora? (S/N)");
+            String respuesta1 = scanner.next();
+            if(respuesta1.equals("S")) {
+            	crearActividad(nuevoPath);//PENDIENTE IMPLEMENTAR PARTE DE PABLO
+				}
+            
             System.out.println("¿Desea volver al menú principal? (S/N)");
             String respuesta = scanner.next();
             if (respuesta.equals("S")) {
-                opcionesprofesor(profesor);
-                }
-            else {
+                opcionesprofesor();
+            } else {
                 System.out.println("Hasta luego!");
+                System.exit(5);
             }
-        	
+            
+        }
+       scanner.close();
+    }
+
+    private void verLearningPaths() {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<LearningPath> paths = sistemaCentral.getLearningPaths();
+        
+        System.out.println("Learning Paths existentes:");
+        System.out.println(paths);
+        if (paths.isEmpty()) {
+            System.out.println("No hay Learning Paths disponibles.");
+            scanner.close();
+            System.exit(5);;
+        }
+        
+        System.out.println("¿Que desea hacer ahora");
+        System.out.println("1. Editar Learning Path");
+        System.out.println("2. Volver al menú principal");
+        String respuesta = scanner.next();
+        if (respuesta.equals("1")) {
+            editarLearningPath();
+        } else if (respuesta.equals("2")) {
+            opcionesprofesor();
+        } else {
+            System.out.println("Opción inválida");
         }
         scanner.close();
     }
-        
-	public static void verLearningPaths(Profesor profesor,Sistema sistemaCentral) {
-		// Método para ver los Learning Paths existentes
-		ArrayList<LearningPath> paths = sistemaCentral.getLearningPaths();
-		
-		System.out.println("Learning Paths existentes:");
-		System.out.println(paths);//usar libreria como en EDA para imprimir
-		
-		
-		
-		
-		
-		if (paths.isEmpty()) {
-	        System.out.println("No hay Learning Paths disponibles."); 
-	        System.exit(0);
-		}	
-		System.out.println("¿Que desea hacer ahora");
-		System.out.println("1. Editar Learning Path");
-		System.out.println("2. Volver al menú principal");
-		String respuesta = scanner.next();
-		if (respuesta.equals("1")) {
-            editarLearningPath(profesor);
-        } else if (respuesta.equals("2")) {
-            opcionesprofesor(profesor);
-        } else {
-            System.out.println("Opción inválida");
-            
+
+    private void editarLearningPath() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ingrese el ID del Learning Path a editar: ");
+        String nombre = scanner.next();
+        LearningPath path = sistemaCentral.getLearningPath(nombre);
+        if (path == null) {
+            System.out.println("Learning Path no encontrado.");
+            System.exit(0);
         }
-			
-		
-		
-		
-	}
+        System.out.println("¿Qué desea editar?");
+        System.out.println("1. Título");
+        System.out.println("2. Descripción");
+        System.out.println("3. Nivel de dificultad");
+        System.out.println("4. Duración");
+        System.out.println("5. Actividades");
+        String respuesta = scanner.next();
+        if (respuesta.equals("1")) {
+            System.out.println("Ingrese el nuevo título: ");
+            String nuevoTitulo = scanner.nextLine();
+            path.setTitulo(nuevoTitulo);
+        } else if (respuesta.equals("2")) {
+            System.out.println("Ingrese la nueva descripción: ");
+            String nuevaDescripcion = scanner.nextLine();
+            path.setDescripcion(nuevaDescripcion);
+        } else if (respuesta.equals("3")) {
+            System.out.println("Ingrese el nuevo nivel de dificultad: ");
+            String nuevoNivel = scanner.nextLine();
+            path.setnivelDeDificultad(nuevoNivel);
+        } else if (respuesta.equals("4")) {
+            System.out.println("Ingrese la nueva duración: ");
+            int nuevaDuracion = scanner.nextInt();
+            path.setDuracion(nuevaDuracion);
+        } else if (respuesta.equals("5")) {
+            System.out.println("¿Qué desea hacer?");
+            System.out.println("1. Editar actividades");
+            System.out.println("2. Eliminar actividades");
+            System.out.println(path.getActividades());
+            String respuesta2 = scanner.next();
+            if (respuesta2.equals("1")) {
+            	 System.out.print("Escriba el nombre de la actividad que desea editar");
+            	 String nombreActividad = scanner.next();
+            	 Actividad modificada = seleccionarActividad(nombreActividad,path.getActividades()); //PENDIENTE IMPLEMENTAR PARTE DE PABLO
+            	 modificarActividad(modificada);
+//                System.out.println("¿Qué desea editar de la actividad?");
+//                String actividad = scanner.next();
+//                System.out.println("Ingrese el tipo de actividad a agregar entre Quiz -> Q, Tarea -> T, Examen -> E, Recurso Educativo -> R, Encuesta -> P");
+//                String seleccion = scanner.next();
+//                System.out.println("Es obligatoria? (true/false)");
+//                boolean obligatoria = scanner.nextBoolean();
+//                System.out.println("Ingrese el nombre: ");
+//                scanner.nextLine(); // Limpiar buffer
+//                String nombreact = scanner.nextLine();
+//                System.out.println("Ingrese la fecha límite (en formato yyyy-MM-dd): ");
+//                String fechaLimiteStr = scanner.nextLine();
+//                Date fechaLimite = Date.valueOf(fechaLimiteStr); // Ajustar a un formato compatible
+//                System.out.println("Ingrese la descripción: ");
+//                String descripcion = scanner.nextLine();
+//                double calificacion = 0.0;
+//                float rating = 0;
+//                boolean esCompletada = false;
+//                ArrayList<Resenia> resenias = new ArrayList<>();
+//                System.out.println("Ingrese el nivel de dificultad: ");
+//                double nivelDificultad = scanner.nextDouble();
+//                boolean estaEmpezado = false;
+//                path.agregarActividad(obligatoria, nombreact, fechaLimite, descripcion,
+//                    calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado);
+//                if (seleccion.equals("Q")) {
+//                	
+//                } else if (seleccion.equals("T")) {
+//                    // Código para Tarea
+//                } else if (seleccion.equals("E")) {
+//                    // Código para Examen
+//                } else if (seleccion.equals("R")) {
+//                    // Código para Recurso Educativo
+//                } else if (seleccion.equals("P")) {
+//                    // Código para Encuesta
+//                } else {
+//                  System.out.println("Opción inválida.");
+//                  System.exit(0);
+//                
+            } else if (respuesta2.equals("2")) {
+                System.out.println("Ingrese el nombre de la actividad a eliminar: ");
+                scanner.nextLine(); // Limpiar buffer
+                String nombreActividad = scanner.nextLine();
+                Actividad seleccionada = seleccionarActividad(nombreActividad,path.getActividades());
+                path.eliminarActividad(seleccionada); // Ajuste aquí
+            } else {
+                System.out.println("Opción inválida.");
+                System.exit(0);
+            }
+        } else {
+            System.out.println("Opción inválida.");
+            System.exit(0);
+        }
+        System.out.println("Learning Path editado exitosamente.");
+        System.out.println("¿Desea volver al menú principal? (S/N)");
+        String respuesta3 = scanner.next();
+        if (respuesta3.equals("S")) {
+            opcionesprofesor();
+        } else {
+            System.out.println("Hasta luego!");
+        }
+        scanner.close();
+    }
 
-	
-	
-	private static void editarLearningPath(Profesor profesor) {
-		// Método para editar un Learning Path existente
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Ingrese el ID del Learning Path a editar: ");
-		String nombre = scanner.next();
-		LearningPath path = sistemaCentral.getLearningPath(nombre);
-		if (path == null) {
-			System.out.println("Learning Path no encontrado.");
-			System.exit(0);
-		}
-		System.out.println("¿Qué desea editar?");
-		System.out.println("1. Título");
-		System.out.println("2. Descripción");
-		System.out.println("3. Nivel de dificultad");
-		System.out.println("4. Duración");
-		System.out.println("5. Actividades");
-		String respuesta = scanner.next();
-		if (respuesta.equals("1")) {
-			System.out.println("Ingrese el nuevo título: ");
-			String nuevoTitulo = scanner.nextLine();
-			path.setTitulo(nuevoTitulo);
-		} else if (respuesta.equals("2")) {
-			System.out.println("Ingrese la nueva descripción: ");
-			String nuevaDescripcion = scanner.nextLine();
-			path.setDescripcion(nuevaDescripcion);
-		} else if (respuesta.equals("3")) {
-			System.out.println("Ingrese el nuevo nivel de dificultad: ");
-			String nuevoNivel = scanner.nextLine();
-			path.setnivelDeDificultad(nuevoNivel);
-		} else if (respuesta.equals("4")) {
-			System.out.println("Ingrese la nueva duración: ");
-			int nuevaDuracion = scanner.nextInt();
-			path.setDuracion(nuevaDuracion);
-		} else if (respuesta.equals("5")) {
-			System.out.println("¿Qué desea hacer?");
-			System.out.println("1. Agregar actividad");
-			System.out.println("2. Eliminar actividad");
-			System.out.println(path.getActividades());
-			String respuesta2 = scanner.next();
-			if (respuesta2.equals("1")) {
-				System.out.println("Ingrese el tipo de actividad a agregar entre Quiz -> Q, Tarea -> T, Examen -> E, Recurso Educativo -> R; Encuesta -> P");
-			    String seleccion = scanner.next();
-				if (seleccion.equals("Q")) {
-					Actividad actividad = path.agregarActividad("Quiz"); // preguntar como va A PABLO como FUNIONA EL agregarActividad
-					path.agregarActividad(actividad);
-				} else if (seleccion.equals("T")) {
-					Actividad actividad = path.agregarActividad("Tarea");
-					path.agregarActividad(actividad);
-				} else if (seleccion.equals("E")) {
-					Actividad actividad = path.agregarActividad("Examen");
-					path.agregarActividad(actividad);
-				} else if (seleccion.equals("R")) {
-					Actividad actividad = path.agregarActividad("Recurso Educativo");
-					path.agregarActividad(actividad);
-				} else if (seleccion.equals("P")) {
-					Actividad actividad = path.agregarActividad("Encuesta");
-					path.agregarActividad(actividad);
-				} else {
-					System.out.println("Opción inválida.");
-					System.exit(0);
-				}
-				
-				System.out.println("Ingrese el nombre de la actividad a agregar: ");
-				String nombreActividad = scanner.nextLine();
-				Actividad actividad = path.agregarActividad(null); // entra como parametro el tipo de actividad quiz, tarea, etc
-				path.agregarActividad(actividad);
-			} else if (respuesta2.equals("2")) {
-				System.out.println("Ingrese el nombre de la actividad a eliminar: ");
-				String nombreActividad = scanner.nextLine();
-				Actividad actividad = new Actividad(nombreActividad);
-				path.eliminarActividad(actividad);
-			
-			
-		} else {
-			System.out.println("Opción inválida.");
-			System.exit(0);
-		}
-		System.out.println("Learning Path editado exitosamente.");
-		System.out.println("¿Desea volver al menú principal? (S/N)");
-		String respuesta2 = scanner.next();
-		if (respuesta2.equals("S")) {
-			opcionesprofesor(profesor);
-		} else {
-			System.out.println("Hasta luego!");
-		}
-		scanner.close();
-	}
-		
-	}
-
-
-	public static void ConsultarotrosLearningpath(Profesor profesor, Sistema sistemaCentral) {
-	    String nombreDocente = profesor.getNombre();
-	    ArrayList<Profesor> otrosDocentes = new ArrayList<>();
-	    
-	    ArrayList<LearningPath> paths = sistemaCentral.getLearningPaths();
-	    
-	    for (LearningPath path : paths) {
-	        /// profesorCreador = path.getProfesorCreador();
-	        if (profesorCreador.getNombre().equals(nombreDocente) && 
-	           // otrosDocentes.contains(profesorCreador)) {
-	            otrosDocentes.add(profesorCreador);
-	        }
-	}
-
-	    if (otrosDocentes.isEmpty()) {
-	        System.out.println("No hay otros docentes con Learning Paths.");
-	        return;
-	    }
-	    
-	    
-	        
-	        
-	     
-		
-	}
-
-	public static void revisarTareasExamenes(Profesor profesor) {
-		
-		
-		
-		
-		// Método para revisar tareas y exámenes enviados por estudiantes
-		// Se puede hacer uso de los métodos de la clase Profesor
-	}
-
-
-
-}
-		
-		
-		
-		
-		
-		
-    		
-		
-        
     
 
+    private void ConsultarotrosLearningpath() {
+        String nombreDocente = this.profesor.getNombre();
+        ArrayList<String> otrosDocentes = new ArrayList<>();
+        ArrayList<LearningPath> paths = sistemaCentral.getLearningPaths();
 
-	
-	
-	
-	
-	
+        for (LearningPath path : paths) {
+            String profesorPath = path.getProfesorCreador();
+            if (!profesorPath.equals(nombreDocente) && !otrosDocentes.contains(profesorPath)) {
+                otrosDocentes.add(profesorPath);
+            }
+        }
 
+        for (String otroDocente : otrosDocentes) {
+            System.out.println("\nLearning Paths del profesor " + otroDocente + ":");
+            for (LearningPath path : paths) {
+                if (path.getProfesorCreador().equals(otroDocente)) {
+                    System.out.println("- " + path.getTitulo() + " (ID: " + path.getID() + ")");
+                    System.out.println("  Descripción: " + path.getDescripcion());
+                    System.out.println("  Duración: " + path.getDuracion() + " horas");
+                }
+            }
+        }
+
+        if (otrosDocentes.isEmpty()) {
+            System.out.println("No se encontraron Learning Paths de otros docentes en el sistema.");
+        }
+    }
+
+    private void clonarLearningPath() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ingrese el ID del Learning Path a clonar: ");
+        String id = scanner.next();
+        LearningPath path = sistemaCentral.getLearningPath(id);
+        if (path == null) {
+            System.out.println("Learning Path no encontrado.");
+            System.exit(5);
+        }
+        
+        LearningPath pathClonado = sistemaCentral.crearLearningPath(
+            this.profesor,
+            path.getTitulo(),
+            path.getDescripcion(),
+            path.getnivelDeDificultad(),
+            path.getDuracion()
+        );
+        System.out.println("Learning Path clonado exitosamente: " + pathClonado.getTitulo());
+        scanner.close();
+    }
+
+    private void revisarTareasExamenes() {
+    	
+    	
+    	
+     }
+}
