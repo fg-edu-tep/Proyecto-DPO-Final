@@ -43,7 +43,7 @@ public class menu_estudiante {
 		
 		if (opcion.equals("1")) {
 			// pendiente learning paths recomendados para estudiantes
-			learningPath recomendado = sistemaCentral.recomendarLearningPath();
+			LearningPath recomendado = sistemaCentral.recomendarLearningPath();
 			System.out.println("Se le recomienda el learningPath: ");
 			System.out.println(recomendado.getTitulo());
 			System.out.println("Descripción: ");
@@ -137,7 +137,7 @@ public class menu_estudiante {
 		String actOpcn = scanner.next();
 		try {
 			
-			learningPath lpEstudiante = estudiante.peekLearningPath();
+			LearningPath lpEstudiante = estudiante.peekLearningPath();
 
 			if (actOpcn.equals("1")) {
 			for (Actividad activity : lpEstudiante.getActividadesSinCompletar()) {
@@ -175,8 +175,8 @@ public class menu_estudiante {
 	
 	
 	// Funciones Handler extensas
-	public learningPath startLearningPath(learningPath newLearningPath) {
-		learningPath nuevoLp = null;
+	public LearningPath startLearningPath(LearningPath newLearningPath) {
+		LearningPath nuevoLp = null;
 		estudiante.startLearningPath(newLearningPath);
 		if (estudiante.getLearningPathActual().equals("None")) {
 			estudiante.startLearningPath(newLearningPath);
@@ -192,7 +192,7 @@ public class menu_estudiante {
 		
 	}
 	
-	public void deleteLearningPath(learningPath newLearningPath) {
+	public void deleteLearningPath(LearningPath newLearningPath) {
 		estudiante.removeLearningPath();
 		System.out.println("¡Learning path eliminado!");
 	}

@@ -12,7 +12,7 @@ import LPTH.actividades.Actividad;
 import LPTH.exceptions.ExceptionEstudianteSinLp;
 import LPTH.modelo.Progreso;
 import LPTH.modelo.Sistema;
-import LPTH.modelo.learningPath;
+import LPTH.modelo.LearningPath;
 
 public class Estudiante extends Usuario{
     private Progreso progreso;
@@ -35,9 +35,9 @@ public class Estudiante extends Usuario{
 		miActividad.setCompletada(false);
     }
     
-    public learningPath peekLearningPath() throws ExceptionEstudianteSinLp {
+    public LearningPath peekLearningPath() throws ExceptionEstudianteSinLp {
     	/*Revisar el learning path acual (Retorna un learning Path)*/
-    	learningPath myLP = null;
+    	LearningPath myLP = null;
     	if (nombreLPActual.equals("None")){
     		throw new ExceptionEstudianteSinLp();
     	}
@@ -49,14 +49,14 @@ public class Estudiante extends Usuario{
   
     public ArrayList<String> peekLearningPathInfo() throws ExceptionEstudianteSinLp{
     	/*Revisar info de un LearningPath actual [Titulo, descripción]*/
-        learningPath myLP = peekLearningPath();
+        LearningPath myLP = peekLearningPath();
         ArrayList<String> attributos = new ArrayList<String>();
         attributos.add(myLP.getTitulo());
         attributos.add(myLP.getDescripcion());
         return attributos;
     }
 
-    public void startLearningPath(learningPath selectedLp) {
+    public void startLearningPath(LearningPath selectedLp) {
     	/*Agrega el LP seleccionado y lo agrega a progreso*/
     	nombreLPActual = selectedLp.getTitulo();
     	Instant now = Instant.now();
@@ -64,7 +64,7 @@ public class Estudiante extends Usuario{
     	progreso.addStartDate(actual, selectedLp);
     	}
     
-    public void endLearningPath(learningPath selectedLp) {
+    public void endLearningPath(LearningPath selectedLp) {
     	/*Agrega el LP seleccionado y lo agrega a progreso*/
     	nombreLPActual = selectedLp.getTitulo();
     	Instant now = Instant.now();
@@ -79,7 +79,7 @@ public class Estudiante extends Usuario{
     
     public void removeLearningPath() {
     	/*Elimina el LP y lo quita de progreso*/
-    	learningPath mylearningPath = sistemaCentral.getLearningPath(nombreLPActual);
+    	LearningPath mylearningPath = sistemaCentral.getLearningPath(nombreLPActual);
     	progreso.removeStartDate(mylearningPath);
     	nombreLPActual = "None";
     }
@@ -92,7 +92,7 @@ public class Estudiante extends Usuario{
     	return this.nombreLPActual;
     }
 
-    public ArrayList<Actividad> checkLearningPath(learningPath selectedLp) {
+    public ArrayList<Actividad> checkLearningPath(LearningPath selectedLp) {
     	/*Retorna las actividades que no se han completado*/
         return selectedLp.getActividadesSinCompletar();
     }

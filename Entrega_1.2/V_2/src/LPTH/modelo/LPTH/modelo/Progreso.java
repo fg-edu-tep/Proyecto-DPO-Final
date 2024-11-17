@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;  
 import LPTH.actividades.Actividad;
-import LPTH.modelo.learningPath;
+import LPTH.modelo.LearningPath;
 
 public class Progreso {
 	// Se elimino porcActividadesExitosas =\equiv successRate
-    private Map<learningPath, Date> inicioLearningPaths = new HashMap<>();
-    private Map<learningPath, Date> finLearningPaths = new HashMap<>();
+    private Map<LearningPath, Date> inicioLearningPaths = new HashMap<>();
+    private Map<LearningPath, Date> finLearningPaths = new HashMap<>();
     private Map<Actividad, Integer> tiempoDedicado = new HashMap<>(); 
     private boolean learningInProgress;
     private float successRate;
@@ -21,12 +21,12 @@ public class Progreso {
 	   this.successRate = 0;
    }
     
-    public Date getInicioLearningPath(learningPath QueryLearningPath) {
+    public Date getInicioLearningPath(LearningPath QueryLearningPath) {
         Date startDate = inicioLearningPaths.get(QueryLearningPath);
     	return startDate;
     }
 
-    public Date getFinLearningPath(learningPath QueryLearningPath) {
+    public Date getFinLearningPath(LearningPath QueryLearningPath) {
         Date endDate = finLearningPaths.get(QueryLearningPath);
     	return endDate;
     }
@@ -46,7 +46,7 @@ public class Progreso {
     }
     
     //Setters
-    public void addStartDate(Date fecha, learningPath theLearningPath) {
+    public void addStartDate(Date fecha, LearningPath theLearningPath) {
     	inicioLearningPaths.put(theLearningPath, fecha);
     }
     
@@ -55,11 +55,11 @@ public class Progreso {
     	tiempoDedicado.put(ActividadEmpezada, ActividadEmpezada.getDuracionMinutos());
     }
     
-    public void removeStartDate(learningPath theLearningPath) {
+    public void removeStartDate(LearningPath theLearningPath) {
     	inicioLearningPaths.remove(theLearningPath);
     }
     
-    public void addEndDate(Date fecha, learningPath theLearningPath) {
+    public void addEndDate(Date fecha, LearningPath theLearningPath) {
     	finLearningPaths.put(theLearningPath, fecha);
     }
     
@@ -80,7 +80,7 @@ public class Progreso {
     public String getCompleteProgress() {
     	StringBuilder megaString = new StringBuilder();
     	megaString.append(" \n Sus learningPaths con las fechas en las que lo ha empezado son: ");
-    	for (learningPath item : inicioLearningPaths.keySet()) {
+    	for (LearningPath item : inicioLearningPaths.keySet()) {
     		megaString.append("\n Empezó: ");
     		megaString.append(item.getTitulo());
     		megaString.append("\n En la fecha: ");

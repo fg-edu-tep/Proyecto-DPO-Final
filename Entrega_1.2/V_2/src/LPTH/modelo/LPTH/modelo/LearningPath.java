@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class learningPath {
+public class LearningPath {
     private String profesorCreador;
     private String titulo;
     private int id;
@@ -41,7 +41,7 @@ public class learningPath {
     private ArrayList<Actividad> actividades;
 
     
-    public learningPath(String profesorCreador, String titulo, int id, String descripcion, ArrayList<String> objetivos,
+    public LearningPath(String profesorCreador, String titulo, int id, String descripcion, ArrayList<String> objetivos,
                         String nivelDeDificultad, int duracion, int rating, Date fechaDeCreacion, Date fechaDeModificacion,
                         String version, float tasaDeExitoFracaso, ArrayList<Actividad> actividades) {
         this.profesorCreador = profesorCreador;

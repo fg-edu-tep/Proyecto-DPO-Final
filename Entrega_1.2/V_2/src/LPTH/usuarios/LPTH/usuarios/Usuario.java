@@ -1,7 +1,7 @@
 package LPTH.usuarios;
 // No es necesario importar resenia
 import LPTH.modelo.Sistema;
-import LPTH.modelo.learningPath;
+import LPTH.modelo.LearningPath;
 import LPTH.actividades.Actividad;
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public abstract class Usuario {
     private String fechaRegistro;
     private String tipo;
     private ArrayList<Resenia> resenias;
-    private ArrayList<learningPath> learningPaths;
+    private ArrayList<LearningPath> LearningPaths;
     private  boolean loggedOn = false;
     protected Sistema sistemaCentral;
 
@@ -26,7 +26,7 @@ public abstract class Usuario {
         this.fechaRegistro = fechaRegistro;
         this.tipo = tipo;
         this.resenias = new ArrayList<>();
-        this.learningPaths = new ArrayList<>();
+        this.LearningPaths = new ArrayList<>();
         
     }
 
@@ -48,8 +48,8 @@ public abstract class Usuario {
     	return this.loggedOn;
     }
     
-    public ArrayList<learningPath> checkLearningPaths() {
-		return learningPaths;
+    public ArrayList<LearningPath> checkLearningPaths() {
+		return LearningPaths;
     	}
 
     public void resetPassword(String newPass) {

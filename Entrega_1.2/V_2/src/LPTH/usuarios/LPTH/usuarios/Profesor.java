@@ -1,6 +1,6 @@
 package LPTH.usuarios;
 import LPTH.modelo.Sistema;
-import LPTH.modelo.learningPath;
+import LPTH.modelo.LearningPath;
 import LPTH.actividades.Actividad;
 import LPTH.actividades.Quiz;
 
@@ -21,17 +21,17 @@ public class Profesor extends Usuario{
     	return this.materia;
     }
     
-	public learningPath crearlearningPath(String titulo, String descripcion, String nivelDeDificultad, int duracion) {
-		learningPath myNewLp = sistemaCentral.crearLearningPath(this, titulo, descripcion, nivelDeDificultad, duracion);
+	public LearningPath crearlearningPath(String titulo, String descripcion, String nivelDeDificultad, int duracion) {
+		LearningPath myNewLp = sistemaCentral.crearLearningPath(this, titulo, descripcion, nivelDeDificultad, duracion);
 		return myNewLp;
     }
 
-    public learningPath editarlearningPath(learningPath learningPath, String nuevoNombre, String nuevaDescripcion) {	
-    	learningPath.editarTituloDesc(nuevoNombre, nuevaDescripcion);
-    	return learningPath;
+    public LearningPath editarlearningPath(LearningPath LearningPath, String nuevoNombre, String nuevaDescripcion) {	
+    	LearningPath.editarTituloDesc(nuevoNombre, nuevaDescripcion);
+    	return LearningPath;
     }
 
-    public Actividad AgregarQuiz(learningPath specificLP, Quiz ActividadNueva) {
+    public Actividad AgregarQuiz(LearningPath specificLP, Quiz ActividadNueva) {
     	/* Recibe un objeto actividad creada y lo agrega al LearningPath*/
     	specificLP.agregarActividad(ActividadNueva);
         return ActividadNueva;

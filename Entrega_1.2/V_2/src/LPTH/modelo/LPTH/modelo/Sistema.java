@@ -24,7 +24,7 @@ import LPTH.usuarios.Usuario;
 
 public class Sistema {
     private Map<String, String> logIns; //Correo y Password
-    private Map<String, learningPath> learningPaths; 
+    private Map<String, LearningPath> LearningPaths; 
     private LinkedList<Usuario> usuarios;
     private Map<String, Usuario> dbUsuarios; //Correo y Usuario
     private Random rand = new Random();    
@@ -32,7 +32,7 @@ public class Sistema {
 
     public Sistema() {
         this.logIns = new HashMap<String, String>();
-        this.learningPaths = new HashMap<String, learningPath>();
+        this.LearningPaths = new HashMap<String, LearningPath>();
         this.usuarios = new LinkedList<Usuario>();
         this.dbUsuarios = new HashMap<String, Usuario>();
     }
@@ -82,7 +82,7 @@ public class Sistema {
     }
 
     // Métodos de conexión:
-    public learningPath crearLearningPath(Profesor profe, String titulo, String descripcion,
+    public LearningPath crearLearningPath(Profesor profe, String titulo, String descripcion,
     		String nivelDeDificultad, int duracion){
     	String profesorCreador = profe.getNombre();
     	int id = rand.nextInt(999999);
@@ -95,10 +95,10 @@ public class Sistema {
     	ArrayList<String> objetivos = new ArrayList<String>();
     	
     	
-    	learningPath originates = new learningPath(profesorCreador, titulo, id, descripcion, objetivos,
+    	LearningPath originates = new LearningPath(profesorCreador, titulo, id, descripcion, objetivos,
                 nivelDeDificultad, duracion, rating, fechaDeCreacion, fechaDeModificacion,
                 version, tasaDeExitoFracaso,actividades);
-    	this.learningPaths.put(titulo, originates);
+    	this.LearningPaths.put(titulo, originates);
     	return originates;
     }
     
@@ -109,12 +109,12 @@ public class Sistema {
     	return today;
     }
     
-    public ArrayList<learningPath> getLearningPaths() {
-        return new ArrayList<>(learningPaths.values()); // Retornar los valores en una lista
+    public ArrayList<LearningPath> getLearningPaths() {
+        return new ArrayList<>(LearningPaths.values()); // Retornar los valores en una lista
     }
     
-    public learningPath getLearningPath(String name) {
-        return learningPaths.get(name);
+    public LearningPath getLearningPath(String name) {
+        return LearningPaths.get(name);
     }
 
 
@@ -122,8 +122,8 @@ public class Sistema {
         return usuarios;
     }
 
-    public learningPath recomendarLearningPath() {
-    	ArrayList<learningPath> Lp = getLearningPaths();
+    public LearningPath recomendarLearningPath() {
+    	ArrayList<LearningPath> Lp = getLearningPaths();
     	int recommend = rand.nextInt(Lp.size());
         return Lp.get(recommend);
     }
