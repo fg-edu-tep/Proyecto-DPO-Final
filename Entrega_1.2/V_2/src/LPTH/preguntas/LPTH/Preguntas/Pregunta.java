@@ -1,9 +1,10 @@
 package LPTH.Preguntas;
 
+
+// Se removio hints y su getter y setter.   
 public abstract class Pregunta {
     private String enunciado;
     private boolean correcta = false;
-    private String hint;
 
     public Pregunta(String elEnunciado) {
     	this.enunciado = elEnunciado;
@@ -17,15 +18,14 @@ public abstract class Pregunta {
     	return this.enunciado;
     }
     
-    public String getHint() {
-    	return this.hint;
-    }
-
     public void toggleCorrecta() {
     	this.correcta = !correcta;
     }
     
-    public void setHint(String hint) {
-    	this.hint = hint;
+    
+    //Añadido para poder corregir examen, profesor corrige abierta con setters ?? 8===)
+    public boolean getCorrecta() {
+    	return this.correcta;
     }
+    
 }

@@ -15,9 +15,9 @@ public class Encuesta extends Actividad {
     private ArrayList<PreguntaAbierta> preguntas;
     private int counterPregunta;
     
-    public Encuesta (boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo) {
-    	super(obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo);
-    	this.preguntas= new ArrayList<PreguntaAbierta>();
+    public Encuesta (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado,ArrayList<PreguntaAbierta> preguntas) {
+    	super(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado);
+    	this.preguntas= preguntas;
     	this.counterPregunta= 0;
     }
     
@@ -28,11 +28,9 @@ public class Encuesta extends Actividad {
         }
         return 0.0;
     }
-
-    @Override
-    public String notificarEstudiante() {
-        return "Debe realizar su Encuesta!";
-
+    
+    public void setPreguntas (ArrayList<PreguntaAbierta> nuevaspreguntas) {
+    	this.preguntas= nuevaspreguntas;
     }
 
     public String nextQuestion() {
@@ -45,6 +43,7 @@ public class Encuesta extends Actividad {
             }
         }
         else if (counterPregunta== (preguntas.size())){
+        	esCompletada= true;
         	return("Ya completo su encuesta.");
         }
 		return "Debe iniciar su encuesta";

@@ -3,6 +3,7 @@ package LPTH.modelo;
 import java.util.ArrayList;
 import java.util.Date;
 
+import LPTH.Preguntas.PreguntaAbierta;
 import LPTH.Preguntas.PreguntaCerrada;
 import LPTH.actividades.Actividad;
 import LPTH.actividades.Encuesta;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.Calendar;  
 
 import java.util.List;
+import java.util.Random;
 
 
 public class learningPath {
@@ -187,45 +189,49 @@ public class learningPath {
 		return ActividadesNoComp;
 	}
 	
-
-	public String crearActividad(Usuario usuario, String actividadDeseada, boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo, ArrayList<PreguntaCerrada> preguntas, int counterPregunta, int counterCorrecta, double calificacionMinima) {
-	    if (usuario.getTipo().equalsIgnoreCase("profesor")) {
-	        if (actividadDeseada.equalsIgnoreCase("quiz")) {
-	            Quiz quiz = crearQuiz(objetivo, obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo, preguntas, counterCorrecta, counterCorrecta, calificacionMinima);
-	            return "Actividad creada: " + quiz.getNombre(); 
-	        } //Falta implementacion, seguir ejemplo quiz.
-	    } else {
-	        return "Para crear/modificar actividades debe ser profesor";
-	    }
-	    return "Actividad no creada"; 
-	}
-
-	
-	public Encuesta crearEncuesta() {
-		return null;
-		//Falta implementacion, ver ejemplo quiz.
+	// seguro el error es relacionado con super.
+	public Encuesta crearEncuesta(boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, ArrayList<PreguntaAbierta> preguntas) {
+		Encuesta encuesta= new Encuesta(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, preguntas);
+		return encuesta;
 	}
 	
-	public Examen crearExamen() {
-		return null;
-		//Falta implementacion, ver ejemplo quiz.
-
+	// seguro el error es relacionado con super.
+	public Examen crearExamen(boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, ArrayList<PreguntaAbierta> preguntas) {
+	    Examen examen = new Examen(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, preguntas);
+	    return examen; 
 	}
 	
-	public Quiz crearQuiz(String actividadDeseada, boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo, ArrayList<PreguntaCerrada> preguntas, int counterPregunta, int counterCorrecta, double calificacionMinima) {
-	    Quiz quiz = new Quiz(obligatoria, notaMinima, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, objetivo);
+	// seguro el error es relacionado con super.
+	public Quiz crearQuiz( boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, ArrayList<PreguntaCerrada> preguntas) {
+	    Quiz quiz = new Quiz(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, preguntas);
 	    return quiz;
 	}
 
 	
-    public RecursoEducativo crearRecursoEd() {
-		return null;
-		//Falta implementacion, ver ejemplo quiz.
+    public RecursoEducativo crearRecursoEd( boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String contenido, String tipo) {
+    	RecursoEducativo recursoeducativo = new RecursoEducativo(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado,contenido, tipo);
+	    return recursoeducativo;
+	}
 
+	public Tarea crearTarea( boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado) {
+		Tarea tarea= new Tarea(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado);
+		return tarea;
 	}
 	
-	public Tarea crearTarea() {
-		return null;
-		//Falta implementacion, ver ejemplo quiz.
+	
+	//Por simplicidad recomienda una actividad al estudiante de manera aleatoria.
+	//En consola, usar este metodo antes de permitir al estudiante escoger actividad.
+	public Actividad recomendarActividad(){
+		
+		if (actividades.isEmpty()) {
+            return null;
+        }
+		
+		else {
+		Random random = new Random();
+        int indiceAleatorio = random.nextInt(actividades.size());
+        Actividad recActividad = actividades.get(indiceAleatorio);
+		
+		return recActividad;}
 	}
 }
