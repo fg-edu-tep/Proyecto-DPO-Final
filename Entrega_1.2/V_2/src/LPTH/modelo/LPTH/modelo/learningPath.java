@@ -174,6 +174,8 @@ public class learningPath {
 		}
 	}
 	
+
+	
 	public ArrayList<Actividad> getActividadesSinCompletar(){
 		ArrayList<Actividad> ActividadesNoComp = new ArrayList<Actividad>();
 		for (Actividad actividad : actividades) {

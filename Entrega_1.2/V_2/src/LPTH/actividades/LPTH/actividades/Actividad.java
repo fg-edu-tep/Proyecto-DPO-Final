@@ -1,5 +1,8 @@
 package LPTH.actividades;
 import LPTH.usuarios.Resenia;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,6 +22,9 @@ public abstract class Actividad {
         protected double nivelDificultad;
         protected boolean estaEmpezado;
         protected String objetivo;
+        protected Date fechaEmpezada;
+        protected Date fechaTerminada;
+        protected int duracion;
 
         public Actividad (boolean obligatoria, int notaMinima, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String objetivo) {
 			   this.obligatoria = obligatoria;
@@ -60,9 +66,27 @@ public abstract class Actividad {
         }
         
         public void empezarActividad() {
+            Instant empezado = Instant.now();
+            Date fechaEmpezado = Date.from(empezado);
+        	this.fechaEmpezada = fechaEmpezado;
             this.estaEmpezado = true;
         }
 
+        public void terminarActividad() {
+            Instant terminado = Instant.now(); 
+            Date fechaTerminado = Date.from(terminado);
+        	this.fechaTerminada = fechaTerminado;
+            this.esCompletada = true;
+        }
+        
+        public int getDuracionMinutos() {
+            Duration duration = Duration.between(this.fechaEmpezada, this.fechaTerminada);
+            int minutosDedicados = (int) duration.toMinutes(); // Convertir a horas la diferencia
+            this.duracion = minutosDedicados;
+            return minutosDedicados;
+        }
+        
+        
 		public String getNombre() {
 			return this.nombre;
 		}

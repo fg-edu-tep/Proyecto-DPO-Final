@@ -12,6 +12,7 @@ import java.util.Random; // Para los Ids de Usuario
 import LPTH.Preguntas.PreguntaAbierta;
 import LPTH.Preguntas.PreguntaCerrada;
 import LPTH.actividades.Actividad;
+import LPTH.exceptions.ExceptionUsuarioNoEncontrado;
 import LPTH.modelo.*;
 import LPTH.usuarios.Estudiante;
 import LPTH.usuarios.Profesor;
@@ -58,10 +59,10 @@ public class Sistema {
     	}
     
     
-    public Usuario autenticarUsuario(String email, String contrasenia){
+    public Usuario autenticarUsuario(String email, String contrasenia) throws ExceptionUsuarioNoEncontrado{
         Usuario usuario = grabUsuarioByEmail(email);
         if (usuario.equals(null)) {
-        	return null;
+        	throw new ExceptionUsuarioNoEncontrado();
         }
         if (usuario.getContrasenia().equals(contrasenia)) { 
         	usuario.LogInAtt();
@@ -73,7 +74,9 @@ public class Sistema {
     }
  
     
-    public Usuario grabUsuarioByEmail(String email) {
+    public Usuario grabUsuarioByEmail(String email) throws ExceptionUsuarioNoEncontrado{
+    	if (!dbUsuarios.containsKey(email))
+    		throw new  ExceptionUsuarioNoEncontrado();
     	return dbUsuarios.get(email);
     }
 

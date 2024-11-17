@@ -5,9 +5,11 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.time.Duration;
 import java.util.List;
 
 import LPTH.actividades.Actividad;
+import LPTH.exceptions.ExceptionEstudianteSinLp;
 import LPTH.modelo.Progreso;
 import LPTH.modelo.Sistema;
 import LPTH.modelo.learningPath;
@@ -15,7 +17,7 @@ import LPTH.modelo.learningPath;
 public class Estudiante extends Usuario{
     private Progreso progreso;
     private List<String> notificaciones;
-    private String nombreLPActual;
+    private String nombreLPActual = "None";
     private static final String tipo = "Estudiante";
 
     // Constructor
@@ -26,21 +28,26 @@ public class Estudiante extends Usuario{
     }
 
     public void iniciarActividad(Actividad miActividad) {
-    	miActividad.empezarActividad();	
-
+        miActividad.empezarActividad(); 
     }
 
     public void cancelarActividad(Actividad miActividad) {
 		miActividad.setCompletada(false);
     }
     
-    public learningPath peekLearningPath() {
+    public learningPath peekLearningPath() throws ExceptionEstudianteSinLp {
     	/*Revisar el learning path acual (Retorna un learning Path)*/
-        learningPath myLP = sistemaCentral.getLearningPath(nombreLPActual);
+    	learningPath myLP = null;
+    	if (nombreLPActual.equals("None")){
+    		throw new ExceptionEstudianteSinLp();
+    	}
+    	else {
+        myLP = sistemaCentral.getLearningPath(nombreLPActual);
+    	}
         return myLP;
     }
   
-    public ArrayList<String> peekLearningPathInfo() {
+    public ArrayList<String> peekLearningPathInfo() throws ExceptionEstudianteSinLp{
     	/*Revisar info de un LearningPath actual [Titulo, descripción]*/
         learningPath myLP = peekLearningPath();
         ArrayList<String> attributos = new ArrayList<String>();
@@ -57,11 +64,32 @@ public class Estudiante extends Usuario{
     	progreso.addStartDate(actual, selectedLp);
     	}
     
+    public void endLearningPath(learningPath selectedLp) {
+    	/*Agrega el LP seleccionado y lo agrega a progreso*/
+    	nombreLPActual = selectedLp.getTitulo();
+    	Instant now = Instant.now();
+    	Date actual = Date.from(now);
+    	progreso.addEndDate(actual, selectedLp);
+    	}
+    
+	public void terminarActividad(Actividad myActividad) {
+		this.progreso.agregarTiempoActividad(myActividad);
+	}
+
+    
     public void removeLearningPath() {
     	/*Elimina el LP y lo quita de progreso*/
     	learningPath mylearningPath = sistemaCentral.getLearningPath(nombreLPActual);
     	progreso.removeStartDate(mylearningPath);
     	nombreLPActual = "None";
+    }
+    
+    public Progreso getProgreso() {
+    	return this.progreso;
+    }
+    
+    public String getLearningPathActual() {
+    	return this.nombreLPActual;
     }
 
     public ArrayList<Actividad> checkLearningPath(learningPath selectedLp) {
@@ -80,7 +108,7 @@ public class Estudiante extends Usuario{
     	return this.notificaciones;
     }
     
-    public List<String> getNotificaciones(){
+    public List<String> getNotificaciones() throws ExceptionEstudianteSinLp{
     	/*Learning path es el responsable de obtener las notificaciones, 
     	 * este agrega a la lista*/ 
     	notificaciones.clear();

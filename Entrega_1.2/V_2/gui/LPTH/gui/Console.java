@@ -32,30 +32,44 @@ public class Console {
 	/*Métodos de autenticación y creacion de usuario*/
 	
 	public static Usuario IngresoUsuario() {
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Ingrese su email: ");
-		String email = scanner.next();
-		System.out.println("Ingrese su contraseña: ");
-		String contrasenia = scanner.next();
-		Usuario elUsuario = sistemaCentral.autenticarUsuario(email, contrasenia);
-		if (elUsuario.checkLogIn()) {
-			System.out.println("Ha ingresado correctamente");
-			String tipoDeUsuario = elUsuario.getTipo();
-			if (tipoDeUsuario.equals("profesor")) {
-				Profesor elProfesor = (Profesor)elUsuario; 
-				// TODO Constructor de consola y enviar a flujo
-				menu_profesor.opcionesprofesor();
-			} else if (tipoDeUsuario.equals("estudiante")) {
-				Estudiante elEstudiante = (Estudiante)elUsuario; 
-				menu_estudiante menuDelEstudiante = new menu_estudiante(sistemaCentral, elEstudiante); // Constructor de instancia consola
-				menu_estudiante.opcionesestudiante(); // Enviar al flujo de esa consola
-			}
-		} else {
-			System.out.println("No se ha podido autenticar");
-		}
-		scanner.close();
-		return elUsuario;
+	    Scanner scanner = new Scanner(System.in);
+	    Usuario elUsuario = null;
+
+	    while (elUsuario == null) {
+	        System.out.println("Ingrese su email: ");
+	        String email = scanner.next();
+	        System.out.println("Ingrese su contraseña: ");
+	        String contrasenia = scanner.next();
+
+	        try {
+	            elUsuario = sistemaCentral.autenticarUsuario(email, contrasenia);
+	            if (elUsuario.checkLogIn()) {
+	                System.out.println("Ha ingresado correctamente");
+	                String tipoDeUsuario = elUsuario.getTipo();
+
+	                if (tipoDeUsuario.equals("profesor")) {
+	                    Profesor elProfesor = (Profesor) elUsuario;
+	                    menu_profesor.opcionesprofesor();
+	                } else if (tipoDeUsuario.equals("estudiante")) {
+	                    Estudiante elEstudiante = (Estudiante) elUsuario;
+	                    menu_estudiante menuDelEstudiante = new menu_estudiante(sistemaCentral, elEstudiante);
+	                    menuDelEstudiante.opcionesEstudiante();
+	                }
+	                return elUsuario; 
+	            }
+	        } catch (Exception e) {
+	            System.out.println("No se ha podido autenticar. ¿Desea intentar de nuevo? | S -> Sí | N -> No");
+	            String retry = scanner.next();
+	            if (retry.equalsIgnoreCase("N")) {
+	                System.out.println("Regresando al menú principal...");
+	                return null; 
+	            }
+	        }
+	    }
+	    scanner.close();
+	    return elUsuario;
 	}
+
 	
 	public static void elegirCreacionUsuario() {
 		Scanner scanner = new Scanner(System.in);
@@ -126,6 +140,9 @@ public class Console {
 	}
 	
 	private static Usuario resetPassword(String Email){
+		Usuario elUsuario = null;
+		while(elUsuario == null)
+		try {
 		Usuario olvidadiso = sistemaCentral.grabUsuarioByEmail(Email);
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("Ingrese su nuevo password: ");
@@ -133,36 +150,32 @@ public class Console {
 		olvidadiso.setContrasenia(newPassword);
 		scanner.close();
 		return olvidadiso;
+		}
+		catch (Exception e){
+			System.out.println("Email no encontrado");
+			return elUsuario;
+		}
+		return elUsuario;
 	}
 
 
-	private Usuario realizarLogIn() {
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Ingrese Usuario: ");
-		String usurio = scanner.next();
-		System.out.print("Ingrese su contraseña: ");
-		String password = scanner.next();
-		scanner.close();
-		return sistemaCentral.realizarLogin(usurio, password);
-	}
-
-	
-	
-	
-	
-	
-	
 	
 	public static void main (String[] args) {
-		
-	
-		
 		System.out.println("Bienvenido");
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("¿Tiene cuenta? | S -> Sí | N -> No");
 		String  tiene_cuenta = scanner.next();
 		if(tiene_cuenta.equals("S")){
-			IngresoUsuario();
+			boolean persistLogIn = true;
+			while (persistLogIn) {
+			Usuario user = IngresoUsuario();
+			if (user.equals(null)){
+				IngresoUsuario();
+			}
+			else {
+				persistLogIn = false;
+				}
+			}
 		}
 		else if (tiene_cuenta.equals("N")) {
 			System.out.println("¿Desea crear una cuenta? | S -> Sí | N -> No");

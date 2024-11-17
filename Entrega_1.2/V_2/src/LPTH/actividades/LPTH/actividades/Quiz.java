@@ -40,6 +40,12 @@ public class Quiz extends Actividad{
         return "Debe realizar su quiz"+ " "+ this.nombre;
     }
 
+    /*
+     * miQuiz.empezarActividad() // Lo que hizo poner bool = true
+     * 
+     * COn tu metodo
+     * miQuiz.nextQuestion()
+     * */
     public String nextQuestion(String inputUsuario) {
 
         if(estaEmpezado == true) {

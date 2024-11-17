@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="LPTH/|LPTH/persistencia/" kind="src" path="src"/>
+	<classpathentry excluding="LPTH/|LPTH/persistencia/|LPTH/exceptions/" kind="src" path="src"/>
+	<classpathentry kind="src" path="src/LPTH/exceptions"/>
 	<classpathentry kind="src" path="src/LPTH/persistencia"/>
 	<classpathentry kind="src" path="src/LPTH/preguntas"/>
 	<classpathentry kind="src" path="src/LPTH/actividades"/>
