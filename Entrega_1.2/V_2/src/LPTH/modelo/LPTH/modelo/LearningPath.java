@@ -154,6 +154,18 @@ public class LearningPath {
 	    this.descripcion = descripcion;
 	}
 
+	public void setnivelDeDificultad(String nivelDeDificultad) {
+		this.nivelDeDificultad = nivelDeDificultad;
+	}
+	
+	public void setDuracion(int duracion) {
+        this.duracion = duracion;
+    }
+	
+	
+	
+	
+	
 	// Métodos complejos de profesor
 
 	public void editarTituloDesc(String titulo, String Descripcion) {
