@@ -7,16 +7,16 @@ import LPTH.usuarios.Resenia;
 
 public class RecursoEducativo extends Actividad {
     private String contenido;
-    private String tipo;
+    private String tipoC;
 
-    public RecursoEducativo (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String contenido, String tipo) {
-    	super(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado);
+    public RecursoEducativo (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo, String contenido, String tipoC) {
+    	super(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo);
     	this.contenido=contenido;
-    	this.tipo=tipo;
+    	this.tipoC=tipoC;
     }
 
     @Override
-    public double calificarActividad() {		
+    public double calificarActividad(String input) {		
         if (esCompletada==true) {
         	return 5.0;
         }
@@ -38,5 +38,8 @@ public class RecursoEducativo extends Actividad {
     public String getContenido() {
         return this.contenido;
     }
-
+    
+    public boolean completarRD() {
+    	return this.esCompletada= true;
+    }
 }

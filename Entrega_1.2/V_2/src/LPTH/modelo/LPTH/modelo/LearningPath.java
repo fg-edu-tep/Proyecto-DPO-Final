@@ -190,31 +190,31 @@ public class LearningPath {
 	}
 	
 	// seguro el error es relacionado con super.
-	public Encuesta crearEncuesta(boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, ArrayList<PreguntaAbierta> preguntas) {
-		Encuesta encuesta= new Encuesta(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, preguntas);
+	public Encuesta crearEncuesta(boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo, ArrayList<PreguntaAbierta> preguntas) {
+		Encuesta encuesta= new Encuesta(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo, preguntas);
 		return encuesta;
 	}
 	
 	// seguro el error es relacionado con super.
-	public Examen crearExamen(boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, ArrayList<PreguntaAbierta> preguntas) {
-	    Examen examen = new Examen(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, preguntas);
+	public Examen crearExamen(boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado,String tipo, ArrayList<PreguntaAbierta> preguntas) {
+	    Examen examen = new Examen(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo, preguntas);
 	    return examen; 
 	}
 	
 	// seguro el error es relacionado con super.
-	public Quiz crearQuiz( boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, ArrayList<PreguntaCerrada> preguntas) {
-	    Quiz quiz = new Quiz(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, preguntas);
+	public Quiz crearQuiz( boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo, ArrayList<PreguntaCerrada> preguntas) {
+	    Quiz quiz = new Quiz(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo, preguntas);
 	    return quiz;
 	}
 
 	
-    public RecursoEducativo crearRecursoEd( boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String contenido, String tipo) {
-    	RecursoEducativo recursoeducativo = new RecursoEducativo(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado,contenido, tipo);
+    public RecursoEducativo crearRecursoEd( boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo, String contenido, String tipoC) {
+    	RecursoEducativo recursoeducativo = new RecursoEducativo(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado,tipo,contenido, tipoC);
 	    return recursoeducativo;
 	}
 
-	public Tarea crearTarea( boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado) {
-		Tarea tarea= new Tarea(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado);
+	public Tarea crearTarea( boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo) {
+		Tarea tarea= new Tarea(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo);
 		return tarea;
 	}
 	
