@@ -36,7 +36,7 @@ public class Console {
 	
 	public static Usuario IngresoUsuario(Scanner scanner) {
 	    Usuario elUsuario = null;
-
+	    
 	    while (elUsuario == null) {
 	        System.out.println("Ingrese su email: ");
 	        String email = scanner.next();
@@ -47,14 +47,14 @@ public class Console {
 	            elUsuario = sistemaCentral.autenticarUsuario(email, contrasenia);
 	            if (elUsuario.checkLogIn()) {
 	                System.out.println("Ha ingresado correctamente");
-	                
+	           
 	                String tipoDeUsuario = elUsuario.getTipo();
 	                System.out.println(tipoDeUsuario);
 
 	                if (tipoDeUsuario.equals("Profesor")) {
 	                    Profesor elProfesor = (Profesor) elUsuario;
 	                    menu_profesor menuDelProfesor= new menu_profesor(sistemaCentral, elProfesor);
-	                    menuDelProfesor.opcionesprofesor();
+	                    menuDelProfesor.opcionesprofesor(scanner);
 	                } else if (tipoDeUsuario.equals("Estudiante")) {
 	                    Estudiante elEstudiante = (Estudiante) elUsuario;
 	                    menu_estudiante menuDelEstudiante = new menu_estudiante(sistemaCentral, elEstudiante, scanner);
@@ -100,10 +100,15 @@ public class Console {
 			Profesor nuevoProfesor = crearUsuarioProfesor(scanner);
 			System.out.println("Se ha creado el nuevo usuario:");
 			System.out.println(nuevoProfesor.getNombre());
-			System.out.println("profesor de la materia:");
+			System.out.println("profesor de la materia: ");
 			System.out.println(nuevoProfesor.getMateria());
 			System.out.println("Con Identificador:");
 			System.out.println(nuevoProfesor.getIdUsuario());
+			String  ingresoUsuario2 = scanner.next();
+			if (ingresoUsuario2.equals("S")) {
+				IngresoUsuario(scanner);
+			}
+			
 		}
 	}
 
@@ -131,7 +136,7 @@ public class Console {
 		String nombre = scanner.next();
 		System.out.print("Email del profesor: ");
 		String email = scanner.next();
-		System.out.print("Contraseña del profesor: ");
+		System.out.print("Contraseña del profesor: hoal ");
 		String pass = scanner.next();
 		System.out.print("Materia del profesor: ");
 		String materia = scanner.next();
@@ -141,7 +146,7 @@ public class Console {
 		return  nuevoProfesor;		
 	}
 	
-	private static Usuario resetPassword(Scanner scanner , String Email){
+	private static Usuario resetPassword(Scanner scanner, String Email){
 		Usuario elUsuario = null;
 		while(elUsuario == null)
 		try {
