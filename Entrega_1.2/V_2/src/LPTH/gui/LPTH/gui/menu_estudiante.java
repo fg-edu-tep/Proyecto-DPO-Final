@@ -24,15 +24,15 @@ public class menu_estudiante {
 	private static Sistema sistemaCentral;
 	private Estudiante estudiante;
 	
-	public menu_estudiante(Sistema sistemaCentral, Estudiante estudiante) {
+	public menu_estudiante(Sistema sistemaCentral, Estudiante estudiante, Scanner scanner) {
 		menu_estudiante.sistemaCentral = sistemaCentral; // EDado que solo hay una instancia de sistema debe ser estático
 		this.estudiante = estudiante;
 	}
 	
-	public void opcionesEstudiante() {
+	public void opcionesEstudiante(Scanner scanner) {
 		boolean keepEstudianteinMenu = true;
 		while (keepEstudianteinMenu) {
-		Scanner scanner = new Scanner(System.in);
+		//Cagada
 		System.out.println("¿Que desea hacer?");
 		System.out.println("1. Explorar Learning Paths recomendados");
 		System.out.println("2. Ver Learning Paths vistos (Progreso)");
@@ -63,7 +63,7 @@ public class menu_estudiante {
 			String interact = scanner.next();
 			if (interact.equals("S")) {
 				keepEstudianteinMenu = false; // Lo estamos mandando a otro menú
-				opcionesInteractuarConLp();				
+				opcionesInteractuarConLp(scanner);				
 				}
 		} else if (opcion.equals("4")) {
 			System.out.println("Eliminara TODO su progreso en este learningPath. ¿Desea continuar? S/N");
@@ -74,35 +74,35 @@ public class menu_estudiante {
 		} else {
 			System.out.println("Opción inválida");
 		}
-		scanner.close();
+		//Cagada
 		
 		}
 	}
 	
-	public void opcionesInteractuarConLp() {
+	public void opcionesInteractuarConLp(Scanner scanner) {
 		boolean keepEstudianteinMenu = true;
 		while (keepEstudianteinMenu) {
-			Scanner scanner = new Scanner(System.in);
+			//Cagada
 			System.out.println("¿Que desea hacer?");
 			System.out.println("1. Ver detalles del LearningPath");
 			System.out.println("2. Ver las actividades del LearningPath");
 			System.out.println("3. Salir a menu principal estudiante");
 			String opcion = scanner.next();
 			if (opcion.equals("1")) {
-				imprimirDetallesBasicosLp();
+				imprimirDetallesBasicosLp(scanner);
 			}
 			else if (opcion.equals("2")) {
 				keepEstudianteinMenu = false; // Lo estamos mandando a otro menú
-				imprimirActividadesLp();
+				imprimirActividadesLp(scanner);
 			}
 			else if (opcion.equals("3")) {
 				keepEstudianteinMenu = false; // Lo estamos mandando a otro menú
-				opcionesEstudiante();
+				opcionesEstudiante(scanner);
 			}
 			
 			
 			
-			scanner.close();
+			//Cagada
 		}
 		
 	}
@@ -111,7 +111,7 @@ public class menu_estudiante {
 
 	// Flujo de consola divergente extenso:
 	
-	private void imprimirDetallesBasicosLp() {
+	private void imprimirDetallesBasicosLp(Scanner scanner) {
 		try {
 			ArrayList<String> infoLp = estudiante.peekLearningPathInfo();
 			System.out.println("El titulo de su Learning Path es: ");
@@ -124,12 +124,12 @@ public class menu_estudiante {
 			System.out.println(e); // Imprimir la excepcion
 		}
 		finally {
-			opcionesInteractuarConLp(); // Regresar el usuario un menú
+			opcionesInteractuarConLp(scanner); // Regresar el usuario un menú
 		}
 	}
 	
-	private void imprimirActividadesLp() {
-		Scanner scanner = new Scanner(System.in);
+	private void imprimirActividadesLp(Scanner scanner) {
+		//Cagada
 		System.out.println("Opciones: ");
 		System.out.println("1. Sólo ver las actividades");
 		System.out.println("2. Preguntar si quiero empezar en cada una de las actividades y empezr UNA");
@@ -153,7 +153,7 @@ public class menu_estudiante {
 					String beggin = scanner.next();
 					if ((beggin.equals("S")) && (!yaSelecicionoActividad)) {
 						yaSelecicionoActividad = true;
-						menuEmpezarActividad(activity);
+						menuEmpezarActividad(activity, scanner);
 					} else {
 						if (yaSelecicionoActividad) {
 							System.out.println(activity.getNombre());
@@ -165,15 +165,15 @@ public class menu_estudiante {
 				String actividadDeseada= scanner.nextLine();
 				ArrayList<Actividad> actividades = lpEstudiante.getActividadesSinCompletar();
 				Actividad activity= seleccionarActividadPorNombre(actividadDeseada, actividades);
-				menuEmpezarActividad(activity);
+				menuEmpezarActividad(activity, scanner);
 			}
 		} catch (Exception e) {
 			System.out.println(e); // Imprimir la excepcion
 			}
 		
 		finally {
-			opcionesInteractuarConLp(); // Regresar el usuario un menú
-			scanner.close();
+			opcionesInteractuarConLp(scanner); // Regresar el usuario un menú
+			//Cagada
 		}
 	}
 	
@@ -211,7 +211,7 @@ public class menu_estudiante {
         } return null;
     }
 	
-	public void menuEmpezarActividad(Actividad actividadSeleccionada) {
+	public void menuEmpezarActividad(Actividad actividadSeleccionada, Scanner scanner) {
 		
 		
 		
@@ -234,7 +234,7 @@ public class menu_estudiante {
 		if (actividadSeleccionada instanceof Quiz) {
 	    	estudiante.iniciarActividad(actividadSeleccionada);
 	        Quiz quiz = (Quiz) actividadSeleccionada; 
-	        Scanner scanner = new Scanner(System.in);
+	        //Cagada
 	        
 	        while (!quiz.estaCompletada()) {
 	            String enunciadoConOpciones = quiz.nextQuestion(""); 
@@ -245,10 +245,10 @@ public class menu_estudiante {
 	            String respuestaUsuario = scanner.nextLine();
 
 	            quiz.nextQuestion(respuestaUsuario);
-	        scanner.close();
+	        //Cagada
 	        }
 
-	        double calificacion = quiz.calificarActividad();
+	        double calificacion = quiz.calificarActividad("");
 	        System.out.println("Tu calificación final es: " + calificacion);
 	        //terminarActividad estudiante.this.
 	       
@@ -256,7 +256,7 @@ public class menu_estudiante {
 		 if (actividadSeleccionada instanceof Encuesta) {
 		    	estudiante.iniciarActividad(actividadSeleccionada);
 		        Encuesta encuesta = (Encuesta) actividadSeleccionada; 
-		        Scanner scanner = new Scanner(System.in);
+		        //Cagada
 		        
 		        while (!encuesta.estaCompletada()) {
 		            String enunciadoConOpciones = encuesta.nextQuestion(""); 
@@ -267,16 +267,16 @@ public class menu_estudiante {
 		            String respuestaUsuario = scanner.nextLine();
 
 		            encuesta.nextQuestion(respuestaUsuario);
-		        scanner.close();
+		        //Cagada
 		        }
 
-		        double calificacion = encuesta.calificarActividad();
+		        double calificacion = encuesta.calificarActividad("") ; // TODO Ver inputs
 		        System.out.println("Tu calificación final es: " + calificacion);
 		 		}
 		 if (actividadSeleccionada instanceof Examen) {
 		    	estudiante.iniciarActividad(actividadSeleccionada);
 		    	Examen examen = (Examen) actividadSeleccionada; 
-		        Scanner scanner = new Scanner(System.in);
+		        //Cagada
 		        
 		        while (!examen.estaCompletada()) {
 		            String enunciadoConOpciones = examen.nextQuestion(""); 
@@ -287,40 +287,38 @@ public class menu_estudiante {
 		            String respuestaUsuario = scanner.nextLine();
 
 		            examen.nextQuestion(respuestaUsuario);
-		        scanner.close();
+		        //Cagada
 		        }
 
-		        double calificacion = examen.calificarActividad();
-		        System.out.println("Tu calificación final es: " + calificacion);
 
 		    }
 		 if (actividadSeleccionada instanceof Tarea) {
 		    	estudiante.iniciarActividad(actividadSeleccionada);
 		    	Tarea tarea = (Tarea) actividadSeleccionada; 
-		        Scanner scanner = new Scanner(System.in);
+		        //Cagada
 		        
 		        System.out.print("Ingrese su respuesta: ");
 		        String respuesta= scanner.nextLine();
 		        tarea.completarTarea();
-		        tarea.calificarActividad();
+		        tarea.calificarActividad("") ; // TODO Ver inputs
 		        
-		        double calificacion = tarea.calificarActividad();
+		        double calificacion = tarea.calificarActividad("") ; // TODO Ver inputs
 		        System.out.println("Tu calificación final es: " + calificacion);
-		        scanner.close();
+		        //Cagada
 		   }
 		 if (actividadSeleccionada instanceof RecursoEducativo) {
 		    	estudiante.iniciarActividad(actividadSeleccionada);
 			 	RecursoEducativo recursoeducativo = (RecursoEducativo) actividadSeleccionada; 
-		        Scanner scanner = new Scanner(System.in);
+		        //Cagada
 		        
 		        System.out.print("Ingrese su respuesta: ");
 		        String respuesta= scanner.nextLine();
 		        recursoeducativo.completarRD();
-		        recursoeducativo.calificarActividad();
+		        recursoeducativo.calificarActividad("") ; // TODO Ver inputs
 		        
-		        double calificacion = recursoeducativo.calificarActividad();
+		        double calificacion = recursoeducativo.calificarActividad("") ; // TODO Ver inputs
 		        System.out.println("Tu calificación final es: " + calificacion);
-		        scanner.close();
+		        //Cagada
 		    	estudiante.terminarActividad(actividadSeleccionada);
 
 		   } 

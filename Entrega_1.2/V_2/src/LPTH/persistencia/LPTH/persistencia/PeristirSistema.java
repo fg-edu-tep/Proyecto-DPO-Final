@@ -16,7 +16,7 @@ public class PeristirSistema {
 	        gson.toJson(sistemaCentral, writer);
 	    }
 	}
-public static Sistema cargarSistema() throws IOException {
+public Sistema cargarSistema() throws IOException {
     Gson gson = new Gson();
     try (FileReader reader = new FileReader(filePath)) {
         return gson.fromJson(reader, Sistema.class);

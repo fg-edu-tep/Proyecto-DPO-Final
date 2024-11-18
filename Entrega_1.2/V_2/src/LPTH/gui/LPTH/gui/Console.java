@@ -34,8 +34,7 @@ public class Console {
 	
 	/*Métodos de autenticación y creacion de usuario*/
 	
-	public static Usuario IngresoUsuario() {
-	    Scanner scanner = new Scanner(System.in);
+	public static Usuario IngresoUsuario(Scanner scanner) {
 	    Usuario elUsuario = null;
 
 	    while (elUsuario == null) {
@@ -48,16 +47,18 @@ public class Console {
 	            elUsuario = sistemaCentral.autenticarUsuario(email, contrasenia);
 	            if (elUsuario.checkLogIn()) {
 	                System.out.println("Ha ingresado correctamente");
+	                
 	                String tipoDeUsuario = elUsuario.getTipo();
+	                System.out.println(tipoDeUsuario);
 
-	                if (tipoDeUsuario.equals("profesor")) {
+	                if (tipoDeUsuario.equals("Profesor")) {
 	                    Profesor elProfesor = (Profesor) elUsuario;
 	                    menu_profesor menuDelProfesor= new menu_profesor(sistemaCentral, elProfesor);
 	                    menuDelProfesor.opcionesprofesor();
-	                } else if (tipoDeUsuario.equals("estudiante")) {
+	                } else if (tipoDeUsuario.equals("Estudiante")) {
 	                    Estudiante elEstudiante = (Estudiante) elUsuario;
-	                    menu_estudiante menuDelEstudiante = new menu_estudiante(sistemaCentral, elEstudiante);
-	                    menuDelEstudiante.opcionesEstudiante();
+	                    menu_estudiante menuDelEstudiante = new menu_estudiante(sistemaCentral, elEstudiante, scanner);
+	                    menuDelEstudiante.opcionesEstudiante(scanner);
 	                }
 	                return elUsuario; 
 	            }
@@ -70,35 +71,33 @@ public class Console {
 	            }
 	        }
 	    }
-	    scanner.close();
+	    //scanner.close();
 	    return elUsuario;
 	}
 
 	
-	public static void elegirCreacionUsuario() {
-		Scanner scanner = new Scanner(System.in);
+	public static void elegirCreacionUsuario(Scanner scanner ) {
 		System.out.print("Elija el tipo de usuario a crear | P -> Profesor | E -> Estudiante");
 		String selection = scanner.next();
 		System.out.print(selection);
-		scanner.close();	
+		//scanner.close();	
 		
 		if(selection.equals("E")) {
-			Scanner scanner2 = new Scanner(System.in);
-			Estudiante nuevoEstudiante = crearUsuarioEstudiante();
+			Estudiante nuevoEstudiante = crearUsuarioEstudiante(scanner);
 			System.out.println("Se ha creado el nuevo usuario:");
 			System.out.println(nuevoEstudiante.getNombre());
 			System.out.println("Con Identificador:");
 			System.out.println(nuevoEstudiante.getIdUsuario());
 			System.out.println("Desea ingresar a su cuenta? | S -> Sí | N -> No");			
-			String  ingresoUsuario = scanner2.nextLine();
+			String  ingresoUsuario = scanner.nextLine();
 			if (ingresoUsuario.equals("S")) {
-				IngresoUsuario();
+				IngresoUsuario(scanner);
 			}
 			
-			scanner.close();	
+			//scanner.close();	
 		}
 		else if (selection.equals("P")) {
-			Profesor nuevoProfesor = crearUsuarioProfesor();
+			Profesor nuevoProfesor = crearUsuarioProfesor(scanner);
 			System.out.println("Se ha creado el nuevo usuario:");
 			System.out.println(nuevoProfesor.getNombre());
 			System.out.println("profesor de la materia:");
@@ -109,8 +108,7 @@ public class Console {
 	}
 
 	
-	private static Estudiante crearUsuarioEstudiante() {
-		Scanner scanner = new Scanner(System.in);
+	private static Estudiante crearUsuarioEstudiante(Scanner scanner ) {
 		String tipo = "estudiante";
 		System.out.print("Nombre del estudiante: ");
 		String nombre = scanner.nextLine();
@@ -120,16 +118,15 @@ public class Console {
 		String pass = scanner.nextLine();
 		String materia = null;
 		String fechaRegistro = (sistemaCentral.getCurrentDate()).toString();
-		//scanner.close();
+		////scanner.close();
 		Estudiante nuevoEstudiante = (Estudiante)sistemaCentral.crearUsuario(tipo, nombre, email, pass, fechaRegistro, materia);
-		scanner.close();
+		//scanner.close();
 		return nuevoEstudiante;
 	}
 
 
-	private static Profesor crearUsuarioProfesor() {
+	private static Profesor crearUsuarioProfesor(Scanner scanner ) {
 		System.out.print("Nombre del profesor: ");
-		Scanner scanner = new Scanner(System.in);
 		String tipo = "profesor";
 		String nombre = scanner.next();
 		System.out.print("Email del profesor: ");
@@ -139,21 +136,20 @@ public class Console {
 		System.out.print("Materia del profesor: ");
 		String materia = scanner.next();
 		String fechaRegistro = (sistemaCentral.getCurrentDate()).toString();
-		scanner.close();
+		//scanner.close();
 		Profesor nuevoProfesor = (Profesor)sistemaCentral.crearUsuario(tipo, nombre, email, pass, fechaRegistro, materia);
 		return  nuevoProfesor;		
 	}
 	
-	private static Usuario resetPassword(String Email){
+	private static Usuario resetPassword(Scanner scanner , String Email){
 		Usuario elUsuario = null;
 		while(elUsuario == null)
 		try {
 		Usuario olvidadiso = sistemaCentral.grabUsuarioByEmail(Email);
-		Scanner scanner = new Scanner(System.in);
 		System.out.print("Ingrese su nuevo password: ");
 		String newPassword = scanner.next();
 		olvidadiso.setContrasenia(newPassword);
-		scanner.close();
+		//scanner.close();
 		return olvidadiso;
 		}
 		catch (Exception e){
@@ -166,16 +162,16 @@ public class Console {
 
 	
 	public static void main (String[] args) {
+		Scanner scannerUnico = new Scanner(System.in);
 		System.out.println("Bienvenido");
-		Scanner scanner = new Scanner(System.in);
 		System.out.println("¿Tiene cuenta? | S -> Sí | N -> No");
-		String  tiene_cuenta = scanner.nextLine();
+		String  tiene_cuenta = scannerUnico.nextLine();
 		if(tiene_cuenta.equals("S")){
 			boolean persistLogIn = true;
 			while (persistLogIn) {
-			Usuario user = IngresoUsuario();
+			Usuario user = IngresoUsuario(scannerUnico);
 			if (user.equals(null)){
-				IngresoUsuario();
+				IngresoUsuario(scannerUnico);
 			}
 			else {
 				persistLogIn = false;
@@ -184,20 +180,14 @@ public class Console {
 		}
 		else if (tiene_cuenta.equals("N")) {
 			System.out.println("¿Desea crear una cuenta? | S -> Sí | N -> No");
-			scanner.nextLine();
-			String crear_cuenta = scanner.nextLine();
+			String crear_cuenta = scannerUnico.nextLine();
 			if (crear_cuenta.equals("S")) {
-				elegirCreacionUsuario();
+				elegirCreacionUsuario(scannerUnico);
 			} else if( crear_cuenta.equals("N")) {
 			    System.out.println("Hasta luego");
 				System.exit(0);
             }
 		}
-		
-		scanner.close();//pedinete cerrar el scanner
-		
-		
-			
 		}
 
 	
