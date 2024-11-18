@@ -21,6 +21,7 @@ public abstract class Actividad {
         protected ArrayList<Resenia> resenias; 
         protected double nivelDificultad;
         protected boolean estaEmpezado;
+        protected String tipo;
 
 
 		//Se elimino objetivo y notaminima, notaminima no se espcifica, objetivos puede estar en descripcion.
@@ -29,7 +30,7 @@ public abstract class Actividad {
         protected Temporal fechaTerminada;
         protected int duracion;
         
-        public Actividad (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado) {
+        public Actividad (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo) {
 			   this.obligatoria = obligatoria;
 			   this.nombre = nombre;
 			   this.fechaLimite = fechaLimite;
@@ -40,9 +41,10 @@ public abstract class Actividad {
 			   this.resenias = resenias != null ? resenias : new ArrayList<>(); // Manejo nulo
 			   this.nivelDificultad = nivelDificultad;
 			   this.estaEmpezado = estaEmpezado;
+			   this.tipo=tipo;
 			   }
         
-        public abstract double calificarActividad(); 
+        public abstract double calificarActividad(String input); 
 		
         public void marcarObligatoria() {
         	this.obligatoria = true;
@@ -75,6 +77,10 @@ public abstract class Actividad {
         
         public void setCompletada(boolean Status){
             this.esCompletada =  Status;
+        }
+        
+        public void setTipo(String nuevotipo) {
+        	this.tipo= nuevotipo;
         }
         
         public boolean estaCompletada(){
@@ -132,7 +138,11 @@ public abstract class Actividad {
         public double getCalificacion() {
         	return this.calificacion;
         }
-        public Actividad 
+        
+        public String getTipo() {
+        	return this.tipo;
+        }
+        
 		
 		public void agregarResenia(Resenia nuevaResenia) {
 			resenias.add(nuevaResenia);

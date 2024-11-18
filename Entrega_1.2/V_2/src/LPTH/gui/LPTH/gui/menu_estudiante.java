@@ -70,7 +70,7 @@ public class menu_estudiante {
 			String delete = scanner.next();
 			if (delete.equals("S")) {
 				estudiante.removeLearningPath();
-			}
+			}			
 		} else {
 			System.out.println("Opción inválida");
 		}
@@ -160,8 +160,12 @@ public class menu_estudiante {
 						}
 					}
 				}
-			}if (actOpcn.equals("3")) {
+			}if (actOpcn.equals("3")) {												//aca?
 				// TODO Llamar a actividad de Pablo que recibe un String
+				String actividadDeseada= scanner.nextLine();
+				ArrayList<Actividad> actividades = lpEstudiante.getActividadesSinCompletar();
+				Actividad activity= seleccionarActividadPorNombre(actividadDeseada, actividades);
+				menuEmpezarActividad(activity);
 			}
 		} catch (Exception e) {
 			System.out.println(e); // Imprimir la excepcion
@@ -197,7 +201,20 @@ public class menu_estudiante {
 		System.out.println("¡Learning path eliminado!");
 	}
 	
-	public void menuEmpezarActividad(Actividad activity) {
+	public Actividad seleccionarActividadPorNombre(String nombre, ArrayList<Actividad> actividades) {
+        //brutus cycle
+        for (Actividad actividad: actividades) {
+            if (actividad.getNombre().equals(nombre)){
+            	return actividad;
+            
+            }
+        } return null;
+    }
+	
+	public void menuEmpezarActividad(Actividad actividadSeleccionada) {
+		
+		
+		
 		// Establecer tipo:
 		String tipoActividad;
 		//tipoActividad = activity.getTipo(); // TODO Si esto no esta implementado debe implementarse
@@ -213,9 +230,101 @@ public class menu_estudiante {
 		 * ¿Quiz si se mrc cómo completdo un vez completo? -> Si no, implementr.
 		 * */
 		// TODO @PABLO Realizar esta implementación dependiendo del tipo y lo que necesite
-	}
 		
-		
+		if (actividadSeleccionada instanceof Quiz) {
+	    	estudiante.iniciarActividad(actividadSeleccionada);
+	        Quiz quiz = (Quiz) actividadSeleccionada; 
+	        Scanner scanner = new Scanner(System.in);
+	        
+	        while (!quiz.estaCompletada()) {
+	            String enunciadoConOpciones = quiz.nextQuestion(""); 
 
+	            System.out.println(enunciadoConOpciones);  //problema counter
+
+	            System.out.print("Ingrese su respuesta: ");
+	            String respuestaUsuario = scanner.nextLine();
+
+	            quiz.nextQuestion(respuestaUsuario);
+	        scanner.close();
+	        }
+
+	        double calificacion = quiz.calificarActividad();
+	        System.out.println("Tu calificación final es: " + calificacion);
+	        //terminarActividad estudiante.this.
+	       
+	    	}
+		 if (actividadSeleccionada instanceof Encuesta) {
+		    	estudiante.iniciarActividad(actividadSeleccionada);
+		        Encuesta encuesta = (Encuesta) actividadSeleccionada; 
+		        Scanner scanner = new Scanner(System.in);
+		        
+		        while (!encuesta.estaCompletada()) {
+		            String enunciadoConOpciones = encuesta.nextQuestion(""); 
+
+		            System.out.println(enunciadoConOpciones);
+
+		            System.out.print("Ingrese su respuesta: ");
+		            String respuestaUsuario = scanner.nextLine();
+
+		            encuesta.nextQuestion(respuestaUsuario);
+		        scanner.close();
+		        }
+
+		        double calificacion = encuesta.calificarActividad();
+		        System.out.println("Tu calificación final es: " + calificacion);
+		 		}
+		 if (actividadSeleccionada instanceof Examen) {
+		    	estudiante.iniciarActividad(actividadSeleccionada);
+		    	Examen examen = (Examen) actividadSeleccionada; 
+		        Scanner scanner = new Scanner(System.in);
+		        
+		        while (!examen.estaCompletada()) {
+		            String enunciadoConOpciones = examen.nextQuestion(""); 
+
+		            System.out.println(enunciadoConOpciones);
+
+		            System.out.print("Ingrese su respuesta: ");
+		            String respuestaUsuario = scanner.nextLine();
+
+		            examen.nextQuestion(respuestaUsuario);
+		        scanner.close();
+		        }
+
+		        double calificacion = examen.calificarActividad();
+		        System.out.println("Tu calificación final es: " + calificacion);
+
+		    }
+		 if (actividadSeleccionada instanceof Tarea) {
+		    	estudiante.iniciarActividad(actividadSeleccionada);
+		    	Tarea tarea = (Tarea) actividadSeleccionada; 
+		        Scanner scanner = new Scanner(System.in);
+		        
+		        System.out.print("Ingrese su respuesta: ");
+		        String respuesta= scanner.nextLine();
+		        tarea.completarTarea();
+		        tarea.calificarActividad();
+		        
+		        double calificacion = tarea.calificarActividad();
+		        System.out.println("Tu calificación final es: " + calificacion);
+		        scanner.close();
+		   }
+		 if (actividadSeleccionada instanceof RecursoEducativo) {
+		    	estudiante.iniciarActividad(actividadSeleccionada);
+			 	RecursoEducativo recursoeducativo = (RecursoEducativo) actividadSeleccionada; 
+		        Scanner scanner = new Scanner(System.in);
+		        
+		        System.out.print("Ingrese su respuesta: ");
+		        String respuesta= scanner.nextLine();
+		        recursoeducativo.completarRD();
+		        recursoeducativo.calificarActividad();
+		        
+		        double calificacion = recursoeducativo.calificarActividad();
+		        System.out.println("Tu calificación final es: " + calificacion);
+		        scanner.close();
+		    	estudiante.terminarActividad(actividadSeleccionada);
+
+		   } 
+		
+	}
 
 }
