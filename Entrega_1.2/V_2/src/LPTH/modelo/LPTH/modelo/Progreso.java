@@ -37,7 +37,10 @@ public class Progreso {
     	return dedicacion;
     }
     
-
+    public Map<LearningPath, Date> getInicioLearningPaths(){
+    	return this.inicioLearningPaths;
+    }
+    
     public boolean isLearning() {
     	return this.learningInProgress;
     }
