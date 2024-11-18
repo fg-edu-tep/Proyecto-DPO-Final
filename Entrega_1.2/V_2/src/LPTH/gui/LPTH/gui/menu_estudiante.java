@@ -50,7 +50,7 @@ public class menu_estudiante {
 			System.out.println(recomendado.getDescripcion());
 			System.out.println("Desea empezar el learningPath? ");
 			String seleccion = scanner.next();
-			if (seleccion.equals("S")){
+			if (seleccion.equals("Si")){
 				startLearningPath(recomendado); 
 			}
 		} else if (opcion.equals("2")) {

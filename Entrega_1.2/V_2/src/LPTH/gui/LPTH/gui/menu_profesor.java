@@ -15,6 +15,7 @@ import LPTH.usuarios.Resenia;
 import LPTH.usuarios.Usuario;
 import LPTH.Preguntas.PreguntaAbierta;
 import LPTH.Preguntas.PreguntaCerrada;
+import LPTH.Preguntas.PreguntaToF;
 import LPTH.actividades.Actividad;
 import LPTH.actividades.Examen;
 import LPTH.gui.*;
@@ -60,26 +61,23 @@ public class menu_profesor {
             }
         } else if (opcion.equals("5")) {
             ArrayList<LearningPath> lps = profesor.getLps();
-            Scanner scanner = new Scanner(System.in);
             System.out.println("Ingrese el titulo del LP a consultar: ");
             String nombrelp= scanner.nextLine();
-            LearningPath lpseleccionado= seleccionarLearningPathPorNombre(nombrelp, lps)
+            LearningPath lpseleccionado= seleccionarLearningPathPorNombre(nombrelp, lps);
         	ArrayList<Actividad> actividades = lpseleccionado.getActividades();  
         	revisarExamenes(actividades);
         } else if (opcion.equals("6")){
             ArrayList<LearningPath> lps = profesor.getLps();
-            Scanner scanner = new Scanner(System.in);
             System.out.println("Ingrese el titulo del LP a consultar: ");
             String nombrelp= scanner.nextLine();
-            LearningPath lpseleccionado= seleccionarLearningPathPorNombre(nombrelp, lps)
+            LearningPath lpseleccionado= seleccionarLearningPathPorNombre(nombrelp, lps);
             Actividad actividad= crearActividad(); 
-            lpseleccionado.agregarActividad(actividad)
+            lpseleccionado.agregarActividad(actividad);
     	} else if (opcion.equals("7")) {
     		ArrayList<LearningPath> lps = profesor.getLps();
-            Scanner scanner = new Scanner(System.in);
             System.out.println("Ingrese el titulo del LP a consultar: ");
             String nombrelp= scanner.nextLine();
-            LearningPath lpseleccionado= seleccionarLearningPathPorNombre(nombrelp, lps)
+            LearningPath lpseleccionado= seleccionarLearningPathPorNombre(nombrelp, lps);
             ArrayList<Actividad> actividades= lpseleccionado.getActividades();
     		System.out.print("Ingrese el nombre de la actividad deseada: ");
     		String nombre= scanner.nextLine();
@@ -123,7 +121,9 @@ public class menu_profesor {
             System.out.println("Desearía agregar actividades ahora? (S/N)");
             String respuesta1 = scanner.next();
             if(respuesta1.equals("S")) {
-            	crearActividad(nuevoPath);//PENDIENTE IMPLEMENTAR PARTE DE PABLO
+            	Actividad actividad= crearActividad();//PENDIENTE IMPLEMENTAR PARTE DE PABLO
+            	nuevoPath.agregarActividad(actividad);
+            	
 				}
             
             System.out.println("¿Desea volver al menú principal? (S/N)");
@@ -344,6 +344,7 @@ public class menu_profesor {
         examen.calificarActividad(correccion);
         System.out.println("El estudiante saco: ");
         actividad.getCalificacion();
+        scanner.close();
         }
     }
     
@@ -443,42 +444,64 @@ public class menu_profesor {
             
         }
         else if (actividadDeseada.toLowerCase().equals("quiz")){
-            System.out.print("Se crearan 4 preguntas de 4 opciones ");
-            ArrayList<PreguntaCerrada> preguntas = new ArrayList<>();
-            
-            for (int i = 0; i < 4; i++) {
-                System.out.print("Ingrese el enunciado: ");
-                String enunciado = scanner.nextLine();
-
-                ArrayList<String> opciones = new ArrayList<>();   
-                for (int j = 1; j <= 4; j++) {
-                    System.out.print("Ingrese la opción " + j + ": ");
-                    String opcion= scanner.nextLine();
-                    opciones.add(opcion);
-                }
-
-                System.out.print("Ingrese la opcion correcta (1-4): ");
-                int opcionIndex = scanner.nextInt();
-                String opcionCorrecta = opciones.get(opcionIndex +1);
-
-                PreguntaCerrada pregunta = new PreguntaCerrada(enunciado, opciones, opcionCorrecta);
-                preguntas.add(pregunta);
-
-                System.out.println("Pregunta creada exitosamente.\n");
-            }
-            
-            
-            for(int i= 0; i<4; i++) {
-                System.out.print("Ingrese el enunciado: ");
-                String enunciado= scanner.nextLine();
+        	System.out.print("Que tipo de preguntas desea usar (PreguntaToF/PreguntaCerrada)");
+        	String tipopregunta= scanner.nextLine();
+        	
+        	if(tipopregunta.toLowerCase().equals("PreguntaCerrada")) {      	
+	        	System.out.print("Se crearan 4 preguntas de 4 opciones ");
+	            ArrayList<PreguntaCerrada> preguntas = new ArrayList<>();
+	            
+	            for (int i = 0; i < 4; i++) {
+	                System.out.print("Ingrese el enunciado: ");
+	                String enunciado = scanner.nextLine();
+	
+	                ArrayList<String> opciones = new ArrayList<>();   
+	                for (int j = 1; j <= 4; j++) {
+	                    System.out.print("Ingrese la opción " + j + ": ");
+	                    String opcion= scanner.nextLine();
+	                    opciones.add(opcion);
+	                }
+	
+	                System.out.print("Ingrese la opcion correcta (1-4): ");
+	                int opcionIndex = scanner.nextInt();
+	                String opcionCorrecta = opciones.get(opcionIndex +1);
+	
+	                PreguntaCerrada pregunta = new PreguntaCerrada(enunciado, opciones, opcionCorrecta);
+	                preguntas.add(pregunta);
+	
+	                System.out.println("Pregunta creada exitosamente.\n");
+	            }
+	            
+	            
+	            for(int i= 0; i<4; i++) {
+	                System.out.print("Ingrese el enunciado: ");
+	                String enunciado= scanner.nextLine();
+	                
+	                System.out.print("Ahora ingrese las 4 opciones");
+	                
+	                
+	            }
+	            return LearningPath.crearQuiz(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado,tipo, preguntas);
+	            // de ultimas porque quiz suena como queers y esos son mks.
+        	}
+        	
+        	else if (tipopregunta.toLowerCase().equals("PreguntaToF")) {      	
+        		System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
+                int n = scanner.nextInt();
+                scanner.nextLine();
                 
-                System.out.print("Ahora ingrese las 4 opciones");
+                ArrayList<PreguntaToF> preguntasT= new ArrayList<PreguntaToF>();
                 
-                
-            }
-            return LearningPath.crearQuiz(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado,tipo, preguntas);
-            // de ultimas porque quiz suena como queers y esos son mks.
-            
+                for(int i = 0; i<n; i++) {
+                    System.out.print("Ingrese el enunciado de la pregunta " + (i + 1) + ": ");
+                    String enunciado = scanner.nextLine();
+                    System.out.print("Ingrese si es(true/false)");
+                    boolean respuestaC= scanner.nextBoolean();
+                    PreguntaToF preguntaT = new PreguntaToF(enunciado, respuestaC);
+                    preguntasT.add(preguntaT);
+                	}
+                return LearningPath.crearQuiz(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado,tipo, preguntas);
+	            }
         }
         
         else if (actividadDeseada.toLowerCase().equals("recursoeducativo")){
@@ -578,9 +601,11 @@ public class menu_profesor {
 
             } else if (opcion == 8) {
                 System.out.print("¿Es obligatoria? (true/false): ");
-                boolean obligatoria = scanner.nextBoolean();
-                actividad.marcarObligatoria();
-            
+                String obligatoria= scanner.nextLine();
+                if(obligatoria.equals("true")){
+                	actividad.marcarObligatoria();
+                }
+                
             } else if (opcion == 9) {
                 System.out.print("Ingrese el nuevo tipo: ");
                 String tipo = scanner.nextLine();

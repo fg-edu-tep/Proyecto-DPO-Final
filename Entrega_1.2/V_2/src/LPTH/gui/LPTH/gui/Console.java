@@ -79,17 +79,18 @@ public class Console {
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("Elija el tipo de usuario a crear | P -> Profesor | E -> Estudiante");
 		String selection = scanner.next();
-		//scanner.close();
 		System.out.print(selection);
+		scanner.close();	
 		
 		if(selection.equals("E")) {
+			Scanner scanner2 = new Scanner(System.in);
 			Estudiante nuevoEstudiante = crearUsuarioEstudiante();
 			System.out.println("Se ha creado el nuevo usuario:");
 			System.out.println(nuevoEstudiante.getNombre());
 			System.out.println("Con Identificador:");
 			System.out.println(nuevoEstudiante.getIdUsuario());
-			System.out.println("Desea ingresar a su cuenta? | S -> Sí | N -> No");
-			String  ingresoUsuario = scanner.next();
+			System.out.println("Desea ingresar a su cuenta? | S -> Sí | N -> No");			
+			String  ingresoUsuario = scanner2.nextLine();
 			if (ingresoUsuario.equals("S")) {
 				IngresoUsuario();
 			}
@@ -107,16 +108,16 @@ public class Console {
 		}
 	}
 
-
+	
 	private static Estudiante crearUsuarioEstudiante() {
 		Scanner scanner = new Scanner(System.in);
 		String tipo = "estudiante";
 		System.out.print("Nombre del estudiante: ");
-		String nombre = scanner.next();
+		String nombre = scanner.nextLine();
 		System.out.print("Email del estudiante: ");
-		String email = scanner.next();
+		String email = scanner.nextLine();
 		System.out.print("Contraseña del estudiante: ");
-		String pass = scanner.next();
+		String pass = scanner.nextLine();
 		String materia = null;
 		String fechaRegistro = (sistemaCentral.getCurrentDate()).toString();
 		//scanner.close();
@@ -168,7 +169,7 @@ public class Console {
 		System.out.println("Bienvenido");
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("¿Tiene cuenta? | S -> Sí | N -> No");
-		String  tiene_cuenta = scanner.next();
+		String  tiene_cuenta = scanner.nextLine();
 		if(tiene_cuenta.equals("S")){
 			boolean persistLogIn = true;
 			while (persistLogIn) {
@@ -183,7 +184,8 @@ public class Console {
 		}
 		else if (tiene_cuenta.equals("N")) {
 			System.out.println("¿Desea crear una cuenta? | S -> Sí | N -> No");
-	        String crear_cuenta = scanner.next();
+			scanner.nextLine();
+			String crear_cuenta = scanner.nextLine();
 			if (crear_cuenta.equals("S")) {
 				elegirCreacionUsuario();
 			} else if( crear_cuenta.equals("N")) {
