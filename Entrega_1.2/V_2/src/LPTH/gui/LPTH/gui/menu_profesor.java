@@ -31,6 +31,7 @@ public class menu_profesor {
 		this.profesor = profesor;
 	}
 
+    //consola que si cambia 8====)
 	public void opcionesprofesor(Scanner scanner) {
 	    boolean continuar = true;
 
