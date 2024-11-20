@@ -63,6 +63,7 @@ public class Console {
 	                return elUsuario; 
 	            }
 	        } catch (Exception e) {
+	        	System.out.print(e);
 	            System.out.println("No se ha podido autenticar. ¿Desea intentar de nuevo? | S -> Sí | N -> No");
 	            String retry = scanner.next();
 	            if (retry.equalsIgnoreCase("N")) {
@@ -104,6 +105,7 @@ public class Console {
 			System.out.println(nuevoProfesor.getMateria());
 			System.out.println("Con Identificador:");
 			System.out.println(nuevoProfesor.getIdUsuario());
+			System.out.println("Desea ingresar a su cuenta? | S -> Sí | N -> No");			
 			String  ingresoUsuario2 = scanner.next();
 			if (ingresoUsuario2.equals("S")) {
 				IngresoUsuario(scanner);

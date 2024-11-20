@@ -3,6 +3,9 @@ package LPTH.gui;
 import java.lang.reflect.Array;
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
@@ -128,14 +131,8 @@ public class menu_profesor {
         System.out.println("Ingrese la duración del Learning Path en horas: ");
         int duracion = scanner.nextInt();
 
-        LearningPath nuevoPath = sistemaCentral.crearLearningPath(
-            this.profesor,
-            titulo,
-            descripcion,
-            nivelDeDificultad,
-            duracion
-        );
-
+        LearningPath nuevoPath = sistemaCentral.crearLearningPath(this.profesor,titulo,descripcion, nivelDeDificultad,duracion);
+        
         if (nuevoPath != null) {
             System.out.println("Learning Path creado exitosamente!");
             System.out.println("Título: " + nuevoPath.getTitulo());
@@ -377,10 +374,13 @@ public class menu_profesor {
         //Todos los strings deben ser en minuscula.
         
         ////Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Ingrese la actividad deseada");
-        String actividadDeseada= scanner.nextLine();
-        
+    	
+    	System.out.print("Selecciono crear actividad, ahora se le pediran los parametros" );
+    	
+    	System.out.print("\nIngrese el tipo de la actividad");
+    	System.out.print("\nOpciones: encuesta, examen, quiz, recursoeducativo, tarea: ");
+        String actividadDeseada= scanner.next();
+    	
         System.out.print("¿Es obligatoria la actividad? (true/false): ");
         boolean obligatoria = scanner.nextBoolean();
 
@@ -388,10 +388,12 @@ public class menu_profesor {
         System.out.print("Ingrese el nombre de la actividad: ");
         String nombre = scanner.nextLine();
 
-        System.out.print("Ingrese la fecha límite (dd-MM-yyyy): ");
+        
+        System.out.print("Ingrese la fecha límite (dd-MM-yyyy): ");		//no funciona
         String fechaLimiteStr = scanner.nextLine();
         Instant instant = getDateFromString(fechaLimiteStr);
         Date fechaLimite = (Date) Date.from(instant); //cast para q funcione
+        
         
         System.out.print("Ingrese la descripción de la actividad: ");
         String descripcion = scanner.nextLine();
@@ -407,7 +409,7 @@ public class menu_profesor {
         
         //invocar constructor de reseña y pedir sus respectivos parametros, revisar logica
         ArrayList<Resenia> resenias= new ArrayList<Resenia>();
-        System.out.print("¿Desea crear reseña(s)?");
+        System.out.print("¿Desea crear reseña(s)?" );
         String deseo= scanner.nextLine();
         
         if(deseo.toLowerCase().equals("si")) {
@@ -428,8 +430,6 @@ public class menu_profesor {
         System.out.print("¿Está empezada la actividad? (true/false): ");
         boolean estaEmpezado = scanner.nextBoolean();
         
-        System.out.println("Ingrese el tipo de actividad: ");
-        String tipo = scanner.nextLine();
         
         if(actividadDeseada.toLowerCase().equals("encuesta")) {
             System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
@@ -444,7 +444,7 @@ public class menu_profesor {
                 PreguntaAbierta pregunta = new PreguntaAbierta(enunciado);
                 preguntas.add(pregunta);
             }
-            return lp.crearEncuesta (obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo, preguntas);
+            return lp.crearEncuesta (obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, actividadDeseada, preguntas);
         }
         else if (actividadDeseada.toLowerCase().equals("examen")){
             
@@ -462,7 +462,7 @@ public class menu_profesor {
                 preguntas.add(pregunta);
             }
             
-            return lp.crearExamen(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo, preguntas);
+            return lp.crearExamen(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, actividadDeseada, preguntas);
             
         }
         /*
@@ -532,12 +532,12 @@ public class menu_profesor {
             String contenido= scanner.nextLine();
             String tipoC= scanner.nextLine();
             
-            return lp.crearRecursoEd(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo,  contenido, tipoC);
+            return lp.crearRecursoEd(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, actividadDeseada,  contenido, tipoC);
         }
         
         else if (actividadDeseada.toLowerCase().equals("tarea")){
-            return lp.crearTarea(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo);
-        } //scanner.close();
+            return lp.crearTarea(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, actividadDeseada);
+        } return null; //scanner.close();
     }
 
 
@@ -653,13 +653,16 @@ public class menu_profesor {
     }
 
 
-    public static Instant getDateFromString(String string)
-    {
-        Instant timestamp = null;
 
-        timestamp = Instant.parse(string);
 
-        return timestamp;
+    public static Instant getDateFromString(String string) {
+        // Definir el formato personalizado
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        // Parsear la cadena a LocalDate
+        LocalDate localDate = LocalDate.parse(string, formatter);
+        // Convertir LocalDate a Instant
+        return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
     }
+
 }
 
