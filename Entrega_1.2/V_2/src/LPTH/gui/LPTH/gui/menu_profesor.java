@@ -44,7 +44,7 @@ public class menu_profesor {
 	        System.out.println("2. Ver Learning Paths existentes");
 	        System.out.println("3. Ver mis Learning Paths");
 	        System.out.println("4. Consultar Learning Path de otro docente");
-	        System.out.println("5. Revisar tareas y exámenes enviados por estudiantes");
+	        System.out.println("5. Revisar exámenes enviados por estudiantes");
 	        System.out.println("6. Crear actividad");
 	        System.out.println("7. Modificar Actividad");
 	        System.out.println("8. Salir");
@@ -107,7 +107,7 @@ public class menu_profesor {
 	                System.out.println("Learning Path no encontrado.");
 	            }
 	        } else if (opcion.equals("8")) {
-	            continuar = false;
+	            continuar = !continuar;
 	        } else {
 	            System.out.println("Opción inválida, por favor intente de nuevo.");
 	        }
@@ -198,20 +198,18 @@ public class menu_profesor {
             //scanner.close();
             System.exit(5);
         }
-        for(LearningPath lp: paths) {		// puede quitarse, es para ver si actividad se crea bien. de todas formas no tendremos lp tan grandes.
-        	ArrayList<Actividad> actividades= lp.getActividades();
-        	for(Actividad actividad: actividades) {
-        	System.out.println(actividad.toString());
-        	}
-    	}		
+
         System.out.println("¿Que desea hacer ahora");
         System.out.println("1. Editar Learning Path");
         System.out.println("2. Volver al menú principal");
+        System.out.println("3. Ver Actividad de un LearningPath");
         String respuesta = scanner.next();
         if (respuesta.equals("1")) {
             editarLearningPath(scanner);
         } else if (respuesta.equals("2")) {
             opcionesprofesor(scanner);
+        } else if (respuesta.equals("3")) {
+        	imprimirActividadesLp(scanner);
         } else {
             System.out.println("Opción inválida");
             opcionesprofesor(scanner);
@@ -635,14 +633,9 @@ public class menu_profesor {
                 String obligatoria= scanner.nextLine();
                 if(obligatoria.equals("true")){
                 	actividad.marcarObligatoria();
-                }
+                } 
                 
             } else if (opcion == 9) {
-                System.out.print("Ingrese el nuevo tipo: ");
-                String tipo = scanner.nextLine();
-                actividad.setTipo(tipo);    
-                
-            } else if (opcion == 10) {
                 continuar = false;
                 System.out.println("Saliendo de la modificación.");
 
@@ -672,5 +665,27 @@ public class menu_profesor {
         return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
     }
 
+    private void imprimirActividadesLp(Scanner scanner) {
+		//Cagada
+		try {
+			System.out.println("Ingrese el nombre del learningpath: ");
+			String nombre= scanner.nextLine();
+			ArrayList<LearningPath> lps = this.profesor.getLps();
+			LearningPath lp = seleccionarLearningPathPorNombre(nombre, lps);
+
+			for (Actividad activity : lp.getActividades()) {
+				System.out.println(activity.getNombre());
+				}
+			
+
+		} catch (Exception e) {
+			System.out.println(e); 
+			}
+		
+		finally {
+			opcionesprofesor(scanner); 
+		}
+	}
+    
 }
 
