@@ -403,7 +403,7 @@ public class menu_profesor {
 
         System.out.print("Ingrese el rating (ejemplo: 4.5): ");
         int rating = scanner.nextInt();
-
+        
         System.out.print("¿Está completada la actividad? (true/false): ");
         boolean esCompletada = scanner.nextBoolean();
         
@@ -465,7 +465,7 @@ public class menu_profesor {
             return lp.crearExamen(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, actividadDeseada, preguntas);
             
         }
-        /*
+        /* no funciona quiz
         else if (actividadDeseada.toLowerCase().equals("quiz")){
         	System.out.print("Que tipo de preguntas desea usar (PreguntaToF/PreguntaCerrada)");
         	String tipopregunta= scanner.nextLine();
