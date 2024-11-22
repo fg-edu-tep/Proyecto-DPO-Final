@@ -141,11 +141,11 @@ public class menu_profesor {
             System.out.println("Desearía agregar actividades ahora? (S/N)");
             String respuesta1 = scanner.next();
             if(respuesta1.equals("S")) {
-            	Actividad actividad= crearActividad(scanner,nuevoPath);//PENDIENTE IMPLEMENTAR PARTE DE PABLO
+            	Actividad actividad= crearActividad(scanner,nuevoPath);
             	nuevoPath.agregarActividad(actividad);
             	
 				}
-            
+            this.profesor.agregarLp(nuevoPath); //faltaba esto
             System.out.println("¿Desea volver al menú principal? (S/N)");
             String respuesta = scanner.next();
             if (respuesta.equals("S")) {
@@ -182,13 +182,14 @@ public class menu_profesor {
             opcionesprofesor(scanner);
         } else {
             System.out.println("Opción inválida");
+            opcionesprofesor(scanner);
         }
         //scanner.close();
     }
 
     public void verMisLps(Scanner scanner){    //lps del profe
         ////Scanner scanner = new Scanner(System.in);
-        ArrayList<LearningPath> paths = profesor.getLps();
+        ArrayList<LearningPath> paths = this.profesor.getLps();
         
         System.out.println("Learning Paths existentes:");
         System.out.println(paths);
@@ -197,7 +198,12 @@ public class menu_profesor {
             //scanner.close();
             System.exit(5);
         }
-        
+        for(LearningPath lp: paths) {		// puede quitarse, es para ver si actividad se crea bien. de todas formas no tendremos lp tan grandes.
+        	ArrayList<Actividad> actividades= lp.getActividades();
+        	for(Actividad actividad: actividades) {
+        	System.out.println(actividad.toString());
+        	}
+    	}		
         System.out.println("¿Que desea hacer ahora");
         System.out.println("1. Editar Learning Path");
         System.out.println("2. Volver al menú principal");
@@ -208,6 +214,7 @@ public class menu_profesor {
             opcionesprofesor(scanner);
         } else {
             System.out.println("Opción inválida");
+            opcionesprofesor(scanner);
         }
         //scanner.close();
     }
@@ -389,7 +396,7 @@ public class menu_profesor {
         String nombre = scanner.nextLine();
 
         
-        System.out.print("Ingrese la fecha límite (dd-MM-yyyy): ");		//no funciona
+        System.out.print("Ingrese la fecha límite (dd-MM-yyyy): ");
         String fechaLimiteStr = scanner.nextLine();
         Instant instant = getDateFromString(fechaLimiteStr);
         java.util.Date utilDate = Date.from(instant);
@@ -402,12 +409,12 @@ public class menu_profesor {
         double calificacion = scanner.nextDouble();
 
         System.out.print("Ingrese el rating (ejemplo: 4.5): ");
-        int rating = scanner.nextInt();
+        double rating = scanner.nextDouble();
         
         System.out.print("¿Está completada la actividad? (true/false): ");
         boolean esCompletada = scanner.nextBoolean();
 
-        scanner.nextLine(); // Limpiar el buffer
+        scanner.nextLine(); 
         ArrayList<Resenia> resenias = new ArrayList<>();
         System.out.print("¿Desea crear reseña(s)? (si/no): ");
         String deseo = scanner.nextLine();
@@ -418,14 +425,14 @@ public class menu_profesor {
             scanner.nextLine(); // Limpiar el buffer
 
             for (int i = 0; i < deseosinonimo; i++) {
-                System.out.print("Cree la reseña: ");
+                System.out.print("Meta el texto: ");
                 String texto = scanner.nextLine();
                 Resenia resenia = new Resenia(texto, rating);
                 resenias.add(resenia);
             }
         }
 
-        System.out.print("Ingrese el nivel de dificultad: ");
+        System.out.print("Ingrese el nivel de dificultad (0-5): ");
         double nivelDificultad = scanner.nextDouble();
 
         System.out.print("¿Está empezada la actividad? (true/false): ");
@@ -599,8 +606,9 @@ public class menu_profesor {
                 System.out.print("Ingrese la fecha límite (dd-MM-yyyy): ");
                 String fechaLimiteStr = scanner.nextLine();
                 Instant instant = getDateFromString(fechaLimiteStr);
-                Date fechaLimite = (Date) Date.from(instant);
-                actividad.setFechaLimite(fechaLimite);
+                java.util.Date utilDate = Date.from(instant);
+                java.sql.Date fechaLimite = new java.sql.Date(utilDate.getTime());
+                actividad.setFechaLimite(fechaLimite);		//revisar por si acaso
                 
             } else if (opcion == 4) {
                 System.out.print("Ingrese la nueva calificación: ");
