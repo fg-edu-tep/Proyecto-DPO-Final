@@ -34,6 +34,7 @@ public class menu_profesor {
 		this.profesor = profesor;
 	}
 
+    //consola que si cambia 8====)
 	public void opcionesprofesor(Scanner scanner) {
 	    boolean continuar = true;
 
@@ -368,8 +369,7 @@ public class menu_profesor {
     }
     
 }
-
-
+    
     public Actividad crearActividad(Scanner scanner, LearningPath lp) {
         //Todos los strings deben ser en minuscula.
         
@@ -384,7 +384,7 @@ public class menu_profesor {
         System.out.print("¿Es obligatoria la actividad? (true/false): ");
         boolean obligatoria = scanner.nextBoolean();
 
-        scanner.nextLine(); 
+        scanner.nextLine();
         System.out.print("Ingrese el nombre de la actividad: ");
         String nombre = scanner.nextLine();
 
@@ -392,9 +392,9 @@ public class menu_profesor {
         System.out.print("Ingrese la fecha límite (dd-MM-yyyy): ");		//no funciona
         String fechaLimiteStr = scanner.nextLine();
         Instant instant = getDateFromString(fechaLimiteStr);
-        Date fechaLimite = (Date) Date.from(instant); //cast para q funcione
-        
-        
+        java.util.Date utilDate = Date.from(instant);
+        java.sql.Date fechaLimite = new java.sql.Date(utilDate.getTime());
+
         System.out.print("Ingrese la descripción de la actividad: ");
         String descripcion = scanner.nextLine();
 
@@ -406,24 +406,25 @@ public class menu_profesor {
         
         System.out.print("¿Está completada la actividad? (true/false): ");
         boolean esCompletada = scanner.nextBoolean();
-        
-        //invocar constructor de reseña y pedir sus respectivos parametros, revisar logica
-        ArrayList<Resenia> resenias= new ArrayList<Resenia>();
-        System.out.print("¿Desea crear reseña(s)?" );
-        String deseo= scanner.nextLine();
-        
-        if(deseo.toLowerCase().equals("si")) {
+
+        scanner.nextLine(); // Limpiar el buffer
+        ArrayList<Resenia> resenias = new ArrayList<>();
+        System.out.print("¿Desea crear reseña(s)? (si/no): ");
+        String deseo = scanner.nextLine();
+
+        if (deseo.toLowerCase().equals("si")) {
             System.out.print("Ingrese la cantidad deseada: ");
             int deseosinonimo = scanner.nextInt();
-            
-            for(int i= 0; i<deseosinonimo; i++) {
-            System.out.print("Cree la reseña");
-            String texto = scanner.nextLine();
-            Resenia resenia= new Resenia(texto, rating);
-            resenias.add(resenia);
+            scanner.nextLine(); // Limpiar el buffer
+
+            for (int i = 0; i < deseosinonimo; i++) {
+                System.out.print("Cree la reseña: ");
+                String texto = scanner.nextLine();
+                Resenia resenia = new Resenia(texto, rating);
+                resenias.add(resenia);
             }
         }
-        
+
         System.out.print("Ingrese el nivel de dificultad: ");
         double nivelDificultad = scanner.nextDouble();
 
@@ -435,10 +436,10 @@ public class menu_profesor {
             System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
             int n = scanner.nextInt();
             scanner.nextLine();
-            
-            ArrayList<PreguntaAbierta> preguntas= new ArrayList<PreguntaAbierta>();
-            
-            for(int i = 0; i<n; i++) {
+
+            ArrayList<PreguntaAbierta> preguntas = new ArrayList<>();
+
+            for (int i = 0; i < n; i++) {
                 System.out.print("Ingrese el enunciado de la pregunta " + (i + 1) + ": ");
                 String enunciado = scanner.nextLine();
                 PreguntaAbierta pregunta = new PreguntaAbierta(enunciado);
@@ -451,11 +452,10 @@ public class menu_profesor {
             System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
             int n = scanner.nextInt();
             scanner.nextLine();
-            
-            ArrayList<PreguntaAbierta> preguntas= new ArrayList<PreguntaAbierta>();
-            
-            
-            for(int i = 0; i<n; i++) {
+
+            ArrayList<PreguntaAbierta> preguntas = new ArrayList<>();
+
+            for (int i = 0; i < n; i++) {
                 System.out.print("Ingrese el enunciado de la pregunta " + (i + 1) + ": ");
                 String enunciado = scanner.nextLine();
                 PreguntaAbierta pregunta = new PreguntaAbierta(enunciado);

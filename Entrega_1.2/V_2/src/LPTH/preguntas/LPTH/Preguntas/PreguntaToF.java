@@ -6,7 +6,7 @@ public class PreguntaToF extends Pregunta{
     private boolean opcionCorrecta;
     private boolean correctaTF; //valor de si esta bien respondida
 
-    public PreguntaToF(String enunciado, boolean correctaTF, boolean opcionCorrecta){
+    public PreguntaToF(String enunciado, boolean opcionCorrecta){
         super(enunciado);
         this.correctaTF= false;
         this.opcionCorrecta=opcionCorrecta;

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/bin" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/V_2/src/LPTH/actividades" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/V_2/src/LPTH/exceptions" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/V_2/src/LPTH/gui" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/V_2/src/LPTH/modelo" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/V_2/src/LPTH/persistencia" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/V_2/src/LPTH/preguntas" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/V_2/src/LPTH/usuarios" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
+  </component>
+</module>

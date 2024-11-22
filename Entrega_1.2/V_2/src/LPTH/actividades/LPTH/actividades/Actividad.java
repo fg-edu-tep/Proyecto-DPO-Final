@@ -40,7 +40,7 @@ public abstract class Actividad {
 			   this.esCompletada = esCompletada;
 			   this.resenias = resenias != null ? resenias : new ArrayList<>(); // Manejo nulo
 			   this.nivelDificultad = nivelDificultad;
-			   this.estaEmpezado = estaEmpezado;
+			   this.estaEmpezado = false;
 			   this.tipo=tipo;
 			   }
         
@@ -48,6 +48,10 @@ public abstract class Actividad {
 		
         public void marcarObligatoria() {
         	this.obligatoria = true;
+        }
+
+        public boolean getObligatoria() {
+        	return this.obligatoria;
         }
 
         public void setFechaLimite(Date nuevaFecha) {
@@ -100,6 +104,11 @@ public abstract class Actividad {
         	this.fechaEmpezada = empezado;
             this.estaEmpezado = true;
         }
+        
+        public boolean enProgreso(){
+            return this.estaEmpezado;
+        }
+
 
         public void terminarActividad() {
             Instant terminado = Instant.now(); 
