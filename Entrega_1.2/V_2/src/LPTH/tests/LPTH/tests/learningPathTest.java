@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class learningPathTest {
     Sistema sistemaCentral = new Sistema();
     Date hoy = sistemaCentral.getCurrentDate();
     ArrayList<Resenia> resenias = new ArrayList<Resenia>();
-    Tarea elQuije = new Tarea(true, "Unit tests", hoy, "Programa hasta sangrar", 2.5, (float) 3.11, false, resenias, 2.55, false, "Tarea");
+    Tarea LaActividad = new Tarea(true, "Unit tests", hoy, "Programa hasta sangrar", 2.5, (float) 3.11, false, resenias, 2.55, false, "Tarea");
     ArrayList<Pregunta> preguntas;
     ArrayList<Actividad> actividades = new ArrayList<Actividad>();
     LearningPath learningPath;
@@ -41,7 +42,7 @@ public class learningPathTest {
         jirafales = (Profesor) sistemaCentral.crearUsuario("profesor", "Jirafales", "Jirafales@unimandes.eu", "Chavito", "17_11_2024", "Geociencias");
         preguntas = new ArrayList<>();
         preguntas.add(new PreguntaAbierta("¿Qué es Java?"));
-        actividades.add(elQuije);
+        actividades.add(LaActividad);
         learningPath = new LearningPath(jirafales.getNombre(), "Aprende Java", 1, "Curso para aprender Java desde cero", new ArrayList<>(), "Intermedio", 10, 5, hoy, hoy, "1.0", 0.8f, actividades);
     }
 
@@ -58,13 +59,20 @@ public class learningPathTest {
 
     @Test
     void testEliminarActividad() {
-        learningPath.eliminarActividad(elQuije);
-        assertTrue(!learningPath.getActividades().contains(elQuije), "La actividad no se eliminó correctamente del Learning Path");
+        learningPath.eliminarActividad(LaActividad);
+        assertTrue(!learningPath.getActividades().contains(LaActividad), "La actividad no se eliminó correctamente del Learning Path");
     }
 
     @Test
     void testNotificarEstudianteDue() {
         Estudiante estudiante = new Estudiante(sistemaCentral, 1, "Estudiante Prueba", "estudiante@unimandes.edu", "1234", "17_11_2024");
+    	estudiante.startLearningPath(learningPath);
+        Calendar cal = Calendar.getInstance(); //Usar cal
+    	cal.setTime(this.hoy); 
+    	cal.add(Calendar.DAY_OF_MONTH, 1); //Avanzar un dia
+    	Date future = cal.getTime(); // mañana es futuro
+        Tarea nuevaTarea = new Tarea(true, "Polimorfismo en Java", future, "Aprender sobre polimorfismo", 3.0, (float) 4.0, false, resenias, 3.0, false, "Tarea");
+        learningPath.agregarActividad(nuevaTarea);
         learningPath.notificarEstudianteDue(estudiante);
         List<String> notificaciones;
         try {
@@ -73,7 +81,7 @@ public class learningPathTest {
             throw new RuntimeException("No se pudo obtener las notificaciones del estudiante porque no tiene un Learning Path activo.", e);
         }
         assertNotNull(notificaciones, "Las notificaciones deberían existir aunque estén vacías");
-        assertTrue(notificaciones.isEmpty(), "No debería haber notificaciones ya que no hay actividades próximas a vencer");
+        assertTrue(!notificaciones.isEmpty(), "La actividad no se agregó || no se está notificando");
     }
 
     @Test

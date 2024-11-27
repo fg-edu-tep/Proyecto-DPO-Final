@@ -24,7 +24,7 @@ public class Estudiante extends Usuario{
     public Estudiante(Sistema sistemaCentral, int idUsuario, String nombre, String email, String contraseña, String fechaRegistro) {
     	super(sistemaCentral, idUsuario, nombre, email, contraseña, fechaRegistro, tipo);
         this.progreso = new Progreso();
-        this.notificaciones = new ArrayList<>();
+        this.notificaciones = new ArrayList<String>();
     }
 
     public void iniciarActividad(Actividad miActividad) {
@@ -58,7 +58,7 @@ public class Estudiante extends Usuario{
 
     public void startLearningPath(LearningPath selectedLp) {
     	/*Agrega el LP seleccionado y lo agrega a progreso*/
-    	nombreLPActual = selectedLp.getTitulo();
+    	this.nombreLPActual = selectedLp.getTitulo();
     	Instant now = Instant.now();
     	Date actual = Date.from(now);
     	progreso.addStartDate(actual, selectedLp);

@@ -65,7 +65,7 @@ public class Sistema {
     
     public Usuario autenticarUsuario(String email, String contrasenia) throws ExceptionUsuarioNoEncontrado{
         Usuario usuario = grabUsuarioByEmail(email);
-        if (usuario.equals(null)) {
+        if (usuario == null) {
         	throw new ExceptionUsuarioNoEncontrado();
         }
         if (usuario.getContrasenia().equals(contrasenia)) { 
