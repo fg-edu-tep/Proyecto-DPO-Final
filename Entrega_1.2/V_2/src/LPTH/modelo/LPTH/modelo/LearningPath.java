@@ -56,7 +56,7 @@ public class LearningPath {
         this.fechaDeModificacion = fechaDeModificacion;
         this.version = version;
         this.tasaDeExitoFracaso = tasaDeExitoFracaso;
-        if (actividades.isEmpty()) {
+        if (!actividades.isEmpty()) {
         	this.actividades = actividades;
         }
         

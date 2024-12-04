@@ -1,5 +1,6 @@
 package LPTH.gui;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.sql.Date;
 import java.time.Instant;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import LPTH.modelo.Sistema;
+import LPTH.persistencia.PeristirSistema;
 import LPTH.modelo.LearningPath;
 import LPTH.usuarios.Estudiante;
 
@@ -104,7 +106,10 @@ public class menu_profesor {
 	                System.out.println("Learning Path no encontrado.");
 	            }
 	        } else if (opcion.equals("8")) {
-	            continuar = false;
+	            salvarSistema(sistemaCentral);
+	            System.out.println("Sistema guardado, vemos.");
+	        	continuar = false;
+	            
 	        } else {
 	            System.out.println("Opción inválida, por favor intente de nuevo.");
 	        }
@@ -766,5 +771,36 @@ public class menu_profesor {
 
         return timestamp;
     }
+ // Temas de persistencia
+    
+    public void salvarSistema(Sistema sistemaCentral) {
+    	PeristirSistema fileMngr = new PeristirSistema(); 
+    	try {
+			fileMngr.salvarSistema(sistemaCentral);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    
+    public Sistema cargarSistema() throws NullPointerException {
+    	PeristirSistema fileMngr = new PeristirSistema();
+    	Sistema sistemaCentral = null;
+		try {
+			sistemaCentral = fileMngr.cargarSistema();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (sistemaCentral.equals(null)) {
+			throw new NullPointerException();
+		}
+    	return sistemaCentral;
+    }
+
+
 }
+
+
+
 

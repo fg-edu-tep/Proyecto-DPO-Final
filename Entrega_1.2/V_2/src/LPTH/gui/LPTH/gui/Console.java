@@ -169,6 +169,12 @@ public class Console {
 	public static void main (String[] args) {
 		Scanner scannerUnico = new Scanner(System.in);
 		System.out.println("Bienvenido");
+		System.out.println("¿Cargar sistema? | S -> Sí | N -> No");
+		String  load = scannerUnico.nextLine();
+		if (load.equals("S")) {
+			sistemaCentral = cargarSistema();
+			System.out.println("Se cargó exitosamente");
+		}
 		System.out.println("¿Tiene cuenta? | S -> Sí | N -> No");
 		String  tiene_cuenta = scannerUnico.nextLine();
 		if(tiene_cuenta.equals("S")){
@@ -209,7 +215,7 @@ public class Console {
 		}
     }
 
-    public Sistema cargarSistema() throws NullPointerException {
+    public static Sistema cargarSistema() throws NullPointerException {
     	PeristirSistema fileMngr = new PeristirSistema();
     	Sistema sistemaCentral = null;
 		try {
