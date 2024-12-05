@@ -13,7 +13,7 @@ public abstract class Actividad {
 	
         protected boolean obligatoria; 
         protected String nombre;
-        protected Date fechaLimite;
+        protected Instant fechaLimite;
         protected String descripcion;
         protected double calificacion;
         protected float rating; 
@@ -30,7 +30,7 @@ public abstract class Actividad {
         protected Temporal fechaTerminada;
         protected int duracion;
         
-        public Actividad (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo) {
+        public Actividad (boolean obligatoria, String nombre, Instant fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo) {
 			   this.obligatoria = obligatoria;
 			   this.nombre = nombre;
 			   this.fechaLimite = fechaLimite;
@@ -54,7 +54,7 @@ public abstract class Actividad {
         	return this.obligatoria;
         }
 
-        public void setFechaLimite(Date nuevaFecha) {
+        public void setFechaLimite(Instant nuevaFecha) {
         	this.fechaLimite= nuevaFecha;
         }
         
@@ -132,7 +132,7 @@ public abstract class Actividad {
 			return this.descripcion;
 		}
 		
-		public Date getDueDate() {
+		public Instant getDueDate() {
 			return this.fechaLimite;
 		}
 		

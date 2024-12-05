@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class PeristirSistema {
+public class PersistirSistema {
 	private static final String filePath = "src/LPTH/persistencia/LPTH/persistencia/peristenciaSistema.json";
 	
 	
