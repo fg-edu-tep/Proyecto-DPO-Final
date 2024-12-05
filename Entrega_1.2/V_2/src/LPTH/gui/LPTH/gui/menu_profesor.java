@@ -193,6 +193,7 @@ public class menu_profesor {
         
         System.out.println("Learning Paths existentes:");
         System.out.println(paths);
+   
         if (paths.isEmpty()) {
             System.out.println("No hay Learning Paths disponibles.");
             //scanner.close();
