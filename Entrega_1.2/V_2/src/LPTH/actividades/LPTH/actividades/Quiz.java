@@ -1,5 +1,6 @@
 package LPTH.actividades;
 import java.awt.geom.Arc2D.Double;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -14,11 +15,11 @@ public class Quiz extends Actividad{
 
     //Se removio crearPregunta Abierta
 	
-    private ArrayList<Pregunta> preguntas;
+    private ArrayList<PreguntaCerrada> preguntas;
     private int counterPregunta;
     private int counterCorrecta;
     
-    public Quiz (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo, ArrayList<Pregunta> preguntas) {
+    public Quiz (boolean obligatoria, String nombre, Instant fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo, ArrayList<PreguntaCerrada> preguntas) {
     	super(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo);
     	this.preguntas= preguntas;
     	this.counterPregunta = 0;
@@ -37,7 +38,7 @@ public class Quiz extends Actividad{
 		return 0.0;
     }
 
-    public void setPreguntas (ArrayList<Pregunta> nuevaspreguntas) {
+    public void setPreguntas (ArrayList<PreguntaCerrada> nuevaspreguntas) {
     	this.preguntas= nuevaspreguntas;
     }
     
@@ -84,7 +85,8 @@ public class Quiz extends Actividad{
 
     	}
     	else if (preguntas.get(counterPregunta) instanceof PreguntaCerrada) {
-    		((PreguntaToF) preguntas.get(counterPregunta)).checkCorrecta(inputUsuario);
+    		// @Pablo revisar
+    		//((PreguntaToF) preguntas.get(counterPregunta)).checkCorrecta(inputUsuario);
     		counterCorrecta ++;
     		}    	
     	}

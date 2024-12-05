@@ -1,5 +1,6 @@
 package LPTH.actividades;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class Examen extends Actividad {
     
     //Se removio crearPregunta Abierta
     
-    public Examen (boolean obligatoria, String nombre, Date fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo, ArrayList<PreguntaAbierta> preguntas) {
+    public Examen (boolean obligatoria, String nombre, Instant fechaLimite, String descripcion, double calificacion, float rating, boolean esCompletada, ArrayList<Resenia> resenias, double nivelDificultad, boolean estaEmpezado, String tipo, ArrayList<PreguntaAbierta> preguntas) {
         super(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo);
     	this.preguntas= preguntas;
         this.counterCorrecta = 0;

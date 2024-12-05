@@ -9,9 +9,10 @@ public class Profesor extends Usuario{
     private String materia;
     private static final String tipo = "Profesor";
     private ArrayList<LearningPath> lps = new ArrayList<LearningPath>();
+    private Sistema sistemaCentral = null;
     
-    public Profesor(Sistema sistemaCentral, int idUsuario, String nombre, String email, String contraseña, String fechaRegistro, String materia) {
-    	super(sistemaCentral, idUsuario, nombre, email, contraseña, fechaRegistro, tipo);
+    public Profesor(int idUsuario, String nombre, String email, String contraseña, String fechaRegistro, String materia) {
+    	super(idUsuario, nombre, email, contraseña, fechaRegistro, tipo);
         this.materia = materia;
     }
 
@@ -19,6 +20,10 @@ public class Profesor extends Usuario{
 		return this.tipo;
 	}
 
+	public void setSistema(Sistema sistemaCentral) {
+		this.sistemaCentral = sistemaCentral;
+	}
+	
     public String getMateria() {
     	return this.materia;
     }

@@ -19,14 +19,20 @@ public class Estudiante extends Usuario{
     private List<String> notificaciones;
     private String nombreLPActual = "None";
     private static final String tipo = "Estudiante";
+    private Sistema sistemaCentral = null;
+
 
     // Constructor
-    public Estudiante(Sistema sistemaCentral, int idUsuario, String nombre, String email, String contraseña, String fechaRegistro) {
-    	super(sistemaCentral, idUsuario, nombre, email, contraseña, fechaRegistro, tipo);
+    public Estudiante(int idUsuario, String nombre, String email, String contraseña, String fechaRegistro) {
+    	super(idUsuario, nombre, email, contraseña, fechaRegistro, tipo);
         this.progreso = new Progreso();
         this.notificaciones = new ArrayList<>();
     }
 
+	public void setSistema(Sistema sistemaCentral) {
+		this.sistemaCentral = sistemaCentral;
+	}
+	
     public void iniciarActividad(Actividad miActividad) {
         miActividad.empezarActividad(); 
     }

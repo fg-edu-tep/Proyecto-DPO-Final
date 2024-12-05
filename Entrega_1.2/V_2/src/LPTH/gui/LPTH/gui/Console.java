@@ -19,7 +19,7 @@ import LPTH.usuarios.Estudiante;
 import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Usuario;
 import LPTH.modelo.Sistema.*;
-import LPTH.persistencia.PeristirSistema;
+import LPTH.persistencia.PersistirSistema;
 
 
 public class Console {
@@ -114,6 +114,7 @@ public class Console {
 		}
 	}
 
+	/* DEPRECTAED, USE NEW UserFACTORY
 	
 	private static Estudiante crearUsuarioEstudiante(Scanner scanner ) {
 		String tipo = "estudiante";
@@ -166,7 +167,7 @@ public class Console {
 		return elUsuario;
 	}
 
-
+	*/
 	
 	public static void main (String[] args) {
 		Scanner scannerUnico = new Scanner(System.in);
@@ -195,49 +196,5 @@ public class Console {
 				System.exit(0);
             }
 		}
-		}
-
-	
-	
-   // Persistencia:
-    
-
-    public void salvarSistema(Sistema sistemaCentral) {
-    	PeristirSistema fileMngr = new PeristirSistema(); 
-    	try {
-			fileMngr.salvarSistema(sistemaCentral);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
-
-    public Sistema cargarSistema() throws NullPointerException {
-    	PeristirSistema fileMngr = new PeristirSistema();
-    	Sistema sistemaCentral = null;
-		try {
-			sistemaCentral = fileMngr.cargarSistema();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (sistemaCentral.equals(null)) {
-			throw new NullPointerException();
-		}
-    	return sistemaCentral;
-    }
-
-	
-    /*
-	Crear l.p
-	un lp necesita minimo 1 actividad,
-	
-	crearLp{
 	}
-	
-	crearActividad(lp){} para asignarle las actividaades a ese lp.
-	//ciclo brutus, obtiene
-	necesitar tener forma de pillar lp (id)
-	listaActividades.add(actividad)
-	*/
-	
 }
