@@ -14,8 +14,8 @@ import java.time.Instant;
 import java.util.LinkedList;
 
 public class PersistirUsuarios {
-    public static final String profesoresFilePath = "src/LPTH/persistencia/profesores.json";
-    public static final String estudiantesFilePath = "src/LPTH/persistencia/estudiantes.json";
+    public static final String profesoresFilePath = "Entrega_1.2\\V_2\\src\\LPTH\\persistencia\\LPTH\\persistencia\\profesores.json";
+    public static final String estudiantesFilePath = "Entrega_1.2\\V_2\\src\\LPTH\\persistencia\\LPTH\\persistencia\\estudiantes.json";
 
     public void salvarProfesores(LinkedList<Profesor> profesores) throws IOException {
         Gson gson = new GsonBuilder()
