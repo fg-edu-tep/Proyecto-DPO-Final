@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import LPTH.Preguntas.PreguntaAbierta;
 import LPTH.Preguntas.PreguntaCerrada;
@@ -23,7 +22,6 @@ import LPTH.persistencia.*;
 
 public class Sistema {
     private Map<Integer, LearningPath> learningPaths;
-    private Random rand = new Random();
 
     public Sistema() {
         this.learningPaths = new HashMap<Integer, LearningPath>(); 
@@ -33,7 +31,7 @@ public class Sistema {
     public LearningPath crearLearningPath(Profesor profe, String titulo, String descripcion,
                                           String nivelDeDificultad, int duracion) {
         String profesorCreador = profe.getNombre();
-        int id = rand.nextInt(999999);
+        int id = (int) (Math.random() * 999999);
         Instant fechaDeCreacion = getCurrentInstant();
         Instant fechaDeModificacion = getCurrentInstant();
         String version = "1";
@@ -64,10 +62,16 @@ public class Sistema {
     public LearningPath recomendarLearningPath() throws ExceptionNoPersistencia {
         ArrayList<LearningPath> lp = getLearningPaths();
         if (lp.isEmpty()) {
-            throw new ExceptionNoPersistencia("No learning paths available for recommendation.");
+            throw new ExceptionNoPersistencia("No hay learningPaths para recomendar");
         }
-        int recommend = rand.nextInt(lp.size());
+        int recommend = (int) (Math.random() * lp.size());
         return lp.get(recommend);
+    }
+    
+    //Extra LP por id, lista de usuario tiene lp con Codigo Integer
+    public LearningPath getLP(Integer id) {
+    	LearningPath lp= learningPaths.get(id); 
+    	return lp;
     }
 
     // Persistencia

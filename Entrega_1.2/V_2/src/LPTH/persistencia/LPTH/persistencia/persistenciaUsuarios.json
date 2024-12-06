@@ -1,0 +1,44 @@
+{
+  "sistemaCentral": {
+    "learningPaths": {}
+  },
+  "usuarios": [
+    {
+      "materia": "C",
+      "lps": [],
+      "sistemaCentral": {
+        "learningPaths": {}
+      },
+      "idUsuario": 1612809169,
+      "nombre": "C",
+      "email": "C",
+      "password": "C",
+      "fechaRegistro": "2024-12-05",
+      "tipo": "Profesor",
+      "resenias": [],
+      "LearningPaths": [],
+      "loggedOn": true
+    }
+  ],
+  "dbUsuarios": {
+    "C": {
+      "materia": "C",
+      "lps": [],
+      "sistemaCentral": {
+        "learningPaths": {}
+      },
+      "idUsuario": 1612809169,
+      "nombre": "C",
+      "email": "C",
+      "password": "C",
+      "fechaRegistro": "2024-12-05",
+      "tipo": "Profesor",
+      "resenias": [],
+      "LearningPaths": [],
+      "loggedOn": true
+    }
+  },
+  "logIns": {
+    "C": "C"
+  }
+}

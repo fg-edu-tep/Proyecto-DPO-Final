@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random; // Para los Ids de Usuario
-
 import LPTH.Preguntas.PreguntaAbierta;
 import LPTH.Preguntas.PreguntaCerrada;
 import LPTH.actividades.Actividad;
@@ -22,21 +20,19 @@ import LPTH.usuarios.Resenia;
 import LPTH.usuarios.Usuario;
 import LPTH.persistencia.*;
 
-
 public class UserFactory {
-	private Sistema sistemaCentral = null;
-	private LinkedList<Usuario> usuarios;
-	private Map<String, Usuario> dbUsuarios; //Correo y Usuario
-	private Map<String, String> logIns; //Correo y Password
-    private Random rand = new Random();    
-
-	
+    private Sistema sistemaCentral = null;
+    private LinkedList<Profesor> profesores;
+    private LinkedList<Estudiante> estudiantes;
+    private Map<String, Usuario> dbUsuarios; //Correo y Usuario
+    private Map<String, String> logIns; //Correo y Password
+    
     public UserFactory() throws ExceptionNoPersistencia, IOException {
-        this.usuarios = new LinkedList<Usuario>();
+        this.profesores = new LinkedList<Profesor>();
+        this.estudiantes = new LinkedList<Estudiante>();
         this.dbUsuarios = new HashMap<String, Usuario>();
         this.logIns = new HashMap<String, String>();
         this.sistemaCentral = cargarSistema();  // Intentar cargar el sistema central si existe, si no, empezar uno vacío
-
     }
     
     // Intentar cargar el sistema central si existe, si no, empezar uno vacío
@@ -55,78 +51,80 @@ public class UserFactory {
     }
     
     public UserFactory loadUsuarios() throws ExceptionNoPersistencia {
-    	/*Si existe permite sustituir el nuevo objeto de UserFactory por el cargado usando:
-    	 *UserFactory factoria = new UserFactory();
-		 *factoria = factoria.loadUsuarios(); 
-		*/
         PersistirUsuarios fileMngr = new PersistirUsuarios();
-        UserFactory usuariosSistema;
         try {
-            usuariosSistema = fileMngr.cargarSistema();
-            if (usuariosSistema == null) {
-                throw new ExceptionNoPersistencia("Archivo de userFactory está vacío");
+            this.profesores = fileMngr.cargarProfesores();
+            this.estudiantes = fileMngr.cargarEstudiantes();
+            for (Profesor profesor : profesores) {
+                dbUsuarios.put(profesor.getEmail(), profesor);
+                logIns.put(profesor.getEmail(), profesor.getContrasenia());
+            }
+            for (Estudiante estudiante : estudiantes) {
+                dbUsuarios.put(estudiante.getEmail(), estudiante);
+                logIns.put(estudiante.getEmail(), estudiante.getContrasenia());
             }
         } catch (IOException e) {
-            throw new ExceptionNoPersistencia("No hay un archivo de userFactory", e);
+            throw new ExceptionNoPersistencia("No hay un archivo de usuarios", e);
         }
-        return usuariosSistema;
+        return this;
     }
     
     public void saveUsuarios() throws ExceptionNoPersistencia {
-    	PersistirUsuarios fileMngr = new PersistirUsuarios(); 
-    	try {
-			fileMngr.salvarSistema(this);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        PersistirUsuarios fileMngr = new PersistirUsuarios(); 
+        try {
+            fileMngr.salvarProfesores(profesores);
+            fileMngr.salvarEstudiantes(estudiantes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Usuario crearUsuario(String tipo, String nombre, String email, String contrasenia, String fechaRegistro, String materia) {
-    	int idUsuario = rand.nextInt(99999);
-    	if (tipo == "profesor") {
-        	Profesor nuevoUsuario = new Profesor(idUsuario,nombre,email,contrasenia,fechaRegistro, materia);
-        	nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
-        	logIns.put(email, contrasenia);
-        	dbUsuarios.put(email, nuevoUsuario);
-        	usuarios.add(nuevoUsuario);
-        	nuevoUsuario.setSistema(sistemaCentral); // Si existe el objeto UserFactory tiene un sistemaCenteral así esté vaío
-        	nuevoUsuario.LogInAtt(); // Regresa con la sesión iniciada
-        	return nuevoUsuario;
-    	}
-    	else {
-        	Estudiante nuevoUsuario = new Estudiante(idUsuario,nombre,email,contrasenia,fechaRegistro);   // Sie se puede
-        	nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
-        	logIns.put(email, contrasenia);
-        	dbUsuarios.put(email, nuevoUsuario);
-        	usuarios.add(nuevoUsuario);
-        	nuevoUsuario.setSistema(sistemaCentral); // Si existe el objeto UserFactory tiene un sistemaCenteral así esté vaío
-        	nuevoUsuario.LogInAtt(); // Regresa con la sesión iniciada
-        	return nuevoUsuario;	
-    		}
-    	}
+        int idUsuario = (int) (Math.random() * 99999);
+        if (tipo.equals("profesor")) {
+            Profesor nuevoUsuario = new Profesor(idUsuario, nombre, email, contrasenia, fechaRegistro, materia);
+            nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
+            logIns.put(email, contrasenia);
+            dbUsuarios.put(email, nuevoUsuario);
+            profesores.add(nuevoUsuario);
+            nuevoUsuario.setSistema(sistemaCentral); // Si existe el objeto UserFactory tiene un sistemaCentral así esté vacío
+            nuevoUsuario.LogInAtt(); // Regresa con la sesión iniciada
+            return nuevoUsuario;
+        } else {
+            Estudiante nuevoUsuario = new Estudiante(idUsuario, nombre, email, contrasenia, fechaRegistro);   // Si se puede
+            nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
+            logIns.put(email, contrasenia);
+            dbUsuarios.put(email, nuevoUsuario);
+            estudiantes.add(nuevoUsuario);
+            nuevoUsuario.setSistema(sistemaCentral); // Si existe el objeto UserFactory tiene un sistemaCentral así esté vacío
+            nuevoUsuario.LogInAtt(); // Regresa con la sesión iniciada
+            return nuevoUsuario;    
+        }
+    }
     
-    
-    public Usuario autenticarUsuario(String email, String contrasenia) throws ExceptionUsuarioNoEncontrado{
+    public Usuario autenticarUsuario(String email, String contrasenia) throws ExceptionUsuarioNoEncontrado {
         Usuario usuario = grabUsuarioByEmail(email);
-        if (usuario.equals(null)) {
-        	throw new ExceptionUsuarioNoEncontrado();
+        if (usuario == null) {
+            throw new ExceptionUsuarioNoEncontrado();
         }
         if (usuario.getContrasenia().equals(contrasenia)) { 
-        	usuario.LogInAtt();
-        return usuario;
-        }
-        else {
-        	return null;
+            usuario.LogInAtt();
+            return usuario;
+        } else {
+            return null;
         }
     }
  
     public LinkedList<Usuario> getUsuarios() {
+        LinkedList<Usuario> usuarios = new LinkedList<>();
+        usuarios.addAll(profesores);
+        usuarios.addAll(estudiantes);
         return usuarios;
     }
     
-    public Usuario grabUsuarioByEmail(String email) throws ExceptionUsuarioNoEncontrado{
-    	if (!dbUsuarios.containsKey(email))
-    		throw new  ExceptionUsuarioNoEncontrado();
-    	return dbUsuarios.get(email);
+    public Usuario grabUsuarioByEmail(String email) throws ExceptionUsuarioNoEncontrado {
+        if (!dbUsuarios.containsKey(email))
+            throw new ExceptionUsuarioNoEncontrado();
+        return dbUsuarios.get(email);
     }
 }
