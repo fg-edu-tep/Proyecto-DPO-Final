@@ -15,6 +15,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="S:/Desktop/ProyectoDPOO/EclipseWorkspace/Proyecto-DPO-Final/Entrega_1.2/V_2/Lib/gson-2.11.0.jar"/>
+	<classpathentry kind="lib" path="Lib/gson-2.11.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
