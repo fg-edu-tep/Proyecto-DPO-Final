@@ -2,7 +2,6 @@ package LPTH.modelo;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import LPTH.Preguntas.PreguntaAbierta;
 import LPTH.Preguntas.PreguntaCerrada;
 import LPTH.actividades.Actividad;
@@ -218,8 +217,7 @@ public class LearningPath {
         Tarea tarea= new Tarea(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo);
         return tarea;
     }
-    
-    
+     
     //Por simplicidad recomienda una actividad al estudiante de manera aleatoria.
     //En consola, usar este metodo antes de permitir al estudiante escoger actividad.
     public Actividad recomendarActividad(){
