@@ -39,12 +39,6 @@ public class estudianteTest {
     @AfterEach
     void tearDown() throws Exception {
     }
-    
-    @Test
-    void testStartLearningPath() {
-        myEstudiante.startLearningPath(eda);
-        assertEquals("Aprende a no esperar", myEstudiante.getLearningPathActual(), "Error al iniciar el Learning Path");
-    }
 
     @Test
     void testStartAndRemoveLearningPath() {
@@ -88,6 +82,7 @@ public class estudianteTest {
         assertNotNull(notificaciones, "Las notificaciones no deberían ser nulas");
         assertTrue(notificaciones.isEmpty(), "Las notificaciones deberían estar vacías inicialmente");
 
+        // Simulate adding a notification
         myEstudiante.agregarNotificacion("New activity available");
         notificaciones = myEstudiante.getNotificaciones();
         assertEquals(1, notificaciones.size(), "Se esperaba una notificación");

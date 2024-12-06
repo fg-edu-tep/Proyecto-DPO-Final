@@ -1,14 +1,15 @@
 package LPTH.gui;
 
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import LPTH.modelo.Sistema;
-import LPTH.persistencia.PeristirSistema;
 import LPTH.modelo.LearningPath;
 import LPTH.usuarios.Estudiante;
 
@@ -43,7 +44,7 @@ public class menu_profesor {
 	        System.out.println("2. Ver Learning Paths existentes");
 	        System.out.println("3. Ver mis Learning Paths");
 	        System.out.println("4. Consultar Learning Path de otro docente");
-	        System.out.println("5. Revisar tareas y exámenes enviados por estudiantes");
+	        System.out.println("5. Revisar exámenes enviados por estudiantes");
 	        System.out.println("6. Crear actividad");
 	        System.out.println("7. Modificar Actividad");
 	        System.out.println("8. Salir");
@@ -106,10 +107,7 @@ public class menu_profesor {
 	                System.out.println("Learning Path no encontrado.");
 	            }
 	        } else if (opcion.equals("8")) {
-	            salvarSistema(sistemaCentral);
-	            System.out.println("Sistema guardado, vemos.");
-	        	continuar = false;
-	            
+	            continuar = !continuar;
 	        } else {
 	            System.out.println("Opción inválida, por favor intente de nuevo.");
 	        }
@@ -134,14 +132,8 @@ public class menu_profesor {
         System.out.println("Ingrese la duración del Learning Path en horas: ");
         int duracion = scanner.nextInt();
 
-        LearningPath nuevoPath = sistemaCentral.crearLearningPath(
-            this.profesor,
-            titulo,
-            descripcion,
-            nivelDeDificultad,
-            duracion
-        );
-
+        LearningPath nuevoPath = sistemaCentral.crearLearningPath(this.profesor,titulo,descripcion, nivelDeDificultad,duracion);
+        
         if (nuevoPath != null) {
             System.out.println("Learning Path creado exitosamente!");
             System.out.println("Título: " + nuevoPath.getTitulo());
@@ -149,11 +141,11 @@ public class menu_profesor {
             System.out.println("Desearía agregar actividades ahora? (S/N)");
             String respuesta1 = scanner.next();
             if(respuesta1.equals("S")) {
-            	Actividad actividad= crearActividad(scanner,nuevoPath);//PENDIENTE IMPLEMENTAR PARTE DE PABLO
+            	Actividad actividad= crearActividad(scanner,nuevoPath);
             	nuevoPath.agregarActividad(actividad);
             	
 				}
-            
+            this.profesor.agregarLp(nuevoPath); //faltaba esto
             System.out.println("¿Desea volver al menú principal? (S/N)");
             String respuesta = scanner.next();
             if (respuesta.equals("S")) {
@@ -190,32 +182,38 @@ public class menu_profesor {
             opcionesprofesor(scanner);
         } else {
             System.out.println("Opción inválida");
+            opcionesprofesor(scanner);
         }
         //scanner.close();
     }
 
     public void verMisLps(Scanner scanner){    //lps del profe
         ////Scanner scanner = new Scanner(System.in);
-        ArrayList<LearningPath> paths = profesor.getLps();
+        ArrayList<LearningPath> paths = this.profesor.getLps();
         
         System.out.println("Learning Paths existentes:");
         System.out.println(paths);
+   
         if (paths.isEmpty()) {
             System.out.println("No hay Learning Paths disponibles.");
             //scanner.close();
             System.exit(5);
         }
-        
+
         System.out.println("¿Que desea hacer ahora");
         System.out.println("1. Editar Learning Path");
         System.out.println("2. Volver al menú principal");
+        System.out.println("3. Ver Actividad de un LearningPath");
         String respuesta = scanner.next();
         if (respuesta.equals("1")) {
             editarLearningPath(scanner);
         } else if (respuesta.equals("2")) {
             opcionesprofesor(scanner);
+        } else if (respuesta.equals("3")) {
+        	imprimirActividadesLp(scanner);
         } else {
             System.out.println("Opción inválida");
+            opcionesprofesor(scanner);
         }
         //scanner.close();
     }
@@ -380,10 +378,15 @@ public class menu_profesor {
     
     public Actividad crearActividad(Scanner scanner, LearningPath lp) {
         //Todos los strings deben ser en minuscula.
-
-        System.out.print("Ingrese la actividad deseada: ");
-        String actividadDeseada = scanner.nextLine();
-
+        
+        ////Scanner scanner = new Scanner(System.in);
+    	
+    	System.out.print("Selecciono crear actividad, ahora se le pediran los parametros" );
+    	
+    	System.out.print("\nIngrese el tipo de la actividad");
+    	System.out.print("\nOpciones: encuesta, examen, quiz, recursoeducativo, tarea: ");
+        String actividadDeseada= scanner.next();
+    	
         System.out.print("¿Es obligatoria la actividad? (true/false): ");
         boolean obligatoria = scanner.nextBoolean();
 
@@ -391,6 +394,7 @@ public class menu_profesor {
         System.out.print("Ingrese el nombre de la actividad: ");
         String nombre = scanner.nextLine();
 
+        
         System.out.print("Ingrese la fecha límite (dd-MM-yyyy): ");
         String fechaLimiteStr = scanner.nextLine();
         Instant instant = getDateFromString(fechaLimiteStr);
@@ -404,12 +408,12 @@ public class menu_profesor {
         double calificacion = scanner.nextDouble();
 
         System.out.print("Ingrese el rating (ejemplo: 4.5): ");
-        int rating = scanner.nextInt();
-
+        double rating = scanner.nextDouble();
+        
         System.out.print("¿Está completada la actividad? (true/false): ");
         boolean esCompletada = scanner.nextBoolean();
 
-        scanner.nextLine(); // Limpiar el buffer
+        scanner.nextLine(); 
         ArrayList<Resenia> resenias = new ArrayList<>();
         System.out.print("¿Desea crear reseña(s)? (si/no): ");
         String deseo = scanner.nextLine();
@@ -420,24 +424,21 @@ public class menu_profesor {
             scanner.nextLine(); // Limpiar el buffer
 
             for (int i = 0; i < deseosinonimo; i++) {
-                System.out.print("Cree la reseña: ");
+                System.out.print("Meta el texto: ");
                 String texto = scanner.nextLine();
                 Resenia resenia = new Resenia(texto, rating);
                 resenias.add(resenia);
             }
         }
 
-        System.out.print("Ingrese el nivel de dificultad: ");
+        System.out.print("Ingrese el nivel de dificultad (0-5): ");
         double nivelDificultad = scanner.nextDouble();
 
         System.out.print("¿Está empezada la actividad? (true/false): ");
         boolean estaEmpezado = scanner.nextBoolean();
-
-        scanner.nextLine(); // Limpiar el buffer
-        System.out.print("Ingrese el tipo de actividad: ");
-        String tipo = scanner.nextLine();
-
-        if (actividadDeseada.toLowerCase().equals("encuesta")) {
+        
+        
+        if(actividadDeseada.toLowerCase().equals("encuesta")) {
             System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
             int n = scanner.nextInt();
             scanner.nextLine();
@@ -450,205 +451,100 @@ public class menu_profesor {
                 PreguntaAbierta pregunta = new PreguntaAbierta(enunciado);
                 preguntas.add(pregunta);
             }
-            return lp.crearEncuesta(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo, preguntas);
-        } else if (actividadDeseada.toLowerCase().equals("examen")) {
-            System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
-            int n = scanner.nextInt();
-            scanner.nextLine();
-
-            ArrayList<PreguntaAbierta> preguntas = new ArrayList<>();
-
-            for (int i = 0; i < n; i++) {
-                System.out.print("Ingrese el enunciado de la pregunta " + (i + 1) + ": ");
-                String enunciado = scanner.nextLine();
-                PreguntaAbierta pregunta = new PreguntaAbierta(enunciado);
-                preguntas.add(pregunta);
-            }
-
-            return lp.crearExamen(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo, preguntas);
-        } else if (actividadDeseada.toLowerCase().equals("recursoeducativo")) {
-            System.out.print("Ingrese el contenido y su tipo: ");
-            String contenido = scanner.nextLine();
-            String tipoC = scanner.nextLine();
-
-            return lp.crearRecursoEd(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo, contenido, tipoC);
-        } else if (actividadDeseada.toLowerCase().equals("tarea")) {
-            return lp.crearTarea(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo);
-        } else {
-            System.out.println("Tipo de actividad no reconocido.");
-            return null;
+            return lp.crearEncuesta (obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, actividadDeseada, preguntas);
         }
-    }
-    
-    
+        else if (actividadDeseada.toLowerCase().equals("examen")){
+            
+            System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
+            int n = scanner.nextInt();
+            scanner.nextLine();
 
-//
-//    public Actividad crearActividad(Scanner scanner, LearningPath lp) {
-//        //Todos los strings deben ser en minuscula.
-//        
-//        ////Scanner scanner = new Scanner(System.in);
-//
-//        System.out.print("Ingrese la actividad deseada");
-//        String actividadDeseada= scanner.nextLine();
-//        
-//        System.out.print("¿Es obligatoria la actividad? (true/false): ");
-//        boolean obligatoria = scanner.nextBoolean();
-//
-//        scanner.nextLine(); 
-//        System.out.print("Ingrese el nombre de la actividad: ");
-//        String nombre = scanner.nextLine();
-//
-//        System.out.print("Ingrese la fecha límite (dd-MM-yyyy): ");
-//        String fechaLimiteStr = scanner.nextLine();
-//        Instant instant = getDateFromString(fechaLimiteStr);
-//        Date fechaLimite = (Date) Date.from(instant); //cast para q funcione
-//        
-//        System.out.print("Ingrese la descripción de la actividad: ");
-//        String descripcion = scanner.nextLine();
-//
-//        System.out.print("Ingrese la calificación: ");
-//        double calificacion = scanner.nextDouble();
-//
-//        System.out.print("Ingrese el rating (ejemplo: 4.5): ");
-//        int rating = scanner.nextInt();
-//
-//        System.out.print("¿Está completada la actividad? (true/false): ");
-//        boolean esCompletada = scanner.nextBoolean();
-//        
-//        //invocar constructor de reseña y pedir sus respectivos parametros, revisar logica
-//        ArrayList<Resenia> resenias= new ArrayList<Resenia>();
-//        System.out.print("¿Desea crear reseña(s)?");
-//        String deseo= scanner.nextLine();
-//        
-//        if(deseo.toLowerCase().equals("si")) {
-//            System.out.print("Ingrese la cantidad deseada: ");
-//            int deseosinonimo = scanner.nextInt();
-//            
-//            for(int i= 0; i<deseosinonimo; i++) {
-//            System.out.print("Cree la reseña");
-//            String texto = scanner.nextLine();
-//            Resenia resenia= new Resenia(texto, rating);
-//            resenias.add(resenia);
-//            }
-//        }
-//        
-//        System.out.print("Ingrese el nivel de dificultad: ");
-//        double nivelDificultad = scanner.nextDouble();
-//
-//        System.out.print("¿Está empezada la actividad? (true/false): ");
-//        boolean estaEmpezado = scanner.nextBoolean();
-//        
-//        System.out.println("Ingrese el tipo de actividad: ");
-//        String tipo = scanner.nextLine();
-//        
-//        if(actividadDeseada.toLowerCase().equals("encuesta")) {
-//            System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
-//            int n = scanner.nextInt();
-//            scanner.nextLine();
-//            
-//            ArrayList<PreguntaAbierta> preguntas= new ArrayList<PreguntaAbierta>();
-//            
-//            for(int i = 0; i<n; i++) {
-//                System.out.print("Ingrese el enunciado de la pregunta " + (i + 1) + ": ");
-//                String enunciado = scanner.nextLine();
-//                PreguntaAbierta pregunta = new PreguntaAbierta(enunciado);
-//                preguntas.add(pregunta);
-//            }
-//            return lp.crearEncuesta (obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo, preguntas);
-//        }
-//        else if (actividadDeseada.toLowerCase().equals("examen")){
-//            
-//            System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
-//            int n = scanner.nextInt();
-//            scanner.nextLine();
-//            
-//            ArrayList<PreguntaAbierta> preguntas= new ArrayList<PreguntaAbierta>();
-//            
-//            
-//            for(int i = 0; i<n; i++) {
-//                System.out.print("Ingrese el enunciado de la pregunta " + (i + 1) + ": ");
-//                String enunciado = scanner.nextLine();
-//                PreguntaAbierta pregunta = new PreguntaAbierta(enunciado);
-//                preguntas.add(pregunta);
-//            }
-//            
-//            return lp.crearExamen(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo, preguntas);
-//            
-//        }
-//        /*
-//        else if (actividadDeseada.toLowerCase().equals("quiz")){
-//        	System.out.print("Que tipo de preguntas desea usar (PreguntaToF/PreguntaCerrada)");
-//        	String tipopregunta= scanner.nextLine();
-//        	
-//        	if(tipopregunta.toLowerCase().equals("PreguntaCerrada")) {      	
-//	        	System.out.print("Se crearan 4 preguntas de 4 opciones ");
-//	            ArrayList<PreguntaCerrada> preguntas = new ArrayList<>();
-//	            
-//	            for (int i = 0; i < 4; i++) {
-//	                System.out.print("Ingrese el enunciado: ");
-//	                String enunciado = scanner.nextLine();
-//	
-//	                ArrayList<String> opciones = new ArrayList<>();   
-//	                for (int j = 1; j <= 4; j++) {
-//	                    System.out.print("Ingrese la opción " + j + ": ");
-//	                    String opcion= scanner.nextLine();
-//	                    opciones.add(opcion);
-//	                }
-//	
-//	                System.out.print("Ingrese la opcion correcta (1-4): ");
-//	                int opcionIndex = scanner.nextInt();
-//	                String opcionCorrecta = opciones.get(opcionIndex +1);
-//	
-//	                PreguntaCerrada pregunta = new PreguntaCerrada(enunciado, opciones, opcionCorrecta);
-//	                preguntas.add(pregunta);
-//	
-//	                System.out.println("Pregunta creada exitosamente.\n");
-//	            }
-//	            
-//	            
-//	            for(int i= 0; i<4; i++) {
-//	                System.out.print("Ingrese el enunciado: ");
-//	                String enunciado= scanner.nextLine();
-//	                
-//	                System.out.print("Ahora ingrese las 4 opciones");
-//	                
-//	                
-//	            }
-//	            return lp.crearQuiz(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado,tipo, preguntas);
-//	            // de ultimas porque quiz suena como queers y esos son mks.
-//        	}
-//        	
-//        	else if (tipopregunta.toLowerCase().equals("PreguntaToF")) {      	
-//        		System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
-//                int n = scanner.nextInt();
-//                scanner.nextLine();
-//                
-//                ArrayList<PreguntaToF> preguntasT= new ArrayList<PreguntaToF>();
-//                
-//                for(int i = 0; i<n; i++) {
-//                    System.out.print("Ingrese el enunciado de la pregunta " + (i + 1) + ": ");
-//                    String enunciado = scanner.nextLine();
-//                    System.out.print("Ingrese si es(true/false)");
-//                    boolean respuestaC= scanner.nextBoolean();
-//                    PreguntaToF preguntaT = new PreguntaToF(enunciado, respuestaC);
-//                    preguntasT.add(preguntaT);
-//                	}
-//                return lp.crearQuiz(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado,tipo, preguntasT);
-//	            }
-//        }
-//        */
-//        else if (actividadDeseada.toLowerCase().equals("recursoeducativo")){
-//            System.out.print("Ingrese el contenido y su tipo: ");
-//            String contenido= scanner.nextLine();
-//            String tipoC= scanner.nextLine();
-//            
-//            return lp.crearRecursoEd(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo,  contenido, tipoC);
-//        }
-//        
-//        else if (actividadDeseada.toLowerCase().equals("tarea")){
-//            return lp.crearTarea(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, tipo);
-//        } //scanner.close();
-//    }
+            ArrayList<PreguntaAbierta> preguntas = new ArrayList<>();
+
+            for (int i = 0; i < n; i++) {
+                System.out.print("Ingrese el enunciado de la pregunta " + (i + 1) + ": ");
+                String enunciado = scanner.nextLine();
+                PreguntaAbierta pregunta = new PreguntaAbierta(enunciado);
+                preguntas.add(pregunta);
+            }
+            
+            return lp.crearExamen(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, actividadDeseada, preguntas);
+            
+        }
+        /* no funciona quiz
+        else if (actividadDeseada.toLowerCase().equals("quiz")){
+        	System.out.print("Que tipo de preguntas desea usar (PreguntaToF/PreguntaCerrada)");
+        	String tipopregunta= scanner.nextLine();
+        	
+        	if(tipopregunta.toLowerCase().equals("PreguntaCerrada")) {      	
+	        	System.out.print("Se crearan 4 preguntas de 4 opciones ");
+	            ArrayList<PreguntaCerrada> preguntas = new ArrayList<>();
+	            
+	            for (int i = 0; i < 4; i++) {
+	                System.out.print("Ingrese el enunciado: ");
+	                String enunciado = scanner.nextLine();
+	
+	                ArrayList<String> opciones = new ArrayList<>();   
+	                for (int j = 1; j <= 4; j++) {
+	                    System.out.print("Ingrese la opción " + j + ": ");
+	                    String opcion= scanner.nextLine();
+	                    opciones.add(opcion);
+	                }
+	
+	                System.out.print("Ingrese la opcion correcta (1-4): ");
+	                int opcionIndex = scanner.nextInt();
+	                String opcionCorrecta = opciones.get(opcionIndex +1);
+	
+	                PreguntaCerrada pregunta = new PreguntaCerrada(enunciado, opciones, opcionCorrecta);
+	                preguntas.add(pregunta);
+	
+	                System.out.println("Pregunta creada exitosamente.\n");
+	            }
+	            
+	            
+	            for(int i= 0; i<4; i++) {
+	                System.out.print("Ingrese el enunciado: ");
+	                String enunciado= scanner.nextLine();
+	                
+	                System.out.print("Ahora ingrese las 4 opciones");
+	                
+	                
+	            }
+	            return lp.crearQuiz(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado,tipo, preguntas);
+	            // de ultimas porque quiz suena como queers y esos son mks.
+        	}
+        	
+        	else if (tipopregunta.toLowerCase().equals("PreguntaToF")) {      	
+        		System.out.print("Ingrese la cantidad de preguntas que desea incluir: ");
+                int n = scanner.nextInt();
+                scanner.nextLine();
+                
+                ArrayList<PreguntaToF> preguntasT= new ArrayList<PreguntaToF>();
+                
+                for(int i = 0; i<n; i++) {
+                    System.out.print("Ingrese el enunciado de la pregunta " + (i + 1) + ": ");
+                    String enunciado = scanner.nextLine();
+                    System.out.print("Ingrese si es(true/false)");
+                    boolean respuestaC= scanner.nextBoolean();
+                    PreguntaToF preguntaT = new PreguntaToF(enunciado, respuestaC);
+                    preguntasT.add(preguntaT);
+                	}
+                return lp.crearQuiz(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado,tipo, preguntasT);
+	            }
+        }
+        */
+        else if (actividadDeseada.toLowerCase().equals("recursoeducativo")){
+            System.out.print("Ingrese el contenido y su tipo: ");
+            String contenido= scanner.nextLine();
+            String tipoC= scanner.nextLine();
+            
+            return lp.crearRecursoEd(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, actividadDeseada,  contenido, tipoC);
+        }
+        
+        else if (actividadDeseada.toLowerCase().equals("tarea")){
+            return lp.crearTarea(obligatoria, nombre, fechaLimite, descripcion, calificacion, rating, esCompletada, resenias, nivelDificultad, estaEmpezado, actividadDeseada);
+        } return null; //scanner.close();
+    }
 
 
     //Metodos de busqueda
@@ -709,8 +605,9 @@ public class menu_profesor {
                 System.out.print("Ingrese la fecha límite (dd-MM-yyyy): ");
                 String fechaLimiteStr = scanner.nextLine();
                 Instant instant = getDateFromString(fechaLimiteStr);
-                Date fechaLimite = (Date) Date.from(instant);
-                actividad.setFechaLimite(fechaLimite);
+                java.util.Date utilDate = Date.from(instant);
+                java.sql.Date fechaLimite = new java.sql.Date(utilDate.getTime());
+                actividad.setFechaLimite(fechaLimite);		//revisar por si acaso
                 
             } else if (opcion == 4) {
                 System.out.print("Ingrese la nueva calificación: ");
@@ -737,14 +634,9 @@ public class menu_profesor {
                 String obligatoria= scanner.nextLine();
                 if(obligatoria.equals("true")){
                 	actividad.marcarObligatoria();
-                }
+                } 
                 
             } else if (opcion == 9) {
-                System.out.print("Ingrese el nuevo tipo: ");
-                String tipo = scanner.nextLine();
-                actividad.setTipo(tipo);    
-                
-            } else if (opcion == 10) {
                 continuar = false;
                 System.out.println("Saliendo de la modificación.");
 
@@ -763,44 +655,38 @@ public class menu_profesor {
     }
 
 
-    public static Instant getDateFromString(String string)
-    {
-        Instant timestamp = null;
 
-        timestamp = Instant.parse(string);
 
-        return timestamp;
+    public static Instant getDateFromString(String string) {
+        // Definir el formato personalizado
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        // Parsear la cadena a LocalDate
+        LocalDate localDate = LocalDate.parse(string, formatter);
+        // Convertir LocalDate a Instant
+        return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
     }
- // Temas de persistencia
-    
-    public void salvarSistema(Sistema sistemaCentral) {
-    	PeristirSistema fileMngr = new PeristirSistema(); 
-    	try {
-			fileMngr.salvarSistema(sistemaCentral);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
-    
-    
-    public Sistema cargarSistema() throws NullPointerException {
-    	PeristirSistema fileMngr = new PeristirSistema();
-    	Sistema sistemaCentral = null;
+
+    private void imprimirActividadesLp(Scanner scanner) {
+		//Cagada
 		try {
-			sistemaCentral = fileMngr.cargarSistema();
+			System.out.println("Ingrese el nombre del learningpath: ");
+			String nombre= scanner.nextLine();
+			ArrayList<LearningPath> lps = this.profesor.getLps();
+			LearningPath lp = seleccionarLearningPathPorNombre(nombre, lps);
+
+			for (Actividad activity : lp.getActividades()) {
+				System.out.println(activity.getNombre());
+				}
+			
+
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e); 
+			}
+		
+		finally {
+			opcionesprofesor(scanner); 
 		}
-		if (sistemaCentral.equals(null)) {
-			throw new NullPointerException();
-		}
-    	return sistemaCentral;
-    }
-
-
+	}
+    
 }
-
-
-
 

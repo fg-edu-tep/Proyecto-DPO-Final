@@ -19,7 +19,7 @@ import LPTH.usuarios.Estudiante;
 import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Usuario;
 import LPTH.modelo.Sistema.*;
-import LPTH.persistencia.PeristirSistema;
+import LPTH.persistencia.PersistirSistema;
 
 
 public class Console {
@@ -63,6 +63,7 @@ public class Console {
 	                return elUsuario; 
 	            }
 	        } catch (Exception e) {
+	        	System.out.print(e);
 	            System.out.println("No se ha podido autenticar. ¿Desea intentar de nuevo? | S -> Sí | N -> No");
 	            String retry = scanner.next();
 	            if (retry.equalsIgnoreCase("N")) {
@@ -104,6 +105,7 @@ public class Console {
 			System.out.println(nuevoProfesor.getMateria());
 			System.out.println("Con Identificador:");
 			System.out.println(nuevoProfesor.getIdUsuario());
+			System.out.println("Desea ingresar a su cuenta? | S -> Sí | N -> No");			
 			String  ingresoUsuario2 = scanner.next();
 			if (ingresoUsuario2.equals("S")) {
 				IngresoUsuario(scanner);
@@ -112,6 +114,7 @@ public class Console {
 		}
 	}
 
+	/* DEPRECTAED, USE NEW UserFACTORY
 	
 	private static Estudiante crearUsuarioEstudiante(Scanner scanner ) {
 		String tipo = "estudiante";
@@ -164,17 +167,11 @@ public class Console {
 		return elUsuario;
 	}
 
-
+	*/
 	
 	public static void main (String[] args) {
 		Scanner scannerUnico = new Scanner(System.in);
 		System.out.println("Bienvenido");
-		System.out.println("¿Cargar sistema? | S -> Sí | N -> No");
-		String  load = scannerUnico.nextLine();
-		if (load.equals("S")) {
-			sistemaCentral = cargarSistema();
-			System.out.println("Se cargó exitosamente");
-		}
 		System.out.println("¿Tiene cuenta? | S -> Sí | N -> No");
 		String  tiene_cuenta = scannerUnico.nextLine();
 		if(tiene_cuenta.equals("S")){
@@ -199,49 +196,5 @@ public class Console {
 				System.exit(0);
             }
 		}
-		}
-
-	
-	
-   // Persistencia:
-    
-
-    public void salvarSistema(Sistema sistemaCentral) {
-    	PeristirSistema fileMngr = new PeristirSistema(); 
-    	try {
-			fileMngr.salvarSistema(sistemaCentral);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
-
-    public static Sistema cargarSistema() throws NullPointerException {
-    	PeristirSistema fileMngr = new PeristirSistema();
-    	Sistema sistemaCentral = null;
-		try {
-			sistemaCentral = fileMngr.cargarSistema();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (sistemaCentral.equals(null)) {
-			throw new NullPointerException();
-		}
-    	return sistemaCentral;
-    }
-
-	
-    /*
-	Crear l.p
-	un lp necesita minimo 1 actividad,
-	
-	crearLp{
 	}
-	
-	crearActividad(lp){} para asignarle las actividaades a ese lp.
-	//ciclo brutus, obtiene
-	necesitar tener forma de pillar lp (id)
-	listaActividades.add(actividad)
-	*/
-	
 }
