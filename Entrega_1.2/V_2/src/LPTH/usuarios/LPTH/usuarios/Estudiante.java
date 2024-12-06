@@ -18,6 +18,7 @@ public class Estudiante extends Usuario{
     private Progreso progreso;
     private List<String> notificaciones;
     private String nombreLPActual = "None";
+    private int idNuevoLP = 000;
     private static final String tipo = "Estudiante";
     private Sistema sistemaCentral = null;
 
@@ -44,11 +45,11 @@ public class Estudiante extends Usuario{
     public LearningPath peekLearningPath() throws ExceptionEstudianteSinLp {
     	/*Revisar el learning path acual (Retorna un learning Path)*/
     	LearningPath myLP = null;
-    	if (nombreLPActual.equals("None")){
+    	if (idNuevoLP == 000){
     		throw new ExceptionEstudianteSinLp();
     	}
     	else {
-        myLP = sistemaCentral.getLearningPath(nombreLPActual);
+        myLP = sistemaCentral.getLearningPath(idNuevoLP);
     	}
         return myLP;
     }
@@ -65,6 +66,7 @@ public class Estudiante extends Usuario{
     public void startLearningPath(LearningPath selectedLp) {
     	/*Agrega el LP seleccionado y lo agrega a progreso*/
     	nombreLPActual = selectedLp.getTitulo();
+    	idNuevoLP = selectedLp.getID(); // TODO Arregrar toda la lógica de acceso para que se haga con el DI
     	Instant now = Instant.now();
     	Date actual = Date.from(now);
     	progreso.addStartDate(actual, selectedLp);
@@ -85,9 +87,15 @@ public class Estudiante extends Usuario{
     
     public void removeLearningPath() {
     	/*Elimina el LP y lo quita de progreso*/
-    	LearningPath mylearningPath = sistemaCentral.getLearningPath(nombreLPActual);
-    	progreso.removeStartDate(mylearningPath);
-    	nombreLPActual = "None";
+    	LearningPath mylearningPath;
+		try {
+			mylearningPath = peekLearningPath();
+	    	progreso.removeStartDate(mylearningPath);
+	    	nombreLPActual = "None";
+		} catch (ExceptionEstudianteSinLp e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     public Progreso getProgreso() {

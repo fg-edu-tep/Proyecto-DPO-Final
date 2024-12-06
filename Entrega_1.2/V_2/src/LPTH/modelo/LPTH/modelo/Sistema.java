@@ -22,11 +22,11 @@ import LPTH.usuarios.Usuario;
 import LPTH.persistencia.*;
 
 public class Sistema {
-    private Map<String, LearningPath> learningPaths;
+    private Map<Integer, LearningPath> learningPaths;
     private Random rand = new Random();
 
     public Sistema() {
-        this.learningPaths = new HashMap<String, LearningPath>();
+        this.learningPaths = new HashMap<Integer, LearningPath>(); 
     }
 
     // Métodos de conexión:
@@ -45,7 +45,7 @@ public class Sistema {
         LearningPath originates = new LearningPath(profesorCreador, titulo, id, descripcion, objetivos,
                 nivelDeDificultad, duracion, rating, fechaDeCreacion, fechaDeModificacion,
                 version, tasaDeExitoFracaso, actividades);
-        this.learningPaths.put(titulo, originates);
+        this.learningPaths.put(id, originates);
         return originates;
     }
 
@@ -57,8 +57,8 @@ public class Sistema {
         return new ArrayList<>(learningPaths.values()); // Retornar los valores en una lista
     }
 
-    public LearningPath getLearningPath(String name) {
-        return learningPaths.get(name);
+    public LearningPath getLearningPath(Integer ID) {
+        return learningPaths.get(ID);
     }
 
     public LearningPath recomendarLearningPath() throws ExceptionNoPersistencia {
