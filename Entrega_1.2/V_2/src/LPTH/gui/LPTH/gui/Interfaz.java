@@ -1,5 +1,3 @@
-package LPTH.gui;
-
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
@@ -9,104 +7,215 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
 public class Interfaz {
+
+    public static void main(String[] args) {
+        iniciarServidor();
+    }
+
     public static void iniciarServidor() {
         try {
-            // Create the server on port 8000
             HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
-            // Define the "/" endpoint
+            // Panel de inicio de sesión
             server.createContext("/", exchange -> {
-                String html = """
-                    <html>
-                    <head>
-                        <title>Mi Proyecto</title>
-                        <style>
-                            body {
-                                font-family: Arial, sans-serif;
-                                margin: 0;
-                                padding: 0;
-                                background-color: #f4f4f9;
-                                color: #333;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                height: 100vh;
-                            }
-                            .container {
-                                text-align: center;
-                                background: #fff;
-                                padding: 20px;
-                                border-radius: 8px;
-                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                            }
-                            h1 {
-                                color: #4CAF50;
-                            }
-                            form {
-                                margin-top: 20px;
-                            }
-                            label {
-                                font-weight: bold;
-                                display: block;
-                                margin-bottom: 8px;
-                            }
-                            input {
-                                padding: 10px;
-                                width: 80%;
-                                max-width: 300px;
-                                margin-bottom: 20px;
-                                border: 1px solid #ccc;
-                                border-radius: 4px;
-                            }
-                            button {
-                                padding: 10px 20px;
-                                background-color: #4CAF50;
-                                color: white;
-                                border: none;
-                                border-radius: 4px;
-                                cursor: pointer;
-                            }
-                            button:hover {
-                                background-color: #45a049;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <h1>¡Bienvenido a mi Proyecto Java!</h1>
-                            <form action="/procesar" method="post">
-                                <label for="nombre">Nombre:</label>
-                                <input type="text" id="nombre" name="nombre">
-                                <button type="submit">Enviar</button>
-                            </form>
-                        </div>
-                    </body>
-                    </html>
-                    """;
-                exchange.sendResponseHeaders(200, html.getBytes().length);
-                try (OutputStream os = exchange.getResponseBody()) {
-                    os.write(html.getBytes());
+                String html = generarInicioSesion();
+                enviarRespuesta(exchange, html);
+            });
+
+            // Pantalla de registro de usuario
+            server.createContext("/register", exchange -> {
+                String html = generarRegistroUsuario();
+                enviarRespuesta(exchange, html);
+            });
+
+            // Pantalla de creación de estudiante
+            server.createContext("/register/student", exchange -> {
+                String html = generarCrearEstudiante();
+                enviarRespuesta(exchange, html);
+            });
+
+            // Pantalla de creación de profesor
+            server.createContext("/register/teacher", exchange -> {
+                String html = generarCrearProfesor();
+                enviarRespuesta(exchange, html);
+            });
+
+            // Menú del profesor
+            server.createContext("/menu/teacher", exchange -> {
+                String html = generarMenuProfesor();
+                enviarRespuesta(exchange, html);
+            });
+
+            // Pantalla para crear "Learning Path"
+            server.createContext("/menu/teacher/learning-path", exchange -> {
+                String html = generarCrearLearningPath();
+                enviarRespuesta(exchange, html);
+            });
+
+            // Procesar datos de formularios
+            server.createContext("/process", exchange -> {
+                if ("POST".equals(exchange.getRequestMethod())) {
+                    // Aquí procesaremos los datos del formulario
+                    String response = "¡Datos recibidos y procesados!";
+                    enviarRespuesta(exchange, response);
                 }
             });
 
-            // Define the "/procesar" endpoint
-            server.createContext("/procesar", exchange -> {
-                if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
-                    String response = "¡Datos recibidos!";
-                    exchange.sendResponseHeaders(200, response.getBytes().length);
-                    try (OutputStream os = exchange.getResponseBody()) {
-                        os.write(response.getBytes());
-                    }
-                } else {
-                    exchange.sendResponseHeaders(405, -1); // Method Not Allowed
-                }
-            });
-
-            // Start the server
             server.start();
             System.out.println("Servidor iniciado en http://localhost:8000");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void enviarRespuesta(HttpExchange exchange, String response) throws IOException {
+        exchange.sendResponseHeaders(200, response.getBytes().length);
+        OutputStream os = exchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    // Generar HTML para cada pantalla
+    private static String generarInicioSesion() {
+        return """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Iniciar Sesión</title>
+            </head>
+            <body>
+                <h1>Iniciar Sesión</h1>
+                <form action="/process" method="post">
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required><br>
+                    <label for="password">Contraseña:</label><br>
+                    <input type="password" id="password" name="password" required><br>
+                    <button type="submit">Iniciar sesión</button>
+                </form>
+                <a href="/register">Registrarse</a>
+            </body>
+            </html>
+        """;
+    }
+
+    private static String generarRegistroUsuario() {
+        return """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Registro</title>
+            </head>
+            <body>
+                <h1>Crear Usuario</h1>
+                <a href="/register/student"><button>Cuenta Estudiante</button></a>
+                <a href="/register/teacher"><button>Cuenta Profesor</button></a>
+                <a href="/">Volver</a>
+            </body>
+            </html>
+        """;
+    }
+
+    private static String generarCrearEstudiante() {
+        return """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Crear Estudiante</title>
+            </head>
+            <body>
+                <h1>Crear Estudiante</h1>
+                <form action="/process" method="post">
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required><br>
+                    <label for="password">Contraseña:</label><br>
+                    <input type="password" id="password" name="password" required><br>
+                    <label for="name">Nombre:</label><br>
+                    <input type="text" id="name" name="name" required><br>
+                    <button type="submit">Crear Cuenta</button>
+                </form>
+                <a href="/register">Volver</a>
+            </body>
+            </html>
+        """;
+    }
+
+    private static String generarCrearProfesor() {
+        return """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Crear Profesor</title>
+            </head>
+            <body>
+                <h1>Crear Profesor</h1>
+                <form action="/process" method="post">
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required><br>
+                    <label for="password">Contraseña:</label><br>
+                    <input type="password" id="password" name="password" required><br>
+                    <label for="name">Nombre:</label><br>
+                    <input type="text" id="name" name="name" required><br>
+                    <label for="subject">Materia:</label><br>
+                    <input type="text" id="subject" name="subject" required><br>
+                    <button type="submit">Crear Cuenta</button>
+                </form>
+                <a href="/register">Volver</a>
+            </body>
+            </html>
+        """;
+    }
+
+    private static String generarMenuProfesor() {
+        return """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Menú Profesor</title>
+            </head>
+            <body>
+                <h1>Menú Profesor</h1>
+                <a href="/menu/teacher/learning-path"><button>Crear un Learning Path</button></a>
+                <a href="/"><button>Salir</button></a>
+            </body>
+            </html>
+        """;
+    }
+
+    private static String generarCrearLearningPath() {
+        return """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Crear Learning Path</title>
+            </head>
+            <body>
+                <h1>Crear Learning Path</h1>
+                <form action="/process" method="post">
+                    <label for="title">Título:</label><br>
+                    <input type="text" id="title" name="title" required><br>
+                    <label for="difficulty">Nivel de Dificultad:</label><br>
+                    <input type="text" id="difficulty" name="difficulty" required><br>
+                    <label for="duration">Duración (horas):</label><br>
+                    <input type="text" id="duration" name="duration" required><br>
+                    <label for="description">Descripción:</label><br>
+                    <textarea id="description" name="description" required></textarea><br>
+                    <button type="submit">Guardar</button>
+                </form>
+                <a href="/menu/teacher"><button>Volver</button></a>
+            </body>
+            </html>
+        """;
     }
 }
