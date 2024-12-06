@@ -10,6 +10,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+
 import LPTH.exceptions.ExceptionNoPersistencia;
 import LPTH.modelo.UserFactory;
 import LPTH.usuarios.Usuario;
@@ -117,8 +118,12 @@ public class Interfaz {
                         // Autenticar usuario con UserFactory
                         Usuario usuario = userFactory.autenticarUsuario(email, password);
                         if (usuario != null) {
-                            String response = "Bienvenido, " + usuario.getNombre() + " (" + usuario.getEmail() + ")";
-                            enviarRespuesta(exchange, response);
+                            // Redirigir al menú correspondiente según el tipo de usuario
+                            if (usuario.getTipo().equalsIgnoreCase("estudiante")) {
+                                redirigir(exchange, "/menu/student");
+                            } else if (usuario.getTipo().equalsIgnoreCase("profesor")) {
+                                redirigir(exchange, "/menu/teacher");
+                            }
                         } else {
                             enviarRespuesta(exchange, "Credenciales incorrectas. <a href=\"/\">Intentar nuevamente</a>");
                         }
@@ -126,6 +131,18 @@ public class Interfaz {
                         enviarRespuesta(exchange, "Usuario no encontrado. <a href=\"/\">Intentar nuevamente</a>");
                     }
                 }
+            });
+
+            // Menú de estudiante
+            server.createContext("/menu/student", exchange -> {
+                String html = generarMenuEstudiante();
+                enviarRespuesta(exchange, html);
+            });
+
+            // Menú de profesor
+            server.createContext("/menu/teacher", exchange -> {
+                String html = generarMenuProfesor();
+                enviarRespuesta(exchange, html);
             });
 
             server.start();
@@ -322,6 +339,42 @@ public class Interfaz {
                     </a>
                     <a href="/">Regresar al Inicio de Sesión</a>
                 </div>
+            </body>
+            </html>
+        """;
+    }
+
+    // HTML: Pantalla de menú de estudiante
+    private static String generarMenuEstudiante() {
+        return """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Menú Estudiante</title>
+            </head>
+            <body>
+                <h1>Bienvenido Estudiante</h1>
+                <p>Este es el menú de estudiantes.</p>
+            </body>
+            </html>
+        """;
+    }
+
+    // HTML: Pantalla de menú de profesor
+    private static String generarMenuProfesor() {
+        return """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Menú Profesor</title>
+            </head>
+            <body>
+                <h1>Bienvenido Profesor</h1>
+                <p>Este es el menú de profesores.</p>
             </body>
             </html>
         """;

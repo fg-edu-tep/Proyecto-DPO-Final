@@ -1,0 +1,18 @@
+[
+  {
+    "materia": "344",
+    "lps": [],
+    "sistemaCentral": {
+      "learningPaths": {}
+    },
+    "idUsuario": 1681793215,
+    "nombre": "345",
+    "email": "jojoj@ncs.edu",
+    "password": "123",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Profesor",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
+  }
+]
