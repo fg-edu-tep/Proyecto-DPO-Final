@@ -69,6 +69,12 @@ public class Sistema {
         int recommend = rand.nextInt(lp.size());
         return lp.get(recommend);
     }
+    
+    //Extra LP por id, lista de usuario tiene lp con Codigo Integer
+    public LearningPath getLP(Integer id) {
+    	LearningPath lp= learningPaths.get(id); 
+    	return lp;
+    }
 
     // Persistencia
 
