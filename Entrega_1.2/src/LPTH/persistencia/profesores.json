@@ -1,0 +1,18 @@
+[
+  {
+    "materia": "as",
+    "lps": [],
+    "sistemaCentral": {
+      "learningPaths": {}
+    },
+    "idUsuario": 1877338537,
+    "nombre": "as",
+    "email": "ask@gmail.com",
+    "password": "as",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Profesor",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
+  }
+]

@@ -62,6 +62,12 @@ public class Interfaz {
                         // Crear estudiante con UserFactory
                         Usuario estudiante = userFactory.crearUsuario("estudiante", name, email, password, "");
 
+                        // Guardar los estudiantes actualizados
+                        userFactory.saveUsuarios();
+
+                        // Confirmar el guardado
+                        System.out.println("Guardando estudiantes en el archivo JSON...");
+                        
                         // Convertir estudiante a JSON en el formato esperado
                         String estudianteJson = String.format("""
                             {
@@ -72,9 +78,6 @@ public class Interfaz {
                                 "fechaRegistro": "%s"
                             }
                             """, estudiante.getIdUsuario(), estudiante.getNombre(), estudiante.getEmail(), estudiante.getContrasenia(), estudiante.getFechaRegistro());
-
-                        // Persistir usuarios
-                        userFactory.saveUsuarios();
 
                         // Respuesta
                         String response = "Estudiante creado exitosamente: " + estudianteJson;

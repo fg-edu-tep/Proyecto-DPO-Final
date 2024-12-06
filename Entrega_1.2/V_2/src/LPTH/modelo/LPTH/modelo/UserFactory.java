@@ -1,5 +1,6 @@
 package LPTH.modelo;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -56,7 +57,7 @@ public class UserFactory {
         PersistirUsuarios fileMngr = new PersistirUsuarios();
         try {
         	System.out.println("Cargando usuarios...3");
-            this.profesores = fileMngr.cargarProfesores();
+            this.profesores = fileMngr.cargarProfesores();			//ambas tienen error
             this.estudiantes = fileMngr.cargarEstudiantes();
         	System.out.println("Cargando usuarios...4");
             for (Profesor profesor : profesores) {
@@ -73,13 +74,16 @@ public class UserFactory {
         return this;
     }
     
-    public void saveUsuarios() throws ExceptionNoPersistencia {
-        PersistirUsuarios fileMngr = new PersistirUsuarios(); 
+    public void saveUsuarios() {
         try {
-            fileMngr.salvarProfesores(profesores);
-            fileMngr.salvarEstudiantes(estudiantes);
+            PersistirUsuarios persistirUsuarios = new PersistirUsuarios();
+            persistirUsuarios.salvarProfesores(this.profesores); // Guarda los profesores en el archivo JSON
+            persistirUsuarios.salvarEstudiantes(this.estudiantes); // Guarda los estudiantes en el archivo JSON
+            
+            // Mensaje de confirmación
+            System.out.println("Usuarios guardados exitosamente en " + new File(PersistirUsuarios.estudiantesFilePath).getAbsolutePath());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error al guardar los usuarios: " + e.getMessage());
         }
     }
 
