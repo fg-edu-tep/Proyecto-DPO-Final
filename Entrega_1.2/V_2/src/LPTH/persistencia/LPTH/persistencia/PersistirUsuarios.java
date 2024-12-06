@@ -28,9 +28,11 @@ public class PersistirUsuarios {
     }
 
     public LinkedList<Profesor> cargarProfesores() throws IOException {
+    	System.out.println("Cargando profesores...");
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Instant.class, new InstantTypeAdapter())
                 .create();
+        System.out.println("Cargando profesores...2");
         try (FileReader reader = new FileReader(profesoresFilePath)) {
             Profesor[] profesoresArray = gson.fromJson(reader, Profesor[].class);
             LinkedList<Profesor> profesoresList = new LinkedList<>();
