@@ -1,6 +1,5 @@
 package LPTH.gui;
 
-
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -180,6 +179,7 @@ public class Interfaz {
         }
         return inputs;
     }
+
     // HTML: Pantalla de inicio de sesión
     private static String generarInicioSesion() {
         return """
@@ -214,6 +214,14 @@ public class Interfaz {
                         margin-bottom: 20px;
                     }
 
+                    input {
+                        width: calc(100% - 20px);
+                        padding: 10px;
+                        margin-bottom: 15px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                    }
+
                     button {
                         width: 100%;
                         padding: 10px;
@@ -232,10 +240,13 @@ public class Interfaz {
             </head>
             <body>
                 <div class="container">
-                    <h1>Bienvenido</h1>
-                    <a href="/register">
-                        <button>Registrarse</button>
-                    </a>
+                    <h1>Iniciar Sesión</h1>
+                    <form action="/process/login" method="post">
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="password" name="password" placeholder="Contraseña" required>
+                        <button type="submit">Iniciar Sesión</button>
+                    </form>
+                    <p>¿Es tu primera vez? <a href="/register">Regístrate</a></p>
                 </div>
             </body>
             </html>
