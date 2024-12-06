@@ -18,7 +18,7 @@ public class Estudiante extends Usuario{
     private Progreso progreso;
     private List<String> notificaciones;
     private String nombreLPActual = "None";
-    private int idNuevoLP = 000;
+    private int idNuevoLP = 000; //p
     private static final String tipo = "Estudiante";
     private Sistema sistemaCentral = null;
 

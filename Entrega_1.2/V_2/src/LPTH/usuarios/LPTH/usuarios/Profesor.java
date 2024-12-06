@@ -8,17 +8,15 @@ import java.util.ArrayList;
 public class Profesor extends Usuario{
     private String materia;
     private static final String tipo = "Profesor";
-    private ArrayList<LearningPath> lps = new ArrayList<LearningPath>();
+    private ArrayList<Integer> lps = new ArrayList<Integer>();
     private Sistema sistemaCentral = null;
+    
+    //Todos los metodos que requieran learningPath usan metodo de sistema.getLP
     
     public Profesor(int idUsuario, String nombre, String email, String contraseña, String fechaRegistro, String materia) {
     	super(idUsuario, nombre, email, contraseña, fechaRegistro, tipo);
         this.materia = materia;
     }
-
-	public String getTipo() {
-		return this.tipo;
-	}
 
 	public void setSistema(Sistema sistemaCentral) {
 		this.sistemaCentral = sistemaCentral;
@@ -28,15 +26,15 @@ public class Profesor extends Usuario{
     	return this.materia;
     }
     
-    public ArrayList<LearningPath> getLps(){
+    public ArrayList<Integer> getLps(){
         return this.lps;
     }
 
-    public void setLps(ArrayList<LearningPath> newlps){
+    public void setLps(ArrayList<Integer> newlps){
         this.lps= newlps;
     }
     
-    public void agregarLp(LearningPath lp) {
+    public void agregarLp(Integer lp) {
 	    this.lps.add(lp);
 	}
 
@@ -45,6 +43,7 @@ public class Profesor extends Usuario{
 		return myNewLp;
     }
 
+	
     public LearningPath editarlearningPath(LearningPath LearningPath, String nuevoNombre, String nuevaDescripcion) {	
     	LearningPath.editarTituloDesc(nuevoNombre, nuevaDescripcion);
     	return LearningPath;
