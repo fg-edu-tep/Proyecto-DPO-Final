@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="LPTH/actividades"/>
+	<classpathentry kind="src" path="LPTH/exceptions"/>
+	<classpathentry kind="src" path="LPTH/gui"/>
+	<classpathentry kind="src" path="LPTH/modelo"/>
+	<classpathentry kind="src" path="LPTH/persistencia"/>
+	<classpathentry kind="src" path="LPTH/preguntas"/>
+	<classpathentry kind="src" path="LPTH/tests"/>
+	<classpathentry kind="src" path="LPTH/usuarios"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
