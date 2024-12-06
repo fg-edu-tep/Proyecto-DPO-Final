@@ -66,10 +66,9 @@ public class Interfaz {
 
                         // Confirmar el guardado
                         System.out.println("Guardando estudiantes en el archivo JSON...");
-                        
-                        // Respuesta
-                        String response = "Estudiante creado exitosamente. <a href=\"/\">Iniciar Sesión</a>";
-                        enviarRespuesta(exchange, response);
+
+                        // Redirigir al inicio de sesión
+                        redirigir(exchange, "/");
                     } catch (Exception e) {
                         enviarRespuesta(exchange, "Error al crear estudiante: " + e.getMessage());
                     }
@@ -94,9 +93,11 @@ public class Interfaz {
                         // Guardar los profesores actualizados
                         userFactory.saveUsuarios();
 
-                        // Respuesta
-                        String response = "Profesor creado exitosamente. <a href=\"/\">Iniciar Sesión</a>";
-                        enviarRespuesta(exchange, response);
+                        // Confirmar el guardado
+                        System.out.println("Guardando profesores en el archivo JSON...");
+
+                        // Redirigir al inicio de sesión
+                        redirigir(exchange, "/");
                     } catch (Exception e) {
                         enviarRespuesta(exchange, "Error al crear profesor: " + e.getMessage());
                     }
@@ -140,6 +141,13 @@ public class Interfaz {
         OutputStream os = exchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+
+    // Método para redirigir al cliente a otra ruta
+    private static void redirigir(HttpExchange exchange, String ruta) throws IOException {
+        exchange.getResponseHeaders().add("Location", ruta);
+        exchange.sendResponseHeaders(302, -1); // Código 302 para redirección
+        exchange.close();
     }
 
     // Método auxiliar para procesar inputs de formularios
@@ -234,7 +242,7 @@ public class Interfaz {
                         <input type="password" name="password" placeholder="Contraseña" required>
                         <button type="submit">Iniciar Sesión</button>
                     </form>
-                    <p>¿Es tu primera vez? <a href="/register">Regístrate</a></p>
+                    <a href="/register">No tengo cuenta, registrarme</a>
                 </div>
             </body>
             </html>
