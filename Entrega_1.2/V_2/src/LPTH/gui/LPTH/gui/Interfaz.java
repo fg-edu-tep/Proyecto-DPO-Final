@@ -1,4 +1,5 @@
 package LPTH.gui;
+
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -24,11 +25,10 @@ public class Interfaz {
         try {
             // Inicializar UserFactory
             try {
-				userFactory = new UserFactory();
-			} catch (ExceptionNoPersistencia e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                userFactory = new UserFactory();
+            } catch (ExceptionNoPersistencia e) {
+                e.printStackTrace();
+            }
 
             // Iniciar servidor
             HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -36,6 +36,11 @@ public class Interfaz {
             // Rutas del servidor
             server.createContext("/", exchange -> {
                 String html = generarInicioSesion();
+                enviarRespuesta(exchange, html);
+            });
+
+            server.createContext("/register", exchange -> {
+                String html = generarRegistroUsuario();
                 enviarRespuesta(exchange, html);
             });
 
@@ -61,7 +66,7 @@ public class Interfaz {
                     String fechaRegistro = Date.from(Instant.now()).toString();
 
                     // Crear estudiante con UserFactory
-                    Usuario estudiante = userFactory.crearUsuario("estudiante", name, email, password, "");
+                    Usuario estudiante = userFactory.crearUsuario("estudiante", name, email, password, fechaRegistro, null);
 
                     // Respuesta
                     String response = "Estudiante creado exitosamente: " + estudiante.toString();
@@ -81,9 +86,8 @@ public class Interfaz {
                     String subject = inputs.get("subject");
                     String fechaRegistro = Date.from(Instant.now()).toString();
 
-
                     // Crear profesor con UserFactory
-                    Usuario profesor = userFactory.crearUsuario("profesor", name, email, password, subject);
+                    Usuario profesor = userFactory.crearUsuario("profesor", name, email, password, fechaRegistro, subject);
 
                     // Respuesta
                     String response = "Profesor creado exitosamente: " + profesor.toString();
@@ -155,20 +159,6 @@ public class Interfaz {
                         margin-bottom: 20px;
                     }
 
-                    label {
-                        display: block;
-                        text-align: left;
-                        margin-bottom: 5px;
-                    }
-
-                    input {
-                        width: 100%;
-                        padding: 10px;
-                        margin-bottom: 15px;
-                        border: 1px solid #ccc;
-                        border-radius: 4px;
-                    }
-
                     button {
                         width: 100%;
                         padding: 10px;
@@ -183,42 +173,21 @@ public class Interfaz {
                     button:hover {
                         background-color: #333;
                     }
-
-                    .register-link {
-                        margin-top: 10px;
-                        font-size: 14px;
-                    }
-
-                    .register-link a {
-                        color: #000;
-                        text-decoration: none;
-                        font-weight: bold;
-                    }
-
-                    .register-link a:hover {
-                        text-decoration: underline;
-                    }
                 </style>
             </head>
             <body>
                 <div class="container">
-                    <h1>Iniciar sesión</h1>
-                    <form action="/process" method="post">
-                        <label for="email">Email*</label>
-                        <input type="email" id="email" name="email" required>
-                        <label for="password">Contraseña*</label>
-                        <input type="password" id="password" name="password" required>
-                        <button type="submit">Iniciar sesión</button>
-                    </form>
-                    <div class="register-link">
-                        ¿Es tu primera vez? <a href="/register">Registrarse</a>
-                    </div>
+                    <h1>Bienvenido</h1>
+                    <a href="/register">
+                        <button>Registrarse</button>
+                    </a>
                 </div>
             </body>
             </html>
         """;
     }
-    
+
+    // HTML: Pantalla de registro de usuario
     private static String generarRegistroUsuario() {
         return """
             <!DOCTYPE html>
@@ -255,40 +224,35 @@ public class Interfaz {
                     button {
                         width: 100%;
                         padding: 10px;
-                        margin-bottom: 15px;
                         background-color: #000;
                         color: #fff;
                         border: none;
                         border-radius: 4px;
                         font-size: 16px;
                         cursor: pointer;
+                        margin-bottom: 10px;
                     }
 
                     button:hover {
                         background-color: #333;
                     }
-
-                    a {
-                        text-decoration: none;
-                        color: #fff;
-                    }
                 </style>
             </head>
             <body>
                 <div class="container">
-                    <h1>Crear Usuario</h1>
-                    <a href="/register/teacher">
-                        <button>Cuenta Profesor</button>
-                    </a>
+                    <h1>Seleccionar Tipo de Usuario</h1>
                     <a href="/register/student">
-                        <button>Cuenta Estudiante</button>
+                        <button>Registrar Estudiante</button>
+                    </a>
+                    <a href="/register/teacher">
+                        <button>Registrar Profesor</button>
                     </a>
                 </div>
             </body>
             </html>
         """;
     }
-    
+
     // HTML: Formulario para crear estudiante
     private static String generarCrearEstudiante() {
         return """
@@ -332,6 +296,7 @@ public class Interfaz {
                     }
 
                     button {
+                        width: 100%;
                         padding: 10px;
                         background-color: #000;
                         color: #fff;
@@ -349,11 +314,11 @@ public class Interfaz {
             <body>
                 <div class="container">
                     <h1>Crear Estudiante</h1>
-                    <form action="/process" method="post">
-                        <input type="email" id="email" name="email" placeholder="Ingrese su email" required>
-                        <input type="password" id="password" name="password" placeholder="Ingrese su Contraseña" required>
-                        <input type="text" id="name" name="name" placeholder="Ingrese su Nombre" required>
-                        <button type="submit">Crear Cuenta</button>
+                    <form action="/process/student" method="post">
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="password" name="password" placeholder="Contraseña" required>
+                        <input type="text" name="name" placeholder="Nombre" required>
+                        <button type="submit">Registrar Estudiante</button>
                     </form>
                 </div>
             </body>
@@ -404,6 +369,7 @@ public class Interfaz {
                     }
 
                     button {
+                        width: 100%;
                         padding: 10px;
                         background-color: #000;
                         color: #fff;
@@ -421,12 +387,12 @@ public class Interfaz {
             <body>
                 <div class="container">
                     <h1>Crear Profesor</h1>
-                    <form action="/process" method="post">
-                        <input type="email" id="email" name="email" placeholder="Ingrese su email" required>
-                        <input type="password" id="password" name="password" placeholder="Ingrese su Contraseña" required>
-                        <input type="text" id="name" name="name" placeholder="Ingrese su Nombre" required>
-                        <input type="text" id="subject" name="subject" placeholder="Ingrese su Materia" required>
-                        <button type="submit">Crear Cuenta</button>
+                    <form action="/process/teacher" method="post">
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="password" name="password" placeholder="Contraseña" required>
+                        <input type="text" name="name" placeholder="Nombre" required>
+                        <input type="text" name="subject" placeholder="Materia" required>
+                        <button type="submit">Registrar Profesor</button>
                     </form>
                 </div>
             </body>
