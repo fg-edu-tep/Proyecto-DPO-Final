@@ -61,7 +61,7 @@ public class Interfaz {
                     String fechaRegistro = Date.from(Instant.now()).toString();
 
                     // Crear estudiante con UserFactory
-                    Usuario estudiante = userFactory.crearUsuario("estudiante", name, email, password, fechaRegistro, null);
+                    Usuario estudiante = userFactory.crearUsuario("estudiante", name, email, password, "");
 
                     // Respuesta
                     String response = "Estudiante creado exitosamente: " + estudiante.toString();
@@ -81,8 +81,9 @@ public class Interfaz {
                     String subject = inputs.get("subject");
                     String fechaRegistro = Date.from(Instant.now()).toString();
 
+
                     // Crear profesor con UserFactory
-                    Usuario profesor = userFactory.crearUsuario("profesor", name, email, password, fechaRegistro, subject);
+                    Usuario profesor = userFactory.crearUsuario("profesor", name, email, password, subject);
 
                     // Respuesta
                     String response = "Profesor creado exitosamente: " + profesor.toString();
