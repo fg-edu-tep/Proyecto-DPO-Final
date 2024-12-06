@@ -120,9 +120,11 @@ public class Interfaz {
                         if (usuario != null) {
                             // Redirigir al menú correspondiente según el tipo de usuario
                             if (usuario.getTipo().equalsIgnoreCase("estudiante")) {
-                                redirigir(exchange, "/menu/student");
+                                // Aquí se podría redirigir a un menú de estudiante si fuera necesario
+                                enviarRespuesta(exchange, "Bienvenido estudiante: " + usuario.getNombre());
                             } else if (usuario.getTipo().equalsIgnoreCase("profesor")) {
-                                redirigir(exchange, "/menu/teacher");
+                                // Redirigir al menú del profesor (se ejecutará en el servidor de MenuProfesor)
+                                redirigir(exchange, "http://localhost:8001/menu/teacher");
                             }
                         } else {
                             enviarRespuesta(exchange, "Credenciales incorrectas. <a href=\"/\">Intentar nuevamente</a>");
@@ -131,18 +133,6 @@ public class Interfaz {
                         enviarRespuesta(exchange, "Usuario no encontrado. <a href=\"/\">Intentar nuevamente</a>");
                     }
                 }
-            });
-
-            // Menú de estudiante
-            server.createContext("/menu/student", exchange -> {
-                String html = generarMenuEstudiante();
-                enviarRespuesta(exchange, html);
-            });
-
-            // Menú de profesor
-            server.createContext("/menu/teacher", exchange -> {
-                String html = generarMenuProfesor();
-                enviarRespuesta(exchange, html);
             });
 
             server.start();
@@ -182,7 +172,7 @@ public class Interfaz {
         return inputs;
     }
 
-    // HTML: Pantalla de inicio de sesión
+    // HTML: Pantalla de inicio de sesión (sin cambios)
     private static String generarInicioSesion() {
         return """
             <!DOCTYPE html>
@@ -265,6 +255,9 @@ public class Interfaz {
             </html>
         """;
     }
+
+
+
 
     // HTML: Pantalla de registro de usuario
     private static String generarRegistroUsuario() {

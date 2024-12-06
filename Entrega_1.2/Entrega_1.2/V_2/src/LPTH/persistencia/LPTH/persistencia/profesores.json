@@ -14,5 +14,37 @@
     "resenias": [],
     "LearningPaths": [],
     "loggedOn": true
+  },
+  {
+    "materia": "hola",
+    "lps": [],
+    "sistemaCentral": {
+      "learningPaths": {}
+    },
+    "idUsuario": 1249027614,
+    "nombre": "hola",
+    "email": "pasartadu@gmail.com",
+    "password": "hola",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Profesor",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
+  },
+  {
+    "materia": "hola",
+    "lps": [],
+    "sistemaCentral": {
+      "learningPaths": {}
+    },
+    "idUsuario": 1015870825,
+    "nombre": "hola",
+    "email": "pasartadu1@gmail.com",
+    "password": "hola",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Profesor",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
   }
 ]
