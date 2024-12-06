@@ -1,6 +1,5 @@
 package LPTH.gui;
 
-
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -68,19 +67,8 @@ public class Interfaz {
                         // Confirmar el guardado
                         System.out.println("Guardando estudiantes en el archivo JSON...");
                         
-                        // Convertir estudiante a JSON en el formato esperado
-                        String estudianteJson = String.format("""
-                            {
-                                "idUsuario": %d,
-                                "nombre": "%s",
-                                "email": "%s",
-                                "contrasenia": "%s",
-                                "fechaRegistro": "%s"
-                            }
-                            """, estudiante.getIdUsuario(), estudiante.getNombre(), estudiante.getEmail(), estudiante.getContrasenia(), estudiante.getFechaRegistro());
-
                         // Respuesta
-                        String response = "Estudiante creado exitosamente: " + estudianteJson;
+                        String response = "Estudiante creado exitosamente. <a href=\"/\">Iniciar Sesión</a>";
                         enviarRespuesta(exchange, response);
                     } catch (Exception e) {
                         enviarRespuesta(exchange, "Error al crear estudiante: " + e.getMessage());
@@ -103,23 +91,11 @@ public class Interfaz {
                         // Crear profesor con UserFactory
                         Usuario profesor = userFactory.crearUsuario("profesor", name, email, password, subject);
 
-                        // Convertir profesor a JSON en el formato esperado
-                        String profesorJson = String.format("""
-                            {
-                                "idUsuario": %d,
-                                "nombre": "%s",
-                                "email": "%s",
-                                "contrasenia": "%s",
-                                "fechaRegistro": "%s",
-                                "materia": "%s"
-                            }
-                            """, profesor.getIdUsuario(), profesor.getNombre(), profesor.getEmail(), profesor.getContrasenia(), profesor.getFechaRegistro(), subject);
-
-                        // Persistir usuarios
+                        // Guardar los profesores actualizados
                         userFactory.saveUsuarios();
 
                         // Respuesta
-                        String response = "Profesor creado exitosamente: " + profesorJson;
+                        String response = "Profesor creado exitosamente. <a href=\"/\">Iniciar Sesión</a>";
                         enviarRespuesta(exchange, response);
                     } catch (Exception e) {
                         enviarRespuesta(exchange, "Error al crear profesor: " + e.getMessage());
@@ -140,13 +116,13 @@ public class Interfaz {
                         // Autenticar usuario con UserFactory
                         Usuario usuario = userFactory.autenticarUsuario(email, password);
                         if (usuario != null) {
-                            String response = "Bienvenido, " + usuario.toString();
+                            String response = "Bienvenido, " + usuario.getNombre() + " (" + usuario.getEmail() + ")";
                             enviarRespuesta(exchange, response);
                         } else {
-                            enviarRespuesta(exchange, "Credenciales incorrectas.");
+                            enviarRespuesta(exchange, "Credenciales incorrectas. <a href=\"/\">Intentar nuevamente</a>");
                         }
                     } catch (Exception e) {
-                        enviarRespuesta(exchange, "Usuario no encontrado.");
+                        enviarRespuesta(exchange, "Usuario no encontrado. <a href=\"/\">Intentar nuevamente</a>");
                     }
                 }
             });
@@ -180,6 +156,7 @@ public class Interfaz {
         }
         return inputs;
     }
+
     // HTML: Pantalla de inicio de sesión
     private static String generarInicioSesion() {
         return """
@@ -214,6 +191,14 @@ public class Interfaz {
                         margin-bottom: 20px;
                     }
 
+                    input {
+                        width: calc(100% - 20px);
+                        padding: 10px;
+                        margin-bottom: 15px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                    }
+
                     button {
                         width: 100%;
                         padding: 10px;
@@ -228,14 +213,28 @@ public class Interfaz {
                     button:hover {
                         background-color: #333;
                     }
+
+                    a {
+                        display: block;
+                        margin-top: 15px;
+                        color: #333;
+                        text-decoration: none;
+                    }
+
+                    a:hover {
+                        text-decoration: underline;
+                    }
                 </style>
             </head>
             <body>
                 <div class="container">
-                    <h1>Bienvenido</h1>
-                    <a href="/register">
-                        <button>Registrarse</button>
-                    </a>
+                    <h1>Iniciar Sesión</h1>
+                    <form action="/process/login" method="post">
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="password" name="password" placeholder="Contraseña" required>
+                        <button type="submit">Iniciar Sesión</button>
+                    </form>
+                    <a href="/register">No tengo cuenta, registrarme</a>
                 </div>
             </body>
             </html>
@@ -291,6 +290,17 @@ public class Interfaz {
                     button:hover {
                         background-color: #333;
                     }
+
+                    a {
+                        display: block;
+                        margin-top: 15px;
+                        color: #333;
+                        text-decoration: none;
+                    }
+
+                    a:hover {
+                        text-decoration: underline;
+                    }
                 </style>
             </head>
             <body>
@@ -302,6 +312,7 @@ public class Interfaz {
                     <a href="/register/teacher">
                         <button>Registrar Profesor</button>
                     </a>
+                    <a href="/">Regresar al Inicio de Sesión</a>
                 </div>
             </body>
             </html>
