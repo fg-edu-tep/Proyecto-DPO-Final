@@ -234,7 +234,7 @@ public class Interfaz {
                         <input type="password" name="password" placeholder="Contraseña" required>
                         <button type="submit">Iniciar Sesión</button>
                     </form>
-                    <a href="/register">No tengo cuenta, registrarme</a>
+                    <p>¿Es tu primera vez? <a href="/register">Regístrate</a></p>
                 </div>
             </body>
             </html>

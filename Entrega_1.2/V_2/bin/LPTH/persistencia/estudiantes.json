@@ -46,5 +46,29 @@
     "resenias": [],
     "LearningPaths": [],
     "loggedOn": true
+  },
+  {
+    "progreso": {
+      "inicioLearningPaths": {},
+      "finLearningPaths": {},
+      "tiempoDedicado": {},
+      "learningInProgress": false,
+      "successRate": 0.0
+    },
+    "notificaciones": [],
+    "nombreLPActual": "None",
+    "idNuevoLP": 0,
+    "sistemaCentral": {
+      "learningPaths": {}
+    },
+    "idUsuario": 1276040637,
+    "nombre": "123",
+    "email": "kilo@ha.co",
+    "password": "123",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Estudiante",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
   }
 ]
