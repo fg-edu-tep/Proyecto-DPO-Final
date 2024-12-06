@@ -1,5 +1,6 @@
 package LPTH.gui;
 
+
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -8,11 +9,8 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import LPTH.exceptions.ExceptionNoPersistencia;
 import LPTH.modelo.UserFactory;
 import LPTH.usuarios.Usuario;
@@ -24,11 +22,7 @@ public class Interfaz {
     public static void main(String[] args) {
         try {
             // Inicializar UserFactory
-            try {
-                userFactory = new UserFactory();
-            } catch (ExceptionNoPersistencia e) {
-                e.printStackTrace();
-            }
+            userFactory = new UserFactory().loadUsuarios(); // Cargar usuarios existentes
 
             // Iniciar servidor
             HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -63,14 +57,31 @@ public class Interfaz {
                     String email = inputs.get("email");
                     String password = inputs.get("password");
                     String name = inputs.get("name");
-                    String fechaRegistro = Date.from(Instant.now()).toString();
 
-                    // Crear estudiante con UserFactory
-                    Usuario estudiante = userFactory.crearUsuario("estudiante", name, email, password, fechaRegistro, null);
+                    try {
+                        // Crear estudiante con UserFactory
+                        Usuario estudiante = userFactory.crearUsuario("estudiante", name, email, password, "");
 
-                    // Respuesta
-                    String response = "Estudiante creado exitosamente: " + estudiante.toString();
-                    enviarRespuesta(exchange, response);
+                        // Convertir estudiante a JSON en el formato esperado
+                        String estudianteJson = String.format("""
+                            {
+                                "idUsuario": %d,
+                                "nombre": "%s",
+                                "email": "%s",
+                                "contrasenia": "%s",
+                                "fechaRegistro": "%s"
+                            }
+                            """, estudiante.getIdUsuario(), estudiante.getNombre(), estudiante.getEmail(), estudiante.getContrasenia(), estudiante.getFechaRegistro());
+
+                        // Persistir usuarios
+                        userFactory.saveUsuarios();
+
+                        // Respuesta
+                        String response = "Estudiante creado exitosamente: " + estudianteJson;
+                        enviarRespuesta(exchange, response);
+                    } catch (Exception e) {
+                        enviarRespuesta(exchange, "Error al crear estudiante: " + e.getMessage());
+                    }
                 }
             });
 
@@ -84,20 +95,62 @@ public class Interfaz {
                     String password = inputs.get("password");
                     String name = inputs.get("name");
                     String subject = inputs.get("subject");
-                    String fechaRegistro = Date.from(Instant.now()).toString();
 
-                    // Crear profesor con UserFactory
-                    Usuario profesor = userFactory.crearUsuario("profesor", name, email, password, fechaRegistro, subject);
+                    try {
+                        // Crear profesor con UserFactory
+                        Usuario profesor = userFactory.crearUsuario("profesor", name, email, password, subject);
 
-                    // Respuesta
-                    String response = "Profesor creado exitosamente: " + profesor.toString();
-                    enviarRespuesta(exchange, response);
+                        // Convertir profesor a JSON en el formato esperado
+                        String profesorJson = String.format("""
+                            {
+                                "idUsuario": %d,
+                                "nombre": "%s",
+                                "email": "%s",
+                                "contrasenia": "%s",
+                                "fechaRegistro": "%s",
+                                "materia": "%s"
+                            }
+                            """, profesor.getIdUsuario(), profesor.getNombre(), profesor.getEmail(), profesor.getContrasenia(), profesor.getFechaRegistro(), subject);
+
+                        // Persistir usuarios
+                        userFactory.saveUsuarios();
+
+                        // Respuesta
+                        String response = "Profesor creado exitosamente: " + profesorJson;
+                        enviarRespuesta(exchange, response);
+                    } catch (Exception e) {
+                        enviarRespuesta(exchange, "Error al crear profesor: " + e.getMessage());
+                    }
+                }
+            });
+
+            // Procesar inicio de sesión
+            server.createContext("/process/login", exchange -> {
+                if ("POST".equals(exchange.getRequestMethod())) {
+                    String requestBody = new String(exchange.getRequestBody().readAllBytes());
+                    Map<String, String> inputs = parseFormInputs(requestBody);
+
+                    String email = inputs.get("email");
+                    String password = inputs.get("password");
+
+                    try {
+                        // Autenticar usuario con UserFactory
+                        Usuario usuario = userFactory.autenticarUsuario(email, password);
+                        if (usuario != null) {
+                            String response = "Bienvenido, " + usuario.toString();
+                            enviarRespuesta(exchange, response);
+                        } else {
+                            enviarRespuesta(exchange, "Credenciales incorrectas.");
+                        }
+                    } catch (Exception e) {
+                        enviarRespuesta(exchange, "Usuario no encontrado.");
+                    }
                 }
             });
 
             server.start();
             System.out.println("Servidor iniciado en http://localhost:8000");
-        } catch (IOException e) {
+        } catch (IOException | ExceptionNoPersistencia e) {
             e.printStackTrace();
         }
     }
@@ -124,7 +177,6 @@ public class Interfaz {
         }
         return inputs;
     }
-
     // HTML: Pantalla de inicio de sesión
     private static String generarInicioSesion() {
         return """

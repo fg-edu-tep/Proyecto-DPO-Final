@@ -41,7 +41,8 @@ public class UserFactory {
         PersistirSistema fileMngr = new PersistirSistema();
         Sistema sistemaCentral;
         try {
-            sistemaCentral = fileMngr.cargarSistema();
+        	System.out.println("Cargando sistema...");
+           sistemaCentral = fileMngr.cargarSistema();
             if (sistemaCentral == null) {
                 return new Sistema(); 
             }
@@ -54,8 +55,10 @@ public class UserFactory {
     public UserFactory loadUsuarios() throws ExceptionNoPersistencia {
         PersistirUsuarios fileMngr = new PersistirUsuarios();
         try {
+        	System.out.println("Cargando usuarios...3");
             this.profesores = fileMngr.cargarProfesores();
             this.estudiantes = fileMngr.cargarEstudiantes();
+        	System.out.println("Cargando usuarios...4");
             for (Profesor profesor : profesores) {
                 dbUsuarios.put(profesor.getEmail(), profesor);
                 logIns.put(profesor.getEmail(), profesor.getContrasenia());
