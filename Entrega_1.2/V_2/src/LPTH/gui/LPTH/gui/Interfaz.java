@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -19,15 +18,12 @@ public class Interfaz {
 
     private static UserFactory userFactory; // Instancia de UserFactory para gestionar usuarios
 
-    public static void main(String[] args) {
+    public static void addContexts(HttpServer server) {
         try {
             // Inicializar UserFactory
             userFactory = new UserFactory().loadUsuarios(); // Cargar usuarios existentes
 
-            // Iniciar servidor
-            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-
-            // Rutas del servidor
+            // Rutas del servidor (contextos)
             server.createContext("/", exchange -> {
                 String html = generarInicioSesion();
                 enviarRespuesta(exchange, html);
@@ -65,9 +61,6 @@ public class Interfaz {
                         // Guardar los estudiantes actualizados
                         userFactory.saveUsuarios();
 
-                        // Confirmar el guardado
-                        System.out.println("Guardando estudiantes en el archivo JSON...");
-
                         // Redirigir al inicio de sesión
                         redirigir(exchange, "/");
                     } catch (Exception e) {
@@ -94,9 +87,6 @@ public class Interfaz {
                         // Guardar los profesores actualizados
                         userFactory.saveUsuarios();
 
-                        // Confirmar el guardado
-                        System.out.println("Guardando profesores en el archivo JSON...");
-
                         // Redirigir al inicio de sesión
                         redirigir(exchange, "/");
                     } catch (Exception e) {
@@ -120,11 +110,9 @@ public class Interfaz {
                         if (usuario != null) {
                             // Redirigir al menú correspondiente según el tipo de usuario
                             if (usuario.getTipo().equalsIgnoreCase("estudiante")) {
-                                // Aquí se podría redirigir a un menú de estudiante si fuera necesario
                                 enviarRespuesta(exchange, "Bienvenido estudiante: " + usuario.getNombre());
                             } else if (usuario.getTipo().equalsIgnoreCase("profesor")) {
-                                // Redirigir al menú del profesor (se ejecutará en el servidor de MenuProfesor)
-                                redirigir(exchange, "http://localhost:8001/menu/teacher");
+                                redirigir(exchange, "/menu/teacher");
                             }
                         } else {
                             enviarRespuesta(exchange, "Credenciales incorrectas. <a href=\"/\">Intentar nuevamente</a>");
@@ -135,12 +123,13 @@ public class Interfaz {
                 }
             });
 
-            server.start();
-            System.out.println("Servidor iniciado en http://localhost:8000");
-        } catch (IOException | ExceptionNoPersistencia e) {
+        } catch (ExceptionNoPersistencia | IOException e) {
             e.printStackTrace();
         }
     }
+
+    // Métodos auxiliares (enviarRespuesta, redirigir, parseFormInputs, generarInicioSesion, etc.)
+    // (Todos estos métodos permanecen igual que en la versión anterior)
 
     // Método para enviar respuesta al cliente
     private static void enviarRespuesta(HttpExchange exchange, String response) throws IOException {
@@ -172,8 +161,9 @@ public class Interfaz {
         return inputs;
     }
 
-    // HTML: Pantalla de inicio de sesión (sin cambios)
+    // HTML: Pantalla de inicio de sesión
     private static String generarInicioSesion() {
+        // (Mantiene el mismo código de HTML que en la versión anterior)
         return """
             <!DOCTYPE html>
             <html lang="en">

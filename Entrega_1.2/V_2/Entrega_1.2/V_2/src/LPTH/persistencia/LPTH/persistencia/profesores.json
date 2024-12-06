@@ -1,0 +1,18 @@
+[
+  {
+    "materia": "12",
+    "lps": [],
+    "sistemaCentral": {
+      "learningPaths": {}
+    },
+    "idUsuario": 208332898,
+    "nombre": "12",
+    "email": "pepe@mojica",
+    "password": "12",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Profesor",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
+  }
+]

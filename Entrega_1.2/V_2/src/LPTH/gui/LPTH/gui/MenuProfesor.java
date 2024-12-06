@@ -5,58 +5,49 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MenuProfesor {
 
-    public static void main(String[] args) {
-        try {
-            // Iniciar el servidor en el puerto 8001
-            HttpServer server = HttpServer.create(new InetSocketAddress(8001), 0);
+    public static void addContexts(HttpServer server) {
+        // Contexto para el menú del profesor
+        server.createContext("/menu/teacher", exchange -> {
+            String html = generarMenuProfesor();
+            enviarRespuesta(exchange, html);
+        });
 
-            // Contexto para el menú del profesor
-            server.createContext("/menu/teacher", exchange -> {
-                String html = generarMenuProfesor();
-                enviarRespuesta(exchange, html);
-            });
+        // Contexto para la pantalla de creación de Learning Path
+        server.createContext("/menu/teacher/crear_learning_path", exchange -> {
+            String html = generarCrearLearningPath();
+            enviarRespuesta(exchange, html);
+        });
 
-            // Contexto para la pantalla de creación de Learning Path
-            server.createContext("/menu/teacher/crear_learning_path", exchange -> {
-                String html = generarCrearLearningPath();
-                enviarRespuesta(exchange, html);
-            });
+        // Procesar formulario de creación de Learning Path
+        server.createContext("/menu/teacher/process/crear_learning_path", exchange -> {
+            if ("POST".equals(exchange.getRequestMethod())) {
+                String requestBody = new String(exchange.getRequestBody().readAllBytes());
+                Map<String, String> inputs = parseFormInputs(requestBody);
 
-            // Procesar formulario de creación de Learning Path
-            server.createContext("/menu/teacher/process/crear_learning_path", exchange -> {
-                if ("POST".equals(exchange.getRequestMethod())) {
-                    String requestBody = new String(exchange.getRequestBody().readAllBytes());
-                    Map<String, String> inputs = parseFormInputs(requestBody);
+                String titulo = inputs.get("titulo");
+                String nivel = inputs.get("nivel");
+                String duracion = inputs.get("duracion");
+                String descripcion = inputs.get("descripcion");
 
-                    String titulo = inputs.get("titulo");
-                    String nivel = inputs.get("nivel");
-                    String duracion = inputs.get("duracion");
-                    String descripcion = inputs.get("descripcion");
+                // Aquí se podría agregar la lógica para persistir el Learning Path
+                System.out.println("Creando Learning Path:");
+                System.out.println("Título: " + titulo);
+                System.out.println("Nivel: " + nivel);
+                System.out.println("Duración: " + duracion);
+                System.out.println("Descripción: " + descripcion);
 
-                    // Aquí se podría agregar la lógica para persistir el Learning Path
-                    System.out.println("Creando Learning Path:");
-                    System.out.println("Título: " + titulo);
-                    System.out.println("Nivel: " + nivel);
-                    System.out.println("Duración: " + duracion);
-                    System.out.println("Descripción: " + descripcion);
-
-                    // Redirigir al menú del profesor
-                    redirigir(exchange, "/menu/teacher");
-                }
-            });
-
-            server.start();
-            System.out.println("Servidor iniciado en http://localhost:8001/menu/teacher");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                // Redirigir al menú del profesor
+                redirigir(exchange, "/menu/teacher");
+            }
+        });
     }
+
+    // Métodos auxiliares (enviarRespuesta, redirigir, parseFormInputs, generarMenuProfesor, generarCrearLearningPath)
 
     // Método para enviar respuesta al cliente
     private static void enviarRespuesta(HttpExchange exchange, String response) throws IOException {
@@ -157,7 +148,7 @@ public class MenuProfesor {
                     <a href="/menu/teacher/crear_learning_path">
                         <button>Crear un Learning Path</button>
                     </a>
-                    <a href="http://localhost:8000">Salir</a>
+                    <a href="/">Salir</a>
                 </div>
             </body>
             </html>
@@ -245,7 +236,7 @@ public class MenuProfesor {
                         <button type="submit">Crear Learning Path</button>
                     </form>
                     <a href="/menu/teacher">Regresar al Menú Profesor</a>
-                    <a href="http://localhost:8000">Salir</a>
+                    <a href="/">Salir</a>
                 </div>
             </body>
             </html>
