@@ -21,8 +21,9 @@ public class PersistirUsuarios {
                 .setPrettyPrinting()
                 .registerTypeAdapter(Instant.class, new InstantTypeAdapter())
                 .create();
+        String jsonString = gson.toJson(profesores);
         try (FileWriter writer = new FileWriter(profesoresFilePath)) {
-            gson.toJson(profesores, writer);
+            writer.write(jsonString);
         }
     }
 
@@ -47,8 +48,9 @@ public class PersistirUsuarios {
                 .setPrettyPrinting()
                 .registerTypeAdapter(Instant.class, new InstantTypeAdapter())
                 .create();
+        String jsonString = gson.toJson(estudiantes);
         try (FileWriter writer = new FileWriter(estudiantesFilePath)) {
-            gson.toJson(estudiantes, writer);
+            writer.write(jsonString);
         }
     }
 

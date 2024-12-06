@@ -1,0 +1,34 @@
+{
+  "learningPaths": {
+    "594440": {
+      "profesorCreador": "John Doe",
+      "titulo": "Learning Path 2",
+      "id": 594440,
+      "descripcion": "Description 2",
+      "objetivos": [],
+      "nivelDeDificultad": "Intermediate",
+      "duracion": 15,
+      "rating": 5,
+      "fechaDeCreacion": "2024-12-06T04:16:48.383949900Z",
+      "fechaDeModificacion": "2024-12-06T04:16:48.383949900Z",
+      "version": "1",
+      "tasaDeExitoFracaso": 0.0,
+      "actividades": []
+    },
+    "493275": {
+      "profesorCreador": "John Doe",
+      "titulo": "Learning Path 1",
+      "id": 493275,
+      "descripcion": "Description 1",
+      "objetivos": [],
+      "nivelDeDificultad": "Beginner",
+      "duracion": 10,
+      "rating": 5,
+      "fechaDeCreacion": "2024-12-06T04:16:48.383949900Z",
+      "fechaDeModificacion": "2024-12-06T04:16:48.383949900Z",
+      "version": "1",
+      "tasaDeExitoFracaso": 0.0,
+      "actividades": []
+    }
+  }
+}

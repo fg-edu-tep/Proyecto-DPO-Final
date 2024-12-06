@@ -2,6 +2,7 @@ package LPTH.modelo;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -79,8 +80,10 @@ public class UserFactory {
         }
     }
 
-    public Usuario crearUsuario(String tipo, String nombre, String email, String contrasenia, String fechaRegistro, String materia) {
+    public Usuario crearUsuario(String tipo, String nombre, String email, String contrasenia, String materia) {
         int idUsuario = (int) (Math.random() * 99999);
+        String fechaRegistro = LocalDate.now().toString();
+
         if (tipo.equals("profesor")) {
             Profesor nuevoUsuario = new Profesor(idUsuario, nombre, email, contrasenia, fechaRegistro, materia);
             nuevoUsuario.setIdUsuario(idUsuario + nuevoUsuario.hashCode());
