@@ -30,18 +30,24 @@ public class Sistema {
     // Métodos de conexión:
     public LearningPath crearLearningPath(Profesor profe, String titulo, String descripcion,
             String nivelDeDificultad, int duracion) {
+    	
 			String profesorCreador = profe.getNombre();
 			int id = (int) (Math.random() * 999999); // Generar ID único
+			
 			Instant fechaDeCreacion = Instant.now();
+			
 			Instant fechaDeModificacion = Instant.now();
+			
 			String version = "1.0";
+			
 			int rating = 5;
+			
 			float tasaDeExitoFracaso = 0;
 			ArrayList<Actividad> actividades = new ArrayList<>();
 			
 			ArrayList<String> objetivos = new ArrayList<>();
 			objetivos.add("Entender los conceptos básicos de " + titulo);
-			objetivos.add("Aplicar conocimientos en ejercicios prácticos.");
+			objetivos.add(descripcion);
 			
 			LearningPath learningPath = new LearningPath(
 			profesorCreador, titulo, id, descripcion, objetivos,
@@ -49,13 +55,12 @@ public class Sistema {
 			fechaDeModificacion, version, tasaDeExitoFracaso, actividades
 			);
 			
-			// Agregar al mapa de LearningPaths
-			System.out.println("Añadiendo LearningPath al sistema...");
+			System.out.println("!!!Añadiendo LearningPath al sistema...");
 			this.learningPaths.put(id, learningPath);
 			
 			// Verificar si fue añadido
 			if (this.learningPaths.containsKey(id)) {
-			System.out.println("LearningPath añadido correctamente: " + id);
+			System.out.println("!!!LearningPath añadido correctamente: " + id);
 			} else {
 			System.out.println("Error: No se pudo añadir el LearningPath al sistema.");
 			}

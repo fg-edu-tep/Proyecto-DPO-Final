@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpExchange;
 
 import LPTH.modelo.LearningPath;
 import LPTH.modelo.Sistema;
-import LPTH.persistencia.PersistirSistema;
 import LPTH.usuarios.Profesor;
 
 import java.io.IOException;
@@ -15,29 +14,17 @@ import java.util.Map;
 
 public class MenuProfesor {
 
-    private static PersistirSistema persistirSistema = new PersistirSistema();
     private static Sistema sistema; // Sistema para almacenar los Learning Paths
     private static Profesor profesorActual; // Profesor actualmente autenticado
 
-    static {
-        try {
-            // Intentar cargar el sistema al inicio
-            sistema = persistirSistema.cargarSistema();
-            if (sistema == null) {
-                sistema = new Sistema(); // Crear uno nuevo si no se encuentra
-            }
-        } catch (IOException e) {
-            System.out.println("No se pudo cargar el sistema: " + e.getMessage());
-            sistema = new Sistema(); // Crear uno nuevo en caso de error
-        }
-    }
-
-    /**
-     * Establece el profesor autenticado que inició sesión.
-     */
     public static void setProfesorActual(Profesor profesor) {
         profesorActual = profesor;
     }
+
+    public static void setSistema(Sistema sistemaCentral) {
+        sistema = sistemaCentral;
+    }
+
 
     public static void addContexts(HttpServer server) {
         // Contexto para el menú del profesor
@@ -69,13 +56,10 @@ public class MenuProfesor {
                     }
 
                     // Crear el LearningPath
-                    LearningPath learningPath = profesorActual.crearlearningPath(
-                        titulo, descripcion, nivelDeDificultad, duracion);
-                    System.out.println(learningPath.getTitulo());
+                    sistema.crearLearningPath(profesorActual, titulo, descripcion, nivelDeDificultad, duracion);
                     // Persistir el sistema actualizado
                     sistema.saveSistema(); // Aquí es donde va el código
 
-                    System.out.println("Learning Path guardado exitosamente: " + learningPath.getTitulo());
                 } catch (Exception e) {
                     System.out.println("Error al guardar el Learning Path: " + e.getMessage());
                 }

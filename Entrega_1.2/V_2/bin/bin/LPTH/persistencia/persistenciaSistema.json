@@ -1,56 +1,22 @@
 {
   "learningPaths": {
-    "123456": {
-      "profesorCreador": "Juan Pérez",
-      "titulo": "Introducción a la Programación",
-      "id": 123456,
-      "descripcion": "Este curso cubre los fundamentos de la programación en Java.",
-      "objetivos": ["Entender conceptos básicos", "Escribir código simple en Java"],
-      "nivelDeDificultad": "Básico",
-      "duracion": 20,
-      "rating": 4,
-      "fechaDeCreacion": "2024-12-01T10:00:00Z",
-      "fechaDeModificacion": "2024-12-05T15:30:00Z",
-      "version": "1.0",
-      "tasaDeExitoFracaso": 90,
-      "actividades": [
-        {
-          "nombre": "Introducción",
-          "descripcion": "Aprenderás sobre los conceptos básicos de programación.",
-          "duracion": 2
-        },
-        {
-          "nombre": "Sintaxis de Java",
-          "descripcion": "Explora cómo escribir código en Java.",
-          "duracion": 3
-        }
-      ]
-    },
-    "789012": {
-      "profesorCreador": "María Gómez",
-      "titulo": "Desarrollo Web Avanzado",
-      "id": 789012,
-      "descripcion": "Curso avanzado sobre frameworks de desarrollo web.",
-      "objetivos": ["Dominar frameworks modernos", "Crear aplicaciones escalables"],
-      "nivelDeDificultad": "Avanzado",
-      "duracion": 40,
+    "510236": {
+      "profesorCreador": "FlapPersist",
+      "titulo": "FlagPath",
+      "id": 510236,
+      "descripcion": "HJIASHIASDHUIAS",
+      "objetivos": [
+        "Entender los conceptos básicos de FlagPath",
+        "HJIASHIASDHUIAS"
+      ],
+      "nivelDeDificultad": "Medium",
+      "duracion": 10,
       "rating": 5,
-      "fechaDeCreacion": "2024-11-20T08:00:00Z",
-      "fechaDeModificacion": "2024-12-01T14:00:00Z",
-      "version": "1.2",
-      "tasaDeExitoFracaso": 85,
-      "actividades": [
-        {
-          "nombre": "Conceptos Avanzados de Web",
-          "descripcion": "Entender conceptos como seguridad y escalabilidad.",
-          "duracion": 5
-        },
-        {
-          "nombre": "Uso de React",
-          "descripcion": "Aprender React para crear interfaces modernas.",
-          "duracion": 10
-        }
-      ]
+      "fechaDeCreacion": "2024-12-07T03:26:28.613050300Z",
+      "fechaDeModificacion": "2024-12-07T03:26:28.613050300Z",
+      "version": "1.0",
+      "tasaDeExitoFracaso": 0.0,
+      "actividades": []
     }
   }
 }

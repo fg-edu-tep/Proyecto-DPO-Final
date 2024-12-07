@@ -2,7 +2,6 @@ package LPTH.persistencia;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.*;
 import LPTH.modelo.Sistema;
 
 import java.io.FileWriter;
@@ -12,7 +11,7 @@ import java.time.Instant;
 import java.util.LinkedList;
 
 public class PersistirSistema {
-    private static final String sistemaFilePath = "Entrega_1.2\\V_2\\src\\LPTH\\persistencia\\LPTH\\persistencia\\persistenciaSistema.json";
+    private static final String sistemaFilePath = "src/LPTH/persistencia/LPTH/persistencia/persistenciaSistema.json";
 
     public void salvarSistema(Sistema sistema) throws IOException {
         Gson gson = new GsonBuilder()
@@ -32,9 +31,7 @@ public class PersistirSistema {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Instant.class, new InstantTypeAdapter())
                 .create();
-        System.out.println("Cargando sistema...2");
         try (FileReader reader = new FileReader(sistemaFilePath)) {
-        	
             Sistema sistema = gson.fromJson(reader, Sistema.class);
             return sistema;
         } catch (IOException e) {

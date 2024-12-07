@@ -10,8 +10,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.IIOException;
+
 import LPTH.exceptions.ExceptionNoPersistencia;
+import LPTH.modelo.Sistema;
 import LPTH.modelo.UserFactory;
+import LPTH.persistencia.PersistirSistema;
 import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Usuario;
 
@@ -108,6 +112,9 @@ public class Interfaz {
                     try {
                         // Autenticar usuario con UserFactory
                         Usuario usuario = userFactory.autenticarUsuario(email, password);
+                        // Sacar el sistema:
+                        Sistema sistemaCentral = new Sistema();
+                        sistemaCentral.loadSistema();
                         if (usuario != null) {
                             // Redirigir al menú correspondiente según el tipo de usuario
                             if (usuario.getTipo().equalsIgnoreCase("estudiante")) {
@@ -115,6 +122,7 @@ public class Interfaz {
                             } else if (usuario.getTipo().equalsIgnoreCase("profesor")) {
                                 Profesor profesor = (Profesor) usuario;
                             	MenuProfesor.setProfesorActual(profesor);
+                            	MenuProfesor.setSistema(sistemaCentral);
                                 redirigir(exchange, "/menu/teacher");
                             }
                         } else {
