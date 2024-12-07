@@ -3,12 +3,41 @@ package LPTH.gui;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpExchange;
 
+import LPTH.modelo.LearningPath;
+import LPTH.modelo.Sistema;
+import LPTH.persistencia.PersistirSistema;
+import LPTH.usuarios.Profesor;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MenuProfesor {
+
+    private static PersistirSistema persistirSistema = new PersistirSistema();
+    private static Sistema sistema; // Sistema para almacenar los Learning Paths
+    private static Profesor profesorActual; // Profesor actualmente autenticado
+
+    static {
+        try {
+            // Intentar cargar el sistema al inicio
+            sistema = persistirSistema.cargarSistema();
+            if (sistema == null) {
+                sistema = new Sistema(); // Crear uno nuevo si no se encuentra
+            }
+        } catch (IOException e) {
+            System.out.println("No se pudo cargar el sistema: " + e.getMessage());
+            sistema = new Sistema(); // Crear uno nuevo en caso de error
+        }
+    }
+
+    /**
+     * Establece el profesor autenticado que inició sesión.
+     */
+    public static void setProfesorActual(Profesor profesor) {
+        profesorActual = profesor;
+    }
 
     public static void addContexts(HttpServer server) {
         // Contexto para el menú del profesor
@@ -30,16 +59,25 @@ public class MenuProfesor {
                 Map<String, String> inputs = parseFormInputs(requestBody);
 
                 String titulo = inputs.get("titulo");
-                String nivel = inputs.get("nivel");
-                String duracion = inputs.get("duracion");
                 String descripcion = inputs.get("descripcion");
+                String nivelDeDificultad = inputs.get("nivel");
+                int duracion = Integer.parseInt(inputs.get("duracion"));
 
-                // Aquí se podría agregar la lógica para persistir el Learning Path
-                System.out.println("Creando Learning Path:");
-                System.out.println("Título: " + titulo);
-                System.out.println("Nivel: " + nivel);
-                System.out.println("Duración: " + duracion);
-                System.out.println("Descripción: " + descripcion);
+                try {
+                    if (profesorActual == null) {
+                        throw new IllegalStateException("No hay un profesor autenticado.");
+                    }
+
+                    // Crear el Learning Path utilizando el método del profesor autenticado
+                    LearningPath learningPath = profesorActual.crearlearningPath(
+                            titulo, descripcion, nivelDeDificultad, duracion);
+
+                    // Persistir el sistema actualizado
+                    sistema.saveSistema();
+                    System.out.println("Learning Path guardado exitosamente: " + learningPath.getTitulo());
+                } catch (Exception e) {
+                    System.out.println("Error al guardar el Learning Path: " + e.getMessage());
+                }
 
                 // Redirigir al menú del profesor
                 redirigir(exchange, "/menu/teacher");
@@ -49,7 +87,6 @@ public class MenuProfesor {
 
     // Métodos auxiliares (enviarRespuesta, redirigir, parseFormInputs, generarMenuProfesor, generarCrearLearningPath)
 
-    // Método para enviar respuesta al cliente
     private static void enviarRespuesta(HttpExchange exchange, String response) throws IOException {
         exchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = exchange.getResponseBody();
@@ -57,14 +94,12 @@ public class MenuProfesor {
         os.close();
     }
 
-    // Método para redirigir al cliente a otra ruta
     private static void redirigir(HttpExchange exchange, String ruta) throws IOException {
         exchange.getResponseHeaders().add("Location", ruta);
-        exchange.sendResponseHeaders(302, -1); // Código 302 para redirección
+        exchange.sendResponseHeaders(302, -1);
         exchange.close();
     }
 
-    // Método auxiliar para procesar inputs de formularios
     private static Map<String, String> parseFormInputs(String requestBody) {
         Map<String, String> inputs = new HashMap<>();
         String[] pairs = requestBody.split("&");
@@ -79,7 +114,6 @@ public class MenuProfesor {
         return inputs;
     }
 
-    // HTML: Pantalla de menú de profesor
     public static String generarMenuProfesor() {
         return """
             <!DOCTYPE html>
@@ -155,7 +189,6 @@ public class MenuProfesor {
         """;
     }
 
-    // HTML: Pantalla para crear Learning Path
     private static String generarCrearLearningPath() {
         return """
             <!DOCTYPE html>

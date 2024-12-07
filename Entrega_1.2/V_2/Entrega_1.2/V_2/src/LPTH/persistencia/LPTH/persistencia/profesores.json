@@ -14,5 +14,21 @@
     "resenias": [],
     "LearningPaths": [],
     "loggedOn": true
+  },
+  {
+    "materia": "hola",
+    "lps": [],
+    "sistemaCentral": {
+      "learningPaths": {}
+    },
+    "idUsuario": 2076467911,
+    "nombre": "hola",
+    "email": "pmeme@pmeme",
+    "password": "1",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Profesor",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
   }
 ]

@@ -12,7 +12,7 @@ import java.time.Instant;
 import java.util.LinkedList;
 
 public class PersistirSistema {
-    private static final String sistemaFilePath = "src/LPTH/persistencia/LPTH/persistencia/persistenciaSistema.json";
+    private static final String sistemaFilePath = "Entrega_1.2\\V_2\\src\\LPTH\\persistencia\\LPTH\\persistencia\\persistenciaSistema.json";
 
     public void salvarSistema(Sistema sistema) throws IOException {
         Gson gson = new GsonBuilder()
