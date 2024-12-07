@@ -12,6 +12,7 @@ import java.util.Map;
 
 import LPTH.exceptions.ExceptionNoPersistencia;
 import LPTH.modelo.UserFactory;
+import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Usuario;
 
 public class Interfaz {
@@ -112,6 +113,8 @@ public class Interfaz {
                             if (usuario.getTipo().equalsIgnoreCase("estudiante")) {
                                 enviarRespuesta(exchange, "Bienvenido estudiante: " + usuario.getNombre());
                             } else if (usuario.getTipo().equalsIgnoreCase("profesor")) {
+                                Profesor profesor = (Profesor) usuario;
+                            	MenuProfesor.setProfesorActual(profesor);
                                 redirigir(exchange, "/menu/teacher");
                             }
                         } else {
