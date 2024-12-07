@@ -9,7 +9,10 @@ import LPTH.usuarios.Profesor;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MenuProfesor {
@@ -68,6 +71,61 @@ public class MenuProfesor {
                 redirigir(exchange, "/menu/teacher");
             }
         });
+        
+        // Contexto para la pantalla de creación de Learning Path
+        server.createContext("/menu/teacher/editar_learning_path", exchange -> {
+            String html = generarEditarLearningPath();
+            enviarRespuesta(exchange, html);
+        });
+        
+     // Procesar formulario de edición de Learning Path por nombre
+        server.createContext("/menu/teacher/process/editar_learning_path", exchange -> {
+            if ("POST".equals(exchange.getRequestMethod())) {
+                String requestBody = new String(exchange.getRequestBody().readAllBytes());
+                Map<String, String> inputs = parseFormInputs(requestBody);
+
+                try {
+                    String nombreLp = inputs.get("nombre");
+                    String nuevoTitulo = inputs.get("titulo");
+                    String nuevaDescripcion = inputs.get("descripcion");
+                    //String nuevosObjetivos = inputs.get("objetivos");
+                    String nuevoNivel = inputs.get("nivel");
+                    int nuevaDuracion = Integer.parseInt(inputs.get("duracion"));
+                    int nuevoRating = Integer.parseInt(inputs.get("rating"));
+                    String nuevaVersion = inputs.get("version");
+
+                    if (profesorActual == null) {
+                        throw new IllegalStateException("No hay un profesor autenticado.");
+                    }
+
+                    // Buscar el Learning Path por nombre
+                    LearningPath lp = sistema.getLearningPathNombre(nombreLp);
+                    	
+                    if (lp == null || !profesorActual.getLps().contains(lp.getID())) {
+                    	throw new IllegalStateException("El Learning Path no pertenece a este profesor o no existe.");
+                    }
+					
+                    // Actualizar propiedades
+                    lp.setTitulo(nuevoTitulo);
+                    lp.setDescripcion(nuevaDescripcion);
+                    //lp.setObjetivos(new ArrayList<>(List.of(nuevosObjetivos.split(",")))); // Manejo de objetivos
+                    lp.setnivelDeDificultad(nuevoNivel);
+                    lp.setDuracion(nuevaDuracion);
+                    lp.setRating(nuevoRating);
+                    lp.setVersion(nuevaVersion);
+                    lp.setFechaDeModificacion(Instant.now());
+
+                    // Persistir cambios
+                    sistema.saveSistema();
+
+                } catch (Exception e) {
+                    System.out.println("Error al editar el Learning Path: " + e.getMessage());
+                }
+
+                redirigir(exchange, "/menu/teacher");
+            }
+        });
+        
     }	
 
     // Métodos auxiliares (enviarRespuesta, redirigir, parseFormInputs, generarMenuProfesor, generarCrearLearningPath)
@@ -117,7 +175,6 @@ public class MenuProfesor {
                         margin: 0;
                         background-color: #f5f5f5;
                     }
-
                     .container {
                         background: #fff;
                         padding: 20px;
@@ -126,12 +183,10 @@ public class MenuProfesor {
                         width: 300px;
                         text-align: center;
                     }
-
                     h1 {
                         font-size: 24px;
                         margin-bottom: 20px;
                     }
-
                     button {
                         width: 100%;
                         padding: 10px;
@@ -143,18 +198,15 @@ public class MenuProfesor {
                         cursor: pointer;
                         margin-bottom: 10px;
                     }
-
                     button:hover {
                         background-color: #333;
                     }
-
                     a {
                         display: block;
                         margin-top: 15px;
                         color: #333;
                         text-decoration: none;
                     }
-
                     a:hover {
                         text-decoration: underline;
                     }
@@ -167,12 +219,16 @@ public class MenuProfesor {
                     <a href="/menu/teacher/crear_learning_path">
                         <button>Crear un Learning Path</button>
                     </a>
+                    <a href="/menu/teacher/editar_learning_path">
+                        <button>Editar un Learning Path</button>
+                    </a>
                     <a href="/">Salir</a>
                 </div>
             </body>
             </html>
         """;
     }
+
 
     private static String generarCrearLearningPath() {
         return """
@@ -260,4 +316,83 @@ public class MenuProfesor {
             </html>
         """;
     }
+    
+    private static String generarEditarLearningPath() {
+        return """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Editar Learning Path</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                        background-color: #f5f5f5;
+                    }
+                    .container {
+                        background: #fff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                        width: 400px;
+                        text-align: center;
+                    }
+                    input, textarea {
+                        width: calc(100% - 20px);
+                        padding: 10px;
+                        margin-bottom: 15px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                    }
+                    button {
+                        width: 100%;
+                        padding: 10px;
+                        background-color: #000;
+                        color: #fff;
+                        border: none;
+                        border-radius: 4px;
+                        font-size: 16px;
+                        cursor: pointer;
+                    }
+                    button:hover {
+                        background-color: #333;
+                    }
+                    a {
+                        display: block;
+                        margin-top: 15px;
+                        color: #333;
+                        text-decoration: none;
+                    }
+                    a:hover {
+                        text-decoration: underline;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>Editar Learning Path</h1>
+                    <form action="/menu/teacher/process/editar_learning_path" method="post">
+                        <input type="text" name="nombre" placeholder="Nombre del Learning Path" required>
+                        <input type="text" name="titulo" placeholder="Nuevo título" required>
+                        <textarea name="descripcion" rows="3" placeholder="Nueva descripción" required></textarea>
+                        <input type="text" name="objetivos" placeholder="Objetivos separados por comas" required>
+                        <input type="text" name="nivel" placeholder="Nuevo nivel de dificultad" required>
+                        <input type="text" name="duracion" placeholder="Nueva duración en horas" required>
+                        <input type="text" name="rating" placeholder="Nuevo rating (1-5)" required>
+                        <input type="text" name="version" placeholder="Nueva versión" required>
+                        <button type="submit">Guardar cambios</button>
+                    </form>
+                    <a href="/menu/teacher">Regresar al Menú Profesor</a>
+                </div>
+            </body>
+            </html>
+        """;
+    }
+
 }

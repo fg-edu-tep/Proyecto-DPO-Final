@@ -14,5 +14,40 @@
     "resenias": [],
     "LearningPaths": [],
     "loggedOn": true
+  },
+  {
+    "materia": "12",
+    "lps": [],
+    "sistemaCentral": {
+      "learningPaths": {
+        "510236": {
+          "profesorCreador": "FlapPersist",
+          "titulo": "FlagPath",
+          "id": 510236,
+          "descripcion": "HJIASHIASDHUIAS",
+          "objetivos": [
+            "Entender los conceptos básicos de FlagPath",
+            "HJIASHIASDHUIAS"
+          ],
+          "nivelDeDificultad": "Medium",
+          "duracion": 10,
+          "rating": 5,
+          "fechaDeCreacion": "2024-12-07T03:26:28.613050300Z",
+          "fechaDeModificacion": "2024-12-07T03:26:28.613050300Z",
+          "version": "1.0",
+          "tasaDeExitoFracaso": 0.0,
+          "actividades": []
+        }
+      }
+    },
+    "idUsuario": 818675161,
+    "nombre": "12",
+    "email": "pmeme@pmeme",
+    "password": "1",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Profesor",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
   }
 ]

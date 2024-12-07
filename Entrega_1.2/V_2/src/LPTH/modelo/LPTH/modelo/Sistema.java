@@ -78,8 +78,24 @@ public class Sistema {
         return new ArrayList<>(learningPaths.values()); // Retornar los valores en una lista
     }
 
-    public LearningPath getLearningPath(Integer ID) {
+    public LearningPath getLearningPathID(Integer ID) {
         return learningPaths.get(ID);
+    }
+    
+    public LearningPath getLearningPathNombre(String nombre) {
+        if (learningPaths == null || learningPaths.isEmpty()) {
+            System.out.println("El mapa learningPaths está vacío.");
+            return null;
+        }
+        System.out.println("Learning Paths disponibles:");
+        for (LearningPath lp : learningPaths.values()) {
+            System.out.println(" - " + lp.getTitulo());
+            if (lp.getTitulo().equalsIgnoreCase(nombre.trim())) {
+                return lp;
+            }
+        }
+        System.out.println("No se encontró un Learning Path con el nombre: " + nombre);
+        return null;
     }
 
     public LearningPath recomendarLearningPath() throws ExceptionNoPersistencia {
