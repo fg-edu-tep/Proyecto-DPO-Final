@@ -1,19 +1,91 @@
 {
   "learningPaths": {
-    "510236": {
-      "profesorCreador": "FlapPersist",
-      "titulo": "FlagPath",
-      "id": 510236,
-      "descripcion": "HJIASHIASDHUIAS",
+    "2379": {
+      "profesorCreador": "Julio Profe",
+      "titulo": "Integrales+dobles",
+      "id": 2379,
+      "descripcion": "Aprende+a+integrar+en+dos+dimensiones%2C+por+que+no.",
       "objetivos": [
-        "Entender los conceptos básicos de FlagPath",
-        "HJIASHIASDHUIAS"
+        "Entender los conceptos bsicos de Integrales+dobles",
+        "Aprende+a+integrar+en+dos+dimensiones%2C+por+que+no."
       ],
-      "nivelDeDificultad": "Medium",
+      "nivelDeDificultad": "Media",
+      "duracion": 12,
+      "rating": 5,
+      "fechaDeCreacion": "2024-12-07T04:41:21.553498Z",
+      "fechaDeModificacion": "2024-12-07T04:41:21.553498Z",
+      "version": "1.0",
+      "tasaDeExitoFracaso": 0.0,
+      "actividades": []
+    },
+    "446630": {
+      "profesorCreador": "Julio Profe",
+      "titulo": "Integrales+de+linea",
+      "id": 446630,
+      "descripcion": "Resulta+que+necesitamos+medir+vectores+que+pasan+por+contornos%2C+asi+que+sacamos+esto.",
+      "objetivos": [
+        "Entender los conceptos bsicos de Integrales+de+linea",
+        "Resulta+que+necesitamos+medir+vectores+que+pasan+por+contornos%2C+asi+que+sacamos+esto."
+      ],
+      "nivelDeDificultad": "Bastante",
+      "duracion": 12,
+      "rating": 5,
+      "fechaDeCreacion": "2024-12-07T04:42:18.091449700Z",
+      "fechaDeModificacion": "2024-12-07T04:42:18.091449700Z",
+      "version": "1.0",
+      "tasaDeExitoFracaso": 0.0,
+      "actividades": []
+    },
+    "415420": {
+      "profesorCreador": "Julio Profe",
+      "titulo": "Cauchi-Riemann",
+      "id": 415420,
+      "descripcion": "Alguna+vez+has+querido+saber+si+una+funciOn+compleja+es+analItica%3F+Deriva+ambos+lados+con+derivadas+pariales+",
+      "objetivos": [
+        "Entender los conceptos bsicos de Cauchi-Riemann",
+        "Alguna+vez+has+querido+saber+si+una+funciOn+compleja+es+analItica%3F+Deriva+ambos+lados+con+derivadas+pariales+"
+      ],
+      "nivelDeDificultad": "5",
+      "duracion": 6,
+      "rating": 5,
+      "fechaDeCreacion": "2024-12-07T04:43:21.856991700Z",
+      "fechaDeModificacion": "2024-12-07T04:43:21.856991700Z",
+      "version": "1.0",
+      "tasaDeExitoFracaso": 0.0,
+      "actividades": []
+    },
+    "377624": {
+      "profesorCreador": "Camilo",
+      "titulo": "El+arte+de+la+puntualidad",
+      "id": 377624,
+      "descripcion": "Llegar+puntuales+a+nuestras+responsabilidades+puede+ser+retador%2C+en+este+curso%2C+aprende+c%C3%B3mo+ser+mejor.",
+      "objetivos": [
+        "Entender los conceptos bsicos de El+arte+de+la+puntualidad",
+        "Llegar+puntuales+a+nuestras+responsabilidades+puede+ser+retador%2C+en+este+curso%2C+aprende+c%C3%B3mo+ser+mejor."
+      ],
+      "nivelDeDificultad": "Exigente",
       "duracion": 10,
       "rating": 5,
-      "fechaDeCreacion": "2024-12-07T03:26:28.613050300Z",
-      "fechaDeModificacion": "2024-12-07T03:26:28.613050300Z",
+      "fechaDeCreacion": "2024-12-07T04:45:35.584695800Z",
+      "fechaDeModificacion": "2024-12-07T04:45:35.584695800Z",
+      "version": "1.0",
+      "tasaDeExitoFracaso": 0.0,
+      "actividades": []
+    },
+    "624441": {
+      "profesorCreador": "Camilo",
+      "titulo": "Accion+y+reacci%C3%B3n",
+      "id": 624441,
+      "descripcion": "No+es+f%C3%ADsica%2C+es+como+podemos+afectar+a+otros+con+nuestras+acciones+%28o+falta+de%29.+",
+      "objetivos": [
+        "Entender los conceptos bsicos de Accion+y+reacci%C3%B3n",
+        "No+es+f%C3%ADsica%2C+es+como+podemos+afectar+a+otros+con+nuestras+acciones+%28o+falta+de%29.+"
+      ],
+      "nivelDeDificultad": "12",
+      "duracion": 6,
+      "rating": 5,
+      "fechaDeCreacion": "2024-12-07T04:46:49.543993400Z",
+      "fechaDeModificacion": "2024-12-07T04:46:49.543993400Z",
       "version": "1.0",
       "tasaDeExitoFracaso": 0.0,
       "actividades": []

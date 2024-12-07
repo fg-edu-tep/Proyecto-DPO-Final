@@ -55,18 +55,10 @@ public class Sistema {
 			fechaDeModificacion, version, tasaDeExitoFracaso, actividades
 			);
 			
-			System.out.println("!!!Añadiendo LearningPath al sistema...");
 			this.learningPaths.put(id, learningPath);
 			
-			// Verificar si fue añadido
-			if (this.learningPaths.containsKey(id)) {
-			System.out.println("!!!LearningPath añadido correctamente: " + id);
-			} else {
-			System.out.println("Error: No se pudo añadir el LearningPath al sistema.");
-			}
-			
 			return learningPath;
-    		}
+		}
 
 
 

@@ -16,11 +16,15 @@ import LPTH.exceptions.ExceptionNoPersistencia;
 import LPTH.modelo.Sistema;
 import LPTH.modelo.UserFactory;
 import LPTH.persistencia.PersistirSistema;
+import LPTH.usuarios.Estudiante;
 import LPTH.usuarios.Profesor;
 import LPTH.usuarios.Usuario;
 
 public class Interfaz {
-
+	
+    // Crear el sistema:
+    private static Sistema sistemaCentral = new Sistema();
+    
     private static UserFactory userFactory; // Instancia de UserFactory para gestionar usuarios
 
     public static void addContexts(HttpServer server) {
@@ -108,17 +112,25 @@ public class Interfaz {
 
                     String email = inputs.get("email");
                     String password = inputs.get("password");
+                    try {
+                    	sistemaCentral = sistemaCentral.loadSistema();
+                    	//System.out.println(sistemaCentral.getLearningPaths().getFirst().getTitulo());
+                    	
+					} catch (ExceptionNoPersistencia e) {
+						System.out.println("Error Fatal al cargar el sistema");
+						e.printStackTrace();
+					}
+
 
                     try {
                         // Autenticar usuario con UserFactory
                         Usuario usuario = userFactory.autenticarUsuario(email, password);
-                        // Sacar el sistema:
-                        Sistema sistemaCentral = new Sistema();
-                        sistemaCentral.loadSistema();
                         if (usuario != null) {
-                            // Redirigir al menú correspondiente según el tipo de usuario
                             if (usuario.getTipo().equalsIgnoreCase("estudiante")) {
+                                // Estudiante estudiante = (Estudiante)usuario; No importa
+                                MenuEstudiante.setSistema(sistemaCentral);
                             	redirigir(exchange, "/menu/student");
+                            	
                             } else if (usuario.getTipo().equalsIgnoreCase("profesor")) {
                                 Profesor profesor = (Profesor) usuario;
                             	MenuProfesor.setProfesorActual(profesor);

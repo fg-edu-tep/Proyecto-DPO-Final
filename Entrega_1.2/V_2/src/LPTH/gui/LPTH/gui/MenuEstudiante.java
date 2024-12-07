@@ -16,8 +16,8 @@ public class MenuEstudiante {
     private static Sistema sistema;
 
     // Método para asignar la instancia del sistema cargado
-    public static void setSistema(Sistema sistemaInstance) {
-        sistema = sistemaInstance;
+    public static void setSistema(Sistema sistemaCentral) {
+        sistema = sistemaCentral;
     }
 
     public static void addContexts(HttpServer server) {
