@@ -1,5 +1,6 @@
 package LPTH.modelo;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -41,7 +42,8 @@ public class UserFactory {
         PersistirSistema fileMngr = new PersistirSistema();
         Sistema sistemaCentral;
         try {
-            sistemaCentral = fileMngr.cargarSistema();
+        	System.out.println("Cargando sistema...");
+           sistemaCentral = fileMngr.cargarSistema();
             if (sistemaCentral == null) {
                 return new Sistema(); 
             }
@@ -54,8 +56,10 @@ public class UserFactory {
     public UserFactory loadUsuarios() throws ExceptionNoPersistencia {
         PersistirUsuarios fileMngr = new PersistirUsuarios();
         try {
-            this.profesores = fileMngr.cargarProfesores();
+        	System.out.println("Cargando usuarios...3");
+            this.profesores = fileMngr.cargarProfesores();			//ambas tienen error
             this.estudiantes = fileMngr.cargarEstudiantes();
+        	System.out.println("Cargando usuarios...4");
             for (Profesor profesor : profesores) {
                 dbUsuarios.put(profesor.getEmail(), profesor);
                 logIns.put(profesor.getEmail(), profesor.getContrasenia());
@@ -70,13 +74,16 @@ public class UserFactory {
         return this;
     }
     
-    public void saveUsuarios() throws ExceptionNoPersistencia {
-        PersistirUsuarios fileMngr = new PersistirUsuarios(); 
+    public void saveUsuarios() {
         try {
-            fileMngr.salvarProfesores(profesores);
-            fileMngr.salvarEstudiantes(estudiantes);
+            PersistirUsuarios persistirUsuarios = new PersistirUsuarios();
+            persistirUsuarios.salvarProfesores(this.profesores); // Guarda los profesores en el archivo JSON
+            persistirUsuarios.salvarEstudiantes(this.estudiantes); // Guarda los estudiantes en el archivo JSON
+            
+            // Mensaje de confirmación
+            System.out.println("Usuarios guardados exitosamente en " + new File(PersistirUsuarios.estudiantesFilePath).getAbsolutePath());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error al guardar los usuarios: " + e.getMessage());
         }
     }
 

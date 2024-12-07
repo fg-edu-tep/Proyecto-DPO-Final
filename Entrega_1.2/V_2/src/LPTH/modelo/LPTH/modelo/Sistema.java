@@ -28,7 +28,7 @@ public class Sistema {
     }
 
     // Métodos de conexión:
-    public LearningPath crearLearningPath(Profesor profe, String titulo, String descripcion,
+    public LearningPath crearLearningPath(Usuario profe, String titulo, String descripcion,
                                           String nivelDeDificultad, int duracion) {
         String profesorCreador = profe.getNombre();
         int id = (int) (Math.random() * 999999);
