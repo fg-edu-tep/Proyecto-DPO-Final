@@ -38,25 +38,24 @@ public class LearningPath {
 
     
     public LearningPath(String profesorCreador, String titulo, int id, String descripcion, ArrayList<String> objetivos,
-                        String nivelDeDificultad, int duracion, int rating, Instant fechaDeCreacion, Instant fechaDeModificacion,
-                        String version, float tasaDeExitoFracaso, ArrayList<Actividad> actividades) {
-        this.profesorCreador = profesorCreador;
-        this.titulo = titulo;
-        this.id = id;
-        this.descripcion = descripcion;
-        this.objetivos = objetivos;
-        this.nivelDeDificultad = nivelDeDificultad;
-        this.duracion = duracion;
-        this.rating = rating;
-        this.fechaDeCreacion = fechaDeCreacion;
-        this.fechaDeModificacion = fechaDeModificacion;
-        this.version = version;
-        this.tasaDeExitoFracaso = tasaDeExitoFracaso;
-        if (actividades.isEmpty()) {
-            this.actividades = actividades;
-        }
-        
-    }
+            String nivelDeDificultad, int duracion, int rating, Instant fechaDeCreacion,
+            Instant fechaDeModificacion, String version, float tasaDeExitoFracaso,
+            ArrayList<Actividad> actividades) {
+			this.profesorCreador = profesorCreador;
+			this.titulo = titulo;
+			this.id = id;
+			this.descripcion = descripcion;
+			this.objetivos = objetivos != null ? objetivos : new ArrayList<>();
+			this.nivelDeDificultad = nivelDeDificultad;
+			this.duracion = duracion;
+			this.rating = rating;
+			this.fechaDeCreacion = fechaDeCreacion;
+			this.fechaDeModificacion = fechaDeModificacion;
+			this.version = version;
+			this.tasaDeExitoFracaso = tasaDeExitoFracaso;
+			this.actividades = actividades != null ? actividades : new ArrayList<>();
+			}
+
 
     // Getters basicos
     public int mostrarCalificacion() {

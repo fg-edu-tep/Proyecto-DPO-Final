@@ -68,12 +68,13 @@ public class MenuProfesor {
                         throw new IllegalStateException("No hay un profesor autenticado.");
                     }
 
-                    // Crear el Learning Path utilizando el método del profesor autenticado
+                    // Crear el LearningPath
                     LearningPath learningPath = profesorActual.crearlearningPath(
-                            titulo, descripcion, nivelDeDificultad, duracion);
-
+                        titulo, descripcion, nivelDeDificultad, duracion);
+                    System.out.println(learningPath.getTitulo());
                     // Persistir el sistema actualizado
-                    sistema.saveSistema();
+                    sistema.saveSistema(); // Aquí es donde va el código
+
                     System.out.println("Learning Path guardado exitosamente: " + learningPath.getTitulo());
                 } catch (Exception e) {
                     System.out.println("Error al guardar el Learning Path: " + e.getMessage());
@@ -83,7 +84,7 @@ public class MenuProfesor {
                 redirigir(exchange, "/menu/teacher");
             }
         });
-    }
+    }	
 
     // Métodos auxiliares (enviarRespuesta, redirigir, parseFormInputs, generarMenuProfesor, generarCrearLearningPath)
 

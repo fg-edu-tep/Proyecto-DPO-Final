@@ -30,5 +30,21 @@
     "resenias": [],
     "LearningPaths": [],
     "loggedOn": true
+  },
+  {
+    "materia": "pipi",
+    "lps": [],
+    "sistemaCentral": {
+      "learningPaths": {}
+    },
+    "idUsuario": 1110199912,
+    "nombre": "holapipi",
+    "email": "hola@hola",
+    "password": "1",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Profesor",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
   }
 ]
