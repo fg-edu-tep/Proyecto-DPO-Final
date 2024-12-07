@@ -3,12 +3,22 @@ package LPTH.gui;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
+import LPTH.modelo.LearningPath;
+import LPTH.modelo.Sistema;
+import LPTH.exceptions.ExceptionNoPersistencia;
+
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class MenuEstudiante {
+
+    private static Sistema sistema;
+
+    // Método para asignar la instancia del sistema cargado
+    public static void setSistema(Sistema sistemaInstance) {
+        sistema = sistemaInstance;
+    }
 
     public static void addContexts(HttpServer server) {
         // Context for the student menu
@@ -29,12 +39,10 @@ public class MenuEstudiante {
                 // Logic to handle logout (if necessary)
                 redirigir(exchange, "/"); // Redirect to home page
             } else {
-                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                exchange.sendResponseHeaders(405, -1); 
             }
         });
     }
-
-    // Auxiliary methods (enviarRespuesta, redirigir, parseFormInputs, generarMenuEstudiante, generarVerLearningPaths)
 
     // Method to send an HTTP response
     private static void enviarRespuesta(HttpExchange exchange, String response) throws IOException {
@@ -131,7 +139,7 @@ public class MenuEstudiante {
 
     // HTML: Page for viewing available LPs
     private static String generarVerLearningPaths() {
-        return """
+        StringBuilder html = new StringBuilder("""
             <!DOCTYPE html>
             <html lang="en">
             <head>
@@ -241,38 +249,31 @@ public class MenuEstudiante {
                 <div class="container">
                     <h1>Learning Path</h1>
                     <div class="lp-container">
+        """);
+
+        try {
+            List<LearningPath> learningPaths = sistema.getLearningPaths();
+            if (learningPaths.isEmpty()) {
+                html.append("<p>No hay Learning Paths disponibles.</p>");
+            } else {
+                for (LearningPath lp : learningPaths) {
+                    html.append("""
                         <div class="lp-item">
                             <div class="details">
-                                <p><b>Título LP:</b> Introducción a Java</p>
-                                <p><b>Profesor:</b> John Doe</p>
-                                <p><b>Duración:</b> 10 horas</p>
+                                <p><b>Título LP:</b> %s</p>
+                                <p><b>Profesor:</b> %s</p>
+                                <p><b>Duración:</b> %d horas</p>
                             </div>
-                            <div class="description">Descripción breve</div>
+                            <div class="description">%s</div>
                         </div>
-                        <div class="lp-item">
-                            <div class="details">
-                                <p><b>Título LP:</b> Fundamentos de Python</p>
-                                <p><b>Profesor:</b> Jane Smith</p>
-                                <p><b>Duración:</b> 12 horas</p>
-                            </div>
-                            <div class="description">Descripción breve</div>
-                        </div>
-                        <div class="lp-item">
-                            <div class="details">
-                                <p><b>Título LP:</b> Desarrollo Web</p>
-                                <p><b>Profesor:</b> Mark Lee</p>
-                                <p><b>Duración:</b> 8 horas</p>
-                            </div>
-                            <div class="description">Descripción breve</div>
-                        </div>
-                        <div class="lp-item">
-                            <div class="details">
-                                <p><b>Título LP:</b> Machine Learning</p>
-                                <p><b>Profesor:</b> Alice Brown</p>
-                                <p><b>Duración:</b> 15 horas</p>
-                            </div>
-                            <div class="description">Descripción breve</div>
-                        </div>
+                    """.formatted(lp.getTitulo(), lp.getProfesorCreador(), lp.getDuracion(), lp.getDescripcion()));
+                }
+            }
+        } catch (Exception e) {
+            html.append("<p>Ocurrió un error al cargar los Learning Paths.</p>");
+        }
+
+        html.append("""
                     </div>
                     <div class="footer">
                         <a href="/menu/student">
@@ -285,6 +286,8 @@ public class MenuEstudiante {
                 </div>
             </body>
             </html>
-        """;
+        """);
+
+        return html.toString();
     }
 }
