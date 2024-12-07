@@ -16,6 +16,8 @@ public class Main {
 
             // Agregar los contextos de la clase MenuProfesor
             MenuProfesor.addContexts(server);
+            
+            MenuEstudiante.addContexts(server);
 
             // Iniciar el servidor
             server.start();

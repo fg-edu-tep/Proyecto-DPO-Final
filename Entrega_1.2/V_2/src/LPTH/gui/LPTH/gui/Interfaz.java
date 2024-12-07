@@ -110,7 +110,7 @@ public class Interfaz {
                         if (usuario != null) {
                             // Redirigir al menú correspondiente según el tipo de usuario
                             if (usuario.getTipo().equalsIgnoreCase("estudiante")) {
-                                enviarRespuesta(exchange, "Bienvenido estudiante: " + usuario.getNombre());
+                            	redirigir(exchange, "/menu/student");
                             } else if (usuario.getTipo().equalsIgnoreCase("profesor")) {
                                 redirigir(exchange, "/menu/teacher");
                             }
