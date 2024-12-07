@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/exceptions"/>
-	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/gui"/>
-	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/tests"/>
-	<classpathentry kind="src" path="Entrega_1.2/V_2/gui"/>
 	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/actividades"/>
 	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/preguntas"/>
+	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/exceptions"/>
 	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/usuarios"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/modelo"/>
+	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/gui"/>
 	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/persistencia"/>
+	<classpathentry kind="src" path="Entrega_1.2/V_2/src/LPTH/tests"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>

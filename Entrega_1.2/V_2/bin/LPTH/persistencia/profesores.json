@@ -14,5 +14,37 @@
     "resenias": [],
     "LearningPaths": [],
     "loggedOn": true
+  },
+  {
+    "materia": "1",
+    "lps": [],
+    "sistemaCentral": {
+      "learningPaths": {}
+    },
+    "idUsuario": 746902068,
+    "nombre": "1",
+    "email": "1@1",
+    "password": "1",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Profesor",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
+  },
+  {
+    "materia": "1",
+    "lps": [],
+    "sistemaCentral": {
+      "learningPaths": {}
+    },
+    "idUsuario": 883323683,
+    "nombre": "1",
+    "email": "1@po",
+    "password": "1",
+    "fechaRegistro": "2024-12-06",
+    "tipo": "Profesor",
+    "resenias": [],
+    "LearningPaths": [],
+    "loggedOn": true
   }
 ]
